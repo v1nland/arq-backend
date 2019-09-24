@@ -17,3 +17,7 @@ func StartServer() {
     // Run API
     router.Run()
 }
+
+func main() {
+    StartServer()
+}
