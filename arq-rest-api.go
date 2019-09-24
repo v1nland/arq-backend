@@ -1,4 +1,4 @@
-package arq
+package main
 import (
     "github.com/gin-gonic/gin"
     _ "github.com/go-sql-driver/mysql"
@@ -16,8 +16,4 @@ func StartServer() {
 
     // Run API
     router.Run()
-}
-
-func main() {
-    StartServer()
 }

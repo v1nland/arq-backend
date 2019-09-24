@@ -1,4 +1,4 @@
-package arq
+package main
 
 type Condominio struct{
     Id int `json:"id"`
