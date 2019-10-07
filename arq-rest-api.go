@@ -13,6 +13,10 @@ func StartServer() {
     // MySQL routes
     router.GET("/", HomePage) // Set routes
     router.GET("/Condominios", GETCondominios)
+    router.GET("/Bodegas", GETBodegas)
+    router.GET("/Departamentos", GETDepartamentos)
+    router.GET("/Estacionamientos", GETEstacionamientos)
+    router.GET("/Multas", GETMultas)
 
     // Run API
     router.Run()
