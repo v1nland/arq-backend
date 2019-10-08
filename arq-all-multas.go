@@ -6,7 +6,7 @@ import (
     _ "github.com/go-sql-driver/mysql"
 )
 
-func (co Multa) FetchMultas() (multas []Multa, err error) {
+func (mu Multa) FetchMultas() (multas []Multa, err error) {
     // Opens DB
     db, err := sql.Open("mysql", "b5ef0f5f54c166:fc7bd410@tcp(us-cdbr-iron-east-02.cleardb.net:3306)/heroku_eb1b634cb7a7bd8")
     if err != nil {
@@ -34,9 +34,9 @@ func (co Multa) FetchMultas() (multas []Multa, err error) {
 
 func GETCondominios(c *gin.Context){
     // Results container
-    co := Multa{}
+    mu := Multa{}
     // Fetch from database
-	multas, err := co.FetchMultas()
+	multas, err := mu.FetchMultas()
 	if err != nil {
         panic(err.Error())
 	}

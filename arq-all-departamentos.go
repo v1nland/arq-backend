@@ -6,7 +6,7 @@ import (
     _ "github.com/go-sql-driver/mysql"
 )
 
-func (co Departamento) FetchDepartamentos() (departamentos []Departamento, err error) {
+func (de Departamento) FetchDepartamentos() (departamentos []Departamento, err error) {
     // Opens DB
     db, err := sql.Open("mysql", "b5ef0f5f54c166:fc7bd410@tcp(us-cdbr-iron-east-02.cleardb.net:3306)/heroku_eb1b634cb7a7bd8")
     if err != nil {
@@ -34,9 +34,9 @@ func (co Departamento) FetchDepartamentos() (departamentos []Departamento, err e
 
 func GETCondominios(c *gin.Context){
     // Results container
-    co := Departamento{}
+    de := Departamento{}
     // Fetch from database
-	departamentos, err := co.FetchDepartamentos()
+	departamentos, err := de.FetchDepartamentos()
 	if err != nil {
         panic(err.Error())
 	}
