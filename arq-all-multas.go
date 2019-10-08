@@ -32,7 +32,7 @@ func (mu Multa) FetchMultas() (multas []Multa, err error) {
 	return
 }
 
-func GETCondominios(c *gin.Context){
+func GETMultas(c *gin.Context){
     // Results container
     mu := Multa{}
     // Fetch from database

@@ -32,7 +32,7 @@ func (de Departamento) FetchDepartamentos() (departamentos []Departamento, err e
 	return
 }
 
-func GETCondominios(c *gin.Context){
+func GETDepartamentos(c *gin.Context){
     // Results container
     de := Departamento{}
     // Fetch from database

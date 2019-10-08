@@ -32,7 +32,7 @@ func (bo Bodega) FetchBodegas() (bodegas []Bodega, err error) {
 	return
 }
 
-func GETCondominios(c *gin.Context){
+func GETBodegas(c *gin.Context){
     // Results container
     bo := Bodega{}
     // Fetch from database

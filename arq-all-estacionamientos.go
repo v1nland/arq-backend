@@ -32,7 +32,7 @@ func (est Estacionamiento) FetchEstacionamientos() (estacionamientos []Estaciona
 	return
 }
 
-func GETCondominios(c *gin.Context){
+func GETEstacionamientos(c *gin.Context){
     // Results container
     est := Estacionamiento{}
     // Fetch from database
