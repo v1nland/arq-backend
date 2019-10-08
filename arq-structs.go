@@ -33,9 +33,3 @@ type Multa struct{
     Precio int `json:"precio" form:"precio"`
     Fecha string `json:"fecha" form:"fecha"`
 }
-
-type Condominio struct{
-    Id int `json:"id"`
-    Nombre string `json:"nombre" form:"nombre"`
-    Ubicacion string `json:"ubicacion" form:"ubicacion"`
-}
