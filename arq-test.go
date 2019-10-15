@@ -17,6 +17,14 @@ func TestGoEngine(){
     fmt.Println("Package working right!")
 }
 
+func GETUrlFunction(c *gin.Context){
+    var id = c.Param("id")
+
+    c.JSON(200, gin.H{
+		"ID": id,
+	})
+}
+
 func TestDatabaseConnection(c *gin.Context){
     // Try DB connection and show its results
     connState := ""

@@ -9,10 +9,15 @@ func StartServer() {
 
     // Test routes
     router.GET("/Test/Database", TestDatabaseConnection)
+    router.GET("/Test/URL/:id", GETUrlFunction)
 
     // MySQL routes
     router.GET("/", HomePage) // Set routes
+
+    // Condominios queries
     router.GET("/Condominios", GETCondominios)
+    router.GET("/Condominios/:id", GETCondominiosPorID)
+
     router.GET("/Bodegas", GETBodegas)
     router.GET("/Departamentos", GETDepartamentos)
     router.GET("/Estacionamientos", GETEstacionamientos)
