@@ -32,7 +32,6 @@ func TestDatabaseConnection(c *gin.Context){
     connState := ""
     db, err := sql.Open("mysql", "b5ef0f5f54c166:fc7bd410@tcp(us-cdbr-iron-east-02.cleardb.net:3306)/heroku_eb1b634cb7a7bd8")
 
-    // si es que existe error
     if err != nil {
         connState = "Not connected"
     }else{
