@@ -47,5 +47,5 @@ func StartServer() {
     router.GET("/Multas", GetMultas)
 
     // Run API
-    router.Run(":8080")
+    router.Run()
 }
