@@ -14,7 +14,6 @@ func (co Condominio) FetchCondominios() (condominios []Condominio, err error) {
 	if err != nil {
 		return
 	}
-    defer rows.Close()
 
     // Take all data
 	for rows.Next() {

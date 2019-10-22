@@ -1,23 +1,27 @@
 package main
 
-type Condominio struct{
-    Id int `json:"id"`
-    Nombre string `json:"nombre" form:"nombre"`
-    Ubicacion string `json:"ubicacion" form:"ubicacion"`
-}
-
 type Bodega struct{
     Id int `json:"id"`
     Numero int `json:"numero" form:"numero"`
     Num_dpto int `json:"num_dpto" form:"num_dpto"`
 }
 
+type Condominio struct{
+    Id int `json:"id"`
+    Codigo string `json:"codigo"`
+    Nombre string `json:"nombre" form:"nombre"`
+    Ubicacion string `json:"ubicacion" form:"ubicacion"`
+}
+
 type Departamento struct{
     Id int `json:"id"`
     Numero int `json:"numero" form:"numero"`
-    Id_condominio int `json:"id_condominio" form:"id_condominio"`
-    Nombre_dueno string `json:"dueno" form:"dueno"`
-    Nombre_arrendatario string `json:"nombre_arrendatario" form:"nombre_arrendatario"`
+    Password int `json:"password" form:"password"`
+    Dueno string `json:"dueno" form:"dueno"`
+    Residente string `json:"residente" form:"residente"`
+    Telefono string `json:"telefono" form:"telefono"`
+    Correo string `json:"correo" form:"correo"`
+    Cod_condominio string `json:"cod_condominio" form:"cod_condominio"`
 }
 
 type Estacionamiento struct{
