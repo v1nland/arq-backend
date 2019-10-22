@@ -40,6 +40,7 @@ func StartServer() {
 
     router.GET("/Usuarios", GetUsuarios)
     router.GET("/Usuarios/:rut", GetUsuariosPorID)
+    router.GET("/Usuarios/:rut/:password", GetLogin)
 
     router.GET("/Bodegas", GetBodegas)
     router.GET("/Departamentos", GetDepartamentos)
