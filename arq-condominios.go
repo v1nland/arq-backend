@@ -10,7 +10,7 @@ func (co Condominio) FetchCondominios() (condominios []Condominio, err error) {
     db := GetConnection()
 
     // SQL query
-	rows, err := db.Query("SELECT id, nombre, ubicacion FROM condominios")
+	rows, err := db.Query("SELECT id, codigo, nombre, ubicacion FROM condominios")
 	if err != nil {
 		return
 	}
@@ -18,8 +18,8 @@ func (co Condominio) FetchCondominios() (condominios []Condominio, err error) {
     // Take all data
 	for rows.Next() {
 		var cond Condominio
-        rows.Scan(&cond.Id, &cond.Nombre, &cond.Ubicacion)
-        fmt.Println(cond.Id, cond.Nombre, cond.Ubicacion)
+        rows.Scan(&cond.Id, &cond.Codigo, &cond.Nombre, &cond.Ubicacion)
+        fmt.Println(cond.Id, cond.Codigo, cond.Nombre, cond.Ubicacion)
         condominios = append(condominios, cond)
 	}
 	defer rows.Close()
@@ -49,7 +49,7 @@ func (co Condominio) FetchCondominiosPorID(condominio_id string) (condominios []
     db := GetConnection()
 
     // SQL query
-	rows, err := db.Query("SELECT id, nombre, ubicacion FROM condominios WHERE id = ?", condominio_id)
+	rows, err := db.Query("SELECT id, codigo, nombre, ubicacion FROM condominios WHERE id = ?", condominio_id)
 	if err != nil {
 		return
 	}
@@ -57,8 +57,8 @@ func (co Condominio) FetchCondominiosPorID(condominio_id string) (condominios []
     // Take all data
 	for rows.Next() {
 		var cond Condominio
-        rows.Scan(&cond.Id, &cond.Nombre, &cond.Ubicacion)
-        fmt.Println(cond.Id, cond.Nombre, cond.Ubicacion)
+        rows.Scan(&cond.Id, &cond.Codigo, &cond.Nombre, &cond.Ubicacion)
+        fmt.Println(cond.Id, cond.Codigo, cond.Nombre, cond.Ubicacion)
         condominios = append(condominios, cond)
 	}
 	defer rows.Close()
