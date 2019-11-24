@@ -2,6 +2,7 @@ package main
 import (
     "fmt"
     "github.com/gin-gonic/gin"
+    "github.com/dgrijalva/jwt-go"
 )
 
 // Fetch all users
@@ -19,7 +20,6 @@ func (usr Usuario) FetchUsuarios() (users []Usuario, err error) {
 	for rows.Next() {
 		var usr Usuario
         rows.Scan(&usr.Id, &usr.Rut, &usr.Password)
-        fmt.Println(usr.Id, usr.Rut, usr.Password)
         users = append(users, usr)
 	}
 	defer rows.Close()
@@ -56,8 +56,21 @@ func (usr Usuario) FetchUserLogin(usuario_rut string, usuario_pass string) (user
     // Take all data
 	for rows.Next() {
 		var usr Usuario
+
         rows.Scan(&usr.Id, &usr.Rut, &usr.Password)
-        fmt.Println(usr.Id, usr.Rut, usr.Password)
+
+        token := jwt.New(jwt.SigningMethodHS256)
+        claims := token.Claims.(jwt.MapClaims)
+        claims["id"] = usr.Id
+        claims["rut"] = usr.Rut
+        claims["password"] = usr.Password
+        claims["level"] = "admin"
+        usr_token, err := token.SignedString( SecretKey() )
+        usr.Token = usr_token
+
+        _ = err
+
+        fmt.Println(usr.Id, usr.Rut, usr.Password, usr.Token)
         users = append(users, usr)
 	}
 	defer rows.Close()
@@ -71,6 +84,7 @@ func GetUserLogin(c *gin.Context){
     var password = c.Param("password")
 
     usr := Usuario{}
+
     // Fetch from database
 	users, err := usr.FetchUserLogin(rut, password)
 	if err != nil {

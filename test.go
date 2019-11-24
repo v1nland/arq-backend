@@ -4,12 +4,33 @@ import (
     "github.com/gin-gonic/gin"
     "database/sql"
     _ "github.com/go-sql-driver/mysql"
+    "github.com/dgrijalva/jwt-go"
 )
+
+
+func jwttest(c *gin.Context) {
+    // Create token
+    token := jwt.New(jwt.SigningMethodHS256)
+    // Set claims
+    // This is the information which frontend can use
+    // The backend can also decode the token and get admin etc.
+    claims := token.Claims.(jwt.MapClaims)
+    claims["user"] = "Jonsito"
+    // Generate encoded token and send it as response.
+    // The signing string should be secret (a generated UUID          works too)
+    t, err := token.SignedString( []byte("jt65he4ae5ae") )
+
+    c.JSON(200, gin.H{
+        "token": t,
+        "error": err,
+    })
+}
 
 func HomePage(c *gin.Context){
     // Set an standard HomePage message
     c.JSON(200, gin.H{
         "message": "Hello World",
+        "test2": []byte("jt65he4ae5ae"),
     })
 }
 

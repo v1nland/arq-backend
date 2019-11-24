@@ -42,4 +42,5 @@ type Usuario struct{
     Id int `json:"id"`
     Rut string `json:"rut" form:"rut"`
     Password string `json:"password" form:"password"`
+    Token string `json:"token" form:"token"`
 }
