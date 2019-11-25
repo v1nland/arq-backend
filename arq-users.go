@@ -67,10 +67,12 @@ func (usr Usuario) FetchUserLogin(usuario_rut string, usuario_pass string) (user
         claims["level"] = "admin"
         usr_token, err := token.SignedString( SecretKey() )
         usr.Token = usr_token
+        usr.Level = "admin"
+        if err != nil {
+            return
+        }
 
-        _ = err
-
-        fmt.Println(usr.Id, usr.Rut, usr.Password, usr.Token)
+        fmt.Println(usr.Id, usr.Rut, usr.Password, usr.Level, usr.Token)
         users = append(users, usr)
 	}
 	defer rows.Close()

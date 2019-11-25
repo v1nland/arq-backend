@@ -16,8 +16,9 @@ func VerifyToken(c *gin.Context){
     token, err := jwt.ParseWithClaims(usr_token, claims, func(token *jwt.Token) (interface{}, error) {
         return SecretKey(), nil
     })
-
-    _ = err
+    if err != nil {
+        return
+    }
 
     if token.Valid {
         c.JSON(200, gin.H{
