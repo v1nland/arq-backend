@@ -28,27 +28,33 @@ func StartServer() {
     router.Use(CORSMiddleware())
 
     // Test routes
-    router.GET("/Test/Database", TestDatabaseConnection)
-    router.GET("/Test/JWT", jwttest)
-    router.GET("/Test/JWT/:token", VerifyToken)
-    router.GET("/Test/URL/:id/:hola", TestUrlParameters)
+    // router.GET("/Test/Database", TestDatabaseConnection)
+    // router.GET("/Test/URL/:id/:hola", TestUrlParameters)
+    // router.GET("/Test/JWT", jwttest)
 
     // MySQL routes
     router.GET("/", HomePage) // Set routes
 
     // Condominios queries
     router.GET("/Condominios/", GetCondominios)
-    router.GET("/Condominios/:id", GetCondominiosPorID)
+    router.GET("/Condominios/:id/", GetCondominiosPorID)
 
+    // Usuarios queries
     router.GET("/Usuarios/", GetUsuarios)
-    router.GET("/Usuarios/:rut/:password", GetUserLogin)
+    router.GET("/Usuarios/:rut/:password/", GetUserLogin)
+    router.GET("/DatosUsuario/:token/", DecodeToken)
 
+    // Bodegas queries
     router.GET("/Bodegas/", GetBodegas)
 
+    // Departamentos queries
     router.GET("/Departamentos/", GetDepartamentos)
-    router.GET("/Departamentos/:codigo/:numero/:password", GetDptoLogin)
+    router.GET("/Departamentos/:codigo/:numero/:password/", GetDptoLogin)
 
+    // Estacionamientos queries
     router.GET("/Estacionamientos/", GetEstacionamientos)
+
+    // Multas queries
     router.GET("/Multas/", GetMultas)
 
     // Run API

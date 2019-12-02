@@ -8,11 +8,10 @@ func SecretKey() ([]byte){
     return []byte("jt65he4ae5ae")
 }
 
-func VerifyToken(c *gin.Context){
+func DecodeToken(c *gin.Context){
     var usr_token = c.Param("token")
 
     claims := jwt.MapClaims{}
-
     token, err := jwt.ParseWithClaims(usr_token, claims, func(token *jwt.Token) (interface{}, error) {
         return SecretKey(), nil
     })

@@ -48,7 +48,7 @@ func (de Departamento) FetchDptoLogin(cond_code string, dpto_num string, dpto_pa
     db := GetConnection()
 
     // SQL query
-	rows, err := db.Query("SELECT * FROM departamentos WHERE numero = ? AND password = ? AND cod_condominio = ?", dpto_num, dpto_pass, cond_code)
+	rows, err := db.Query("SELECT * FROM departamentos WHERE numero = ? AND password = ? AND id_condominio = ?", dpto_num, dpto_pass, cond_code)
 	if err != nil {
 		return
 	}
