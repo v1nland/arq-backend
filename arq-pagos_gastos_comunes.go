@@ -47,7 +47,7 @@ func GetPagos(c *gin.Context){
 
 //Select con id_departamentos------------------------------------------------------------------------
 
-func (pag Pagos_gastos_comunes) FetchPagosIddpto() (id_departamentos int) (pagos_gastos_comunes []Pago_gastos_comunes, err error) {
+func (pag Pagos_gastos_comunes) FetchPagosIddpto(id_departamentos int) (pagos_gastos_comunes []Pago_gastos_comunes, err error) {
     // Opens DB
     db := GetConnection()
 
@@ -85,6 +85,4 @@ func GetPagosIddpto(c *gin.Context){
 		"rows": pagos_gastos_comunes,
 		"count": len(pagos_gastos_comunes),
 	})
-}		return
-	}
-
+}		
