@@ -47,7 +47,7 @@ func GetBodegas(c *gin.Context){
 
 //Select todas las bodegas con id_departamentos-----------------------------------------------------
 
-func (bo Bodega) FetchBodegasIddepto(id_dpto int) (bodegas []Bodega, err error) {
+func (bo Bodega) FetchBodegasIddepto(id_dpto string) (bodegas []Bodega, err error) {
     // Opens DB
     db := GetConnection()
 
@@ -77,7 +77,7 @@ func GetBodegasIddpto(c *gin.Context){
     // Results container
     bo := Bodega{}
     // Fetch from database
-	bodegas, err := bo.FetchBodegasIddpto(iddepartamento)
+	bodegas, err := bo.FetchBodegasIddepto(iddepartamento)
 	if err != nil {
         panic(err.Error())
 	}

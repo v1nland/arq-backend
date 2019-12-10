@@ -19,8 +19,8 @@ func (mu Multa) FetchMultas() (multas []Multa, err error) {
     // Take all data
 	for rows.Next() {
 		var mul Multa
-        rows.Scan(&mul.Id, &mul.Grado, &mul.Id_departamentos, &mul.Monto, &mul.Fecha, &mul.causa)
-        fmt.Println(mul.Id, mul.Grado, mul.Id_departamentos, mul.Monto, mul.Fecha, mul.causa)
+        rows.Scan(&mul.Id, &mul.Grado, &mul.Id_departamentos, &mul.Monto, &mul.Fecha, &mul.Causa)
+        fmt.Println(mul.Id, mul.Grado, mul.Id_departamentos, mul.Monto, mul.Fecha, mul.Causa)
         multas = append(multas, mul)
 	}
 	defer rows.Close()
@@ -46,7 +46,7 @@ func GetMultas(c *gin.Context){
 
 //Select todas las multas en el mes y ano del depto con id_dpto-----------------------------------------
 
-func (mu Multa) FetchMultasFecha(ano_inicio int, mes_inicio int, ano_final int, mes_final int, id_dpto int) (multas []Multa, err error) {
+func (mu Multa) FetchMultasFecha(ano_inicio string, mes_inicio string, ano_final string, mes_final string, id_dpto string) (multas []Multa, err error) {
     // Opens DB
     db := GetConnection()
 
@@ -59,8 +59,8 @@ func (mu Multa) FetchMultasFecha(ano_inicio int, mes_inicio int, ano_final int, 
     // Take all data
 	for rows.Next() {
 		var mul Multa
-        rows.Scan(&mul.Id, &mul.Grado, &mul.Id_departamentos, &mul.Monto, &mul.Fecha, &mul.causa)
-        fmt.Println(mul.Id, mul.Grado, mul.Id_departamentos, mul.Monto, mul.Fecha, mul.causa)
+        rows.Scan(&mul.Id, &mul.Grado, &mul.Id_departamentos, &mul.Monto, &mul.Fecha, &mul.Causa)
+        fmt.Println(mul.Id, mul.Grado, mul.Id_departamentos, mul.Monto, mul.Fecha, mul.Causa)
         multas = append(multas, mul)
 	}
 	defer rows.Close()
@@ -85,7 +85,7 @@ func GetMultasFecha(c *gin.Context){
     // Results container
     mu := Multa{}
     // Fetch from database
-	multas, err := mu.FetchMultasFecha(anoinicio, mesinicio, anofinal, mesfinal)
+	multas, err := mu.FetchMultasFecha(anoinicio, mesinicio, anofinal, mesfinal, iddpto)
 	if err != nil {
         panic(err.Error())
 	}
@@ -99,7 +99,7 @@ func GetMultasFecha(c *gin.Context){
 
 //Count cantidad de multas en el mes entregado, dpto con id----------------------------------------------
 
-func (mu Multa) FetchCountMultasFecha(ano_inicio int, mes_inicio int, ano_final int, mes_final int, id_dpto int) (multas []Multa, err error) {
+func (mu Multa) FetchCountMultasFecha(ano_inicio string, mes_inicio string, ano_final string, mes_final string, id_dpto string) (multas []Multa, err error) {
     // Opens DB
     db := GetConnection()
 
@@ -112,8 +112,8 @@ func (mu Multa) FetchCountMultasFecha(ano_inicio int, mes_inicio int, ano_final 
     // Take all data
 	for rows.Next() {
 		var mul Multa
-        rows.Scan(&mul.Id, &mul.Grado, &mul.Id_departamentos, &mul.Monto, &mul.Fecha, &mul.causa)
-        fmt.Println(mul.Id, mul.Grado, mul.Id_departamentos, mul.Monto, mul.Fecha, mul.causa)
+        rows.Scan(&mul.Id, &mul.Grado, &mul.Id_departamentos, &mul.Monto, &mul.Fecha, &mul.Causa)
+        fmt.Println(mul.Id, mul.Grado, mul.Id_departamentos, mul.Monto, mul.Fecha, mul.Causa)
         multas = append(multas, mul)
 	}
 	defer rows.Close()

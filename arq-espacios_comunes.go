@@ -46,12 +46,12 @@ func GetEspacios_comunes(c *gin.Context){
 
 //select espacios por id_condominio------------------------------------------------------------------
 
-func (Ec Espacio_comun) FetchEspacios_comunesIdcond(id_condominios int) (espacios_comunes []Espacio_comun, err error) {
+func (Ec Espacio_comun) FetchEspacios_comunesIdcond(id_condominios string) (espacios_comunes []Espacio_comun, err error) {
     // Opens DB
     db := GetConnection()
 
     // SQL query
-	rows, err := db.Query("select * from espacios_comunes where id_condominio =?", id_cond)
+	rows, err := db.Query("select * from espacios_comunes where id_condominio =?", id_condominios)
 	if err != nil {
 		return
 	}
@@ -76,7 +76,7 @@ func GetEspacios_comunesIdcond(c *gin.Context){
     // Results container
     ec := Espacio_comun{}
     // Fetch from database
-	espacios_comunes, err := ec.FetchEspacios_comunes(idcond)
+	espacios_comunes, err := ec.FetchEspacios_comunesIdcond(idcond)
 	if err != nil {
         panic(err.Error())
 	}
@@ -90,12 +90,12 @@ func GetEspacios_comunesIdcond(c *gin.Context){
 
 //update espacio comun con idcond, actualiza el estado----------------------------------------------
 
-func (Ec Espacio_comun) UpdateEspacios_comunesIdcond(estado string, id_condominio int) (espacios_comunes []Espacio_comun, err error) {
+func (Ec Espacio_comun) UpdateEspacios_comunesIdcond(estado string, id_espacio string) (espacios_comunes []Espacio_comun, err error) {
     // Opens DB
     db := GetConnection()
 
     // SQL query
-	rows, err := db.Query("update espacios_comunes set estado= ? where id_condominio = ?", estado, id_condominio)
+	rows, err := db.Query("update espacios_comunes set estado= ? where id_espacio = ?", estado, id_espacio)
 	if err != nil {
 		return
 	}

@@ -19,8 +19,8 @@ func (Cs Conserje) FetchConserjes() (conserjes []Conserje, err error) {
     // Take all data
 	for rows.Next() {
 		var cos Conserje
-        rows.Scan(&cos.Id, &cos.Nombre, &cos.Rut, &cos.id_condominio)
-        fmt.Println(cos.Id, cos.Nombre, cos.Rut, cos.id_condominio)
+        rows.Scan(&cos.Id, &cos.Nombre, &cos.Rut, &cos.Id_condominio)
+        fmt.Println(cos.Id, cos.Nombre, cos.Rut, cos.Id_condominio)
         conserjes = append(conserjes, cos)
 	}
 	defer rows.Close()
@@ -32,7 +32,7 @@ func GetConserjes(c *gin.Context){
     // Results container
     cs := Conserje{}
     // Fetch from database
-	conserjes, err := ec.FetchConserjes()
+	conserjes, err := cs.FetchConserjes()
 	if err != nil {
         panic(err.Error())
 	}
@@ -46,7 +46,7 @@ func GetConserjes(c *gin.Context){
 
 //select conserjes por condominio--------------------------------------------------------------------
 
-func (Cs Conserje) FetchConserjesIdcond(id_condominio int) (conserjes []Conserje, err error) {
+func (Cs Conserje) FetchConserjesIdcond(id_condominio string) (conserjes []Conserje, err error) {
     // Opens DB
     db := GetConnection()
 
@@ -59,8 +59,8 @@ func (Cs Conserje) FetchConserjesIdcond(id_condominio int) (conserjes []Conserje
     // Take all data
 	for rows.Next() {
 		var cos Conserje
-        rows.Scan(&cos.Id, &cos.Nombre, &cos.Rut, &cos.id_condominio)
-        fmt.Println(cos.Id, cos.Nombre, cos.Rut, cos.id_condominio)
+        rows.Scan(&cos.Id, &cos.Nombre, &cos.Rut, &cos.Id_condominio)
+        fmt.Println(cos.Id, cos.Nombre, cos.Rut, cos.Id_condominio)
         conserjes = append(conserjes, cos)
 	}
 	defer rows.Close()
@@ -76,7 +76,7 @@ func GetConserjesIdcond(c *gin.Context){
     // Results container
     cs := Conserje{}
     // Fetch from database
-	conserjes, err := ec.FetchConserjesIdcond(idcondominio)
+	conserjes, err := cs.FetchConserjesIdcond(idcondominio)
 	if err != nil {
         panic(err.Error())
 	}

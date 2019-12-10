@@ -19,8 +19,8 @@ func (Gc Gasto_comun) FetchGastos_comunes() (gastos_comunes []Gasto_comun, err e
     // Take all data
 	for rows.Next() {
 		var gac Gasto_comun
-        rows.Scan(&gac.Id, &gac.Monto, &gac.Detalle, &gac.Fecha, &gac.id_departamentos)
-        fmt.Println(gac.Id, gac.Monto, gac.Detalle, gac.Fecha, gac.id_departamentos)
+        rows.Scan(&gac.Id, &gac.Monto, &gac.Detalle, &gac.Fecha, &gac.Id_departamentos)
+        fmt.Println(gac.Id, gac.Monto, gac.Detalle, gac.Fecha, gac.Id_departamentos)
         gastos_comunes = append(gastos_comunes, gac)
 	}
 	defer rows.Close()
@@ -32,7 +32,7 @@ func GetGastos_comunes(c *gin.Context){
     // Results container
     gc := Gasto_comun{}
     // Fetch from database
-	gastos_comunes, err := ec.FetchGastos_comunes()
+	gastos_comunes, err := gc.FetchGastos_comunes()
 	if err != nil {
         panic(err.Error())
 	}

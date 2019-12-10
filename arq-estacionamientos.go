@@ -6,7 +6,7 @@ import (
 
 //Take all data-------------------------------------------------------------------------------------
 
-func (est Estacionamientos) FetchEstacionamientos() (estacionamientos []Estacionamiento, err error) {
+func (est Estacionamiento) FetchEstacionamientos() (estacionamientos []Estacionamiento, err error) {
     // Opens DB
     db := GetConnection()
 
@@ -18,9 +18,9 @@ func (est Estacionamientos) FetchEstacionamientos() (estacionamientos []Estacion
 
     // Take all data
 	for rows.Next() {
-		var esta Estacionamientos
-        rows.Scan(&esta.Id, &esta.Numero, &esta.id_departamentos, &esta.estado, &esta.patente_frec)
-        fmt.Println(esta.Id, esta.Numero, esta.id_departamentos, esta.estado, esta.patente_frec)
+		var esta Estacionamiento
+        rows.Scan(&esta.Id, &esta.Numero, &esta.Id_departamentos, &esta.Estado, &esta.Patente_frecuente)
+        fmt.Println(esta.Id, esta.Numero, esta.Id_departamentos, esta.Estado, esta.Patente_frecuente)
         estacionamientos = append(estacionamientos, esta)
 	}
 	defer rows.Close()
@@ -32,7 +32,7 @@ func GetEstacionamientos(c *gin.Context){
     // Results container
     est := Estacionamiento{}
     // Fetch from database
-	estacionamientos, err := pag.FetchEstacionamientos()
+	estacionamientos, err := est.FetchEstacionamientos()
 	if err != nil {
         panic(err.Error())
 	}
@@ -47,21 +47,21 @@ func GetEstacionamientos(c *gin.Context){
 
 //Select con id_departamentos------------------------------------------------------------------------
 
-func (est Estacionamientos) FetchEstacionamientosIddpto(id_departamentos int) (estacionamientos []Estacionamiento, err error) {
+func (est Estacionamiento) FetchEstacionamientosIddpto(id_departamentos string) (estacionamientos []Estacionamiento, err error) {
     // Opens DB
     db := GetConnection()
 
     // SQL query
-	rows, err := db.Query("select * from estacionamientos where id_departamentos=?", id_dpto)
+	rows, err := db.Query("select * from estacionamientos where id_departamentos=?", id_departamentos)
 	if err != nil {
 		return
 	}
 
     // Take all data
 	for rows.Next() {
-		var esta Estacionamientos
-        rows.Scan(&esta.Id, &esta.Numero, &esta.id_departamentos, &esta.estado, &esta.patente_frec)
-        fmt.Println(esta.Id, esta.Numero, esta.id_departamentos, esta.estado, esta.patente_frec)
+		var esta Estacionamiento
+        rows.Scan(&esta.Id, &esta.Numero, &esta.Id_departamentos, &esta.Estado, &esta.Patente_frecuente)
+        fmt.Println(esta.Id, esta.Numero, esta.Id_departamentos, esta.Estado, esta.Patente_frecuente)
         estacionamientos = append(estacionamientos, esta)
 	}
 	defer rows.Close()

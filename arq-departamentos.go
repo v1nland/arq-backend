@@ -48,7 +48,7 @@ func GetDepartamentos(c *gin.Context){
 
 //SELECT PARA LOGIN ------------------------------------------------------------------------------
 
-func (de Departamento) FetchDptoLogin(codigo_condominio string, numero_dpto int, password_dpto string) (departamentos []Departamento, err error) {
+func (de Departamento) FetchDptoLogin(codigo_condominio string, numero_dpto string, password_dpto string) (departamentos []Departamento, err error) {
     // Opens DB
     db := GetConnection()
 
@@ -61,9 +61,8 @@ func (de Departamento) FetchDptoLogin(codigo_condominio string, numero_dpto int,
     // Take all data
 	for rows.Next() {
 		var dpto Departamento
-		var cond Condominio
-        rows.Scan(&dpto.Id, &dpto.Numero, &dpto.Password, &dpto.Dueno, &dpto.Residente, &dpto.Telefono, &dpto.Correo, &dpto.Id_condominio, &dpto.Telefono_residente, &dpto.Correo_residente,&cond.codigo)
-        fmt.Println(dpto.Id, dpto.Numero, dpto.Password, dpto.Dueno, dpto.Residente, dpto.Telefono, dpto.Correo, dpto.Id_condominio, dpto.Telefono_residente, dpto.Correo_residente, cond.codigo)
+        rows.Scan(&dpto.Id, &dpto.Numero, &dpto.Password, &dpto.Dueno, &dpto.Residente, &dpto.Telefono, &dpto.Correo, &dpto.Id_condominio, &dpto.Telefono_residente, &dpto.Correo_residente)
+        fmt.Println(dpto.Id, dpto.Numero, dpto.Password, dpto.Dueno, dpto.Residente, dpto.Telefono, dpto.Correo, dpto.Id_condominio, dpto.Telefono_residente, dpto.Correo_residente)
         departamentos = append(departamentos, dpto)
 	}
 	defer rows.Close()
@@ -144,7 +143,7 @@ func GetDptoCondominio(c *gin.Context){
 
 //SELECT DEPARTAMENTOS POR ID--------------------------------------------------------------------
 
-func (de Departamentos) FetchDptoID(id_departamento string) (departamentos []Departamento, err error) {
+func (de Departamento) FetchDptoID(id_departamento string) (departamentos []Departamento, err error) {
     // Opens DB
     db := GetConnection()
 
@@ -190,12 +189,12 @@ func GetDptoID(c *gin.Context){
 
 //SELECT TODOS LOS DATOS CON ID---------------------------------------------------------------------
 
-func (de Departamentos) FetchTodoDptoID(id_departamento string) (departamentos []Departamento, err error) {
+func (de Departamento) FetchTodoDptoID(id_departamento string) (departamentos []Departamento, err error) {
     // Opens DB
     db := GetConnection()
 
     // SQL query
-	rows, err := db.Query("select * from departamentos JOIN tickets on departamentos.id = tickets.id_departamentos JOIN bodegas on tickets.id_departamentos = bodegas.id_departamentos JOIN estacionamientos on bodegas.id_departamentos = estacionamientos.id_departamentos JOIN gastos_comunes on estacionamientos.id_departamentos = gastos_comunes.id_departamentos JOIN mediciones_agua on gastos_comunes.id_departamentos = mediciones_agua.id_departamentos JOIN multas on mediciones_agua.id_departamentos = multas.id_departamentos JOIN pagos_gastos_comunes on multas.id_departamentos = pagos_gastos_comunes.id_departamentos where departamentos.id= ?", id_dpto)
+	rows, err := db.Query("select * from departamentos JOIN tickets on departamentos.id = tickets.id_departamentos JOIN bodegas on tickets.id_departamentos = bodegas.id_departamentos JOIN estacionamientos on bodegas.id_departamentos = estacionamientos.id_departamentos JOIN gastos_comunes on estacionamientos.id_departamentos = gastos_comunes.id_departamentos JOIN mediciones_agua on gastos_comunes.id_departamentos = mediciones_agua.id_departamentos JOIN multas on mediciones_agua.id_departamentos = multas.id_departamentos JOIN pagos_gastos_comunes on multas.id_departamentos = pagos_gastos_comunes.id_departamentos where departamentos.id= ?", id_departamento)
 	if err != nil {
 		return
 	}
@@ -203,15 +202,15 @@ func (de Departamentos) FetchTodoDptoID(id_departamento string) (departamentos [
     // Take all data
 	for rows.Next() {
 		var dpto Departamento
-		var tick Tickets
-		var bode Bodegas
-		var esta Estacionamientos
-		var gast Gastos_comunes
-		var medi Mediciones_agua
-		var mult Multas
-		var pago Pagos_gastos_comunes
-        rows.Scan(&dpto.Id, &dpto.Numero, &dpto.Password, &dpto.Dueno, &dpto.Residente, &dpto.Telefono, &dpto.Correo, &dpto.Id_condominio, &dpto.Telefono_residente, &dpto.Correo_residente, &tick.id_departamentos, &bode.id_departamentos, &esta.id_departamentos, &gast.id_departamentos, &medi.id_departamentos, &mult.id_departamentos, &pago.id_departamentos)
-        fmt.Println(dpto.Id, dpto.Numero, dpto.Password, dpto.Dueno, dpto.Residente, dpto.Telefono, dpto.Correo, dpto.Id_condominio, dpto.Telefono_residente, dpto.Correo_residente, tick.id_departamentos, bode.id_departamentos, esta.id_departamentos, gast.id_departamentos, medi.id_departamentos, mult.id_departamentos, pago.id_departamentos)
+		//var tick Ticket
+		//var bode Bodega
+		//var esta Estacionamiento
+		//var gast Gasto_comun
+		//var medi Medicion_agua
+		//var mult Multa
+		//var pago Pago_gastos_comunes
+        rows.Scan(&dpto.Id, &dpto.Numero, &dpto.Password, &dpto.Dueno, &dpto.Residente, &dpto.Telefono, &dpto.Correo, &dpto.Id_condominio, &dpto.Telefono_residente, &dpto.Correo_residente)
+        fmt.Println(dpto.Id, dpto.Numero, dpto.Password, dpto.Dueno, dpto.Residente, dpto.Telefono, dpto.Correo, dpto.Id_condominio, dpto.Telefono_residente, dpto.Correo_residente)
         departamentos = append(departamentos, dpto)
 	}
 	defer rows.Close()

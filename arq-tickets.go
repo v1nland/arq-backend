@@ -46,7 +46,7 @@ func GetTickets(c *gin.Context){
 
 //Select con id_condominio-------------------------------------------------------------------------
 
-func (Ti Ticket) FetchTicketsIdcond() (id_cond int) (tickets []Ticket, err error) {
+func (Ti Ticket) FetchTicketsIdcond(id_cond string) (tickets []Ticket, err error) {
     // Opens DB
     db := GetConnection()
 
@@ -77,7 +77,7 @@ func GetTicketsIdcond(c *gin.Context){
     // Results container
     ti := Ticket{}
     // Fetch from database
-	tickets, err := ti.FetchTickets(idcondominio)
+	tickets, err := ti.FetchTicketsIdcond(idcondominio)
 	if err != nil {
         panic(err.Error())
 	}
@@ -91,7 +91,7 @@ func GetTicketsIdcond(c *gin.Context){
 
 //Select con id_ticket y finalizados---------------------------------------------------------------
 
-func (Ti Ticket) FetchTicketsIdcondFinal() (id_cond int) (tickets []Ticket, err error) {
+func (Ti Ticket) FetchTicketsIdcondFinal(id_cond string) (tickets []Ticket, err error) {
     // Opens DB
     db := GetConnection()
 
@@ -122,7 +122,7 @@ func GetTicketsIdcondFinal(c *gin.Context){
     // Results container
     ti := Ticket{}
     // Fetch from database
-	tickets, err := ti.FetchTickets(idcondominio)
+	tickets, err := ti.FetchTicketsIdcondFinal(idcondominio)
 	if err != nil {
         panic(err.Error())
 	}
@@ -136,11 +136,11 @@ func GetTicketsIdcondFinal(c *gin.Context){
 
 //Update con id_ticket para poner finalizado=1-----------------------------------------------------
 
-func (Ti Ticket) UpdateTicketsFinal() (id_cond int) (tickets []Ticket, err error) {
+func (Ti Ticket) UpdateTicketsFinal(id_tic string) (tickets []Ticket, err error) {
     // Opens DB
     db := GetConnection()
 
-    // SQL query
+    // SQL que
 	rows, err := db.Query("update tickets set finalizado= 1 where id=?", id_tic)
 	if err != nil {
 		return
@@ -167,7 +167,7 @@ func GetUpdateTicketsFinal(c *gin.Context){
     // Results container
     ti := Ticket{}
     // Fetch from database
-	tickets, err := ti.FetchTickets(idtic)
+	tickets, err := ti.UpdateTicketsFinal(idtic)
 	if err != nil {
         panic(err.Error())
 	}

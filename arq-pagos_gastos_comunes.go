@@ -85,4 +85,6 @@ func GetPagosIddpto(c *gin.Context){
 		"rows": pagos_gastos_comunes,
 		"count": len(pagos_gastos_comunes),
 	})
-}		
+}
+
+
