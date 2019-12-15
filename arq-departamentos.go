@@ -53,7 +53,7 @@ func (de Departamento) FetchDptoLogin(cond_code string, dpto_num string, dpto_pa
     db := GetConnection()
 
     // SQL query
-	rows, err := db.Query("SELECT * FROM departamentos WHERE numero = ? AND password = ? AND id_condominio = ?", dpto_num, dpto_pass, cond_code)
+	rows, err := db.Query("select * from departamentos where (id_condominio = (select id from condominios where codigo = ?)) and numero= ? and password = ?", cond_code, dpto_num, dpto_pass)
 	if err != nil {
 		return
 	}
@@ -61,8 +61,8 @@ func (de Departamento) FetchDptoLogin(cond_code string, dpto_num string, dpto_pa
     // Take all data
 	for rows.Next() {
 		var dpto Departamento
-        rows.Scan(&dpto.Id, &dpto.Numero, &dpto.Password, &dpto.Dueno, &dpto.Residente, &dpto.Telefono, &dpto.Correo, &dpto.Id_condominio)
-        fmt.Println(dpto.Id, dpto.Numero, dpto.Password, dpto.Dueno, dpto.Residente, dpto.Telefono, dpto.Correo, dpto.Id_condominio)
+        rows.Scan(&dpto.Id, &dpto.Numero, &dpto.Password, &dpto.Dueno, &dpto.Residente, &dpto.Telefono, &dpto.Correo, &dpto.Id_condominio, &dpto.Telefono_residente, &dpto.Correo_residente)
+        fmt.Println(dpto.Id, dpto.Numero, dpto.Password, dpto.Dueno, dpto.Residente, dpto.Telefono, dpto.Correo, dpto.Id_condominio, dpto.Telefono_residente, dpto.Correo_residente)
         departamentos = append(departamentos, dpto)
 	}
 	defer rows.Close()
