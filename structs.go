@@ -32,6 +32,8 @@ type Departamento struct{
     Id_condominio string `json:"id_condominio" form:"id_condominio"`
     Telefono_residente string `json:"telefono_residente" form:"telefono_residente"`
     Correo_residente string `json:"correo_residente" form:"correo_residente"`
+    Level string `json:"level" form:"level"`
+    Token string `json:"token" form:"token"`
 }
 
 type Espacio_comun struct{

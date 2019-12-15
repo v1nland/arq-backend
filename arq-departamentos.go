@@ -2,6 +2,7 @@ package main
 import (
     "fmt"
     "github.com/gin-gonic/gin"
+    "github.com/dgrijalva/jwt-go"
 )
 
 // Fetch all departamentos ---------------------------------------------------------------------------
@@ -62,7 +63,27 @@ func (de Departamento) FetchDptoLogin(cond_code string, dpto_num string, dpto_pa
 	for rows.Next() {
 		var dpto Departamento
         rows.Scan(&dpto.Id, &dpto.Numero, &dpto.Password, &dpto.Dueno, &dpto.Residente, &dpto.Telefono, &dpto.Correo, &dpto.Id_condominio, &dpto.Telefono_residente, &dpto.Correo_residente)
-        fmt.Println(dpto.Id, dpto.Numero, dpto.Password, dpto.Dueno, dpto.Residente, dpto.Telefono, dpto.Correo, dpto.Id_condominio, dpto.Telefono_residente, dpto.Correo_residente)
+
+        token := jwt.New(jwt.SigningMethodHS256)
+        claims := token.Claims.(jwt.MapClaims)
+        claims["id"] = dpto.Id
+        claims["numero"] = dpto.Numero
+        claims["password"] = dpto.Password
+        claims["dueno"] = dpto.Dueno
+        claims["residente"] = dpto.Residente
+        claims["telefono"] = dpto.Telefono
+        claims["correo"] = dpto.Correo
+        claims["id_cond"] = dpto.Id_condominio
+        claims["telefono_residente"] = dpto.Telefono_residente
+        claims["correo_residente"] = dpto.Correo_residente
+        claims["level"] = "user"
+        dpto_token, err := token.SignedString( SecretKey() )
+        dpto.Token = dpto_token
+        dpto.Level = "user"
+
+        _ = err
+
+        fmt.Println(dpto.Id, dpto.Numero, dpto.Password, dpto.Dueno, dpto.Residente, dpto.Telefono, dpto.Correo, dpto.Id_condominio, dpto.Telefono_residente, dpto.Correo_residente, dpto.Token)
         departamentos = append(departamentos, dpto)
 	}
 	defer rows.Close()

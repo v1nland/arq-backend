@@ -15,11 +15,12 @@ func DecodeToken(c *gin.Context){
     token, err := jwt.ParseWithClaims(usr_token, claims, func(token *jwt.Token) (interface{}, error) {
         return SecretKey(), nil
     })
+
     if err != nil {
         return
     }
 
-    if token.Valid {
+    if token.Valid && claims["level"] == "admin" {
         c.JSON(200, gin.H{
     		"valid": "true",
             "id": claims["id"],
@@ -27,7 +28,20 @@ func DecodeToken(c *gin.Context){
             "password": claims["password"],
             "level": claims["level"],
     	})
-	} else {
+	} else if token.Valid && claims["level"] == "user" {
+        c.JSON(200, gin.H{
+    		"valid": "true",
+            "numero": claims["numero"],
+            "dueno": claims["dueno"],
+            "residente": claims["residente"],
+            "telefono": claims["telefono"],
+            "correo": claims["correo"],
+            "id_cond": claims["id_cond"],
+            "telefono_residente": claims["telefono_residente"],
+            "correo_residente": claims["correo_residente"],
+            "level": claims["level"],
+    	})
+    }else {
         c.JSON(200, gin.H{
             "valid": "false",
         })
