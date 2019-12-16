@@ -32,6 +32,7 @@ type Departamento struct{
     Id_condominio string `json:"id_condominio" form:"id_condominio"`
     Telefono_residente string `json:"telefono_residente" form:"telefono_residente"`
     Correo_residente string `json:"correo_residente" form:"correo_residente"`
+    Prorrateo float64 `json:"prorrateo" form:"prorrateo"`
     Level string `json:"level" form:"level"`
     Token string `json:"token" form:"token"`
 }
@@ -85,16 +86,19 @@ type Pagos_gastos_comunes struct{
 type Ticket struct{
     Id int `json:"id"`
     Id_departamentos int `json:"id_departamentos" form:"id_departamentos"`
-    Id_usuarios int `json:"id_usuarios" form:"id_usuarios"`
+    Id_condominio int `json:"id_condominio" form:"id_condominio"`
     Consulta string `json:"consulta" form:"consulta"`
     Respuesta string `json:"respuesta" form:"respuesta"`
     Finalizado int `json:"finalizado" form:"finalizado"`
+    Asunto string `json:"asunto" form:"asunto"`
+
 }
 
 type Usuario struct{
     Id int `json:"id"`
     Rut string `json:"rut" form:"rut"`
     Password string `json:"password" form:"password"`
+    Nombre string `json:"nombre" form:"nombre"`
     Level string `json:"level" form:"level"`
     Token string `json:"token" form:"token"`
 }

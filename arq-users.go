@@ -11,7 +11,7 @@ func (usr Usuario) FetchUsuarios() (users []Usuario, err error) {
     db := GetConnection()
 
     // SQL query
-	rows, err := db.Query("SELECT id, rut, password FROM usuarios")
+	rows, err := db.Query("SELECT id, rut, password, nombre FROM usuarios")
 	if err != nil {
 		return
 	}
@@ -19,7 +19,7 @@ func (usr Usuario) FetchUsuarios() (users []Usuario, err error) {
     // Take all data
 	for rows.Next() {
 		var usr Usuario
-        rows.Scan(&usr.Id, &usr.Rut, &usr.Password)
+        rows.Scan(&usr.Id, &usr.Rut, &usr.Password, &usr.Nombre)
         users = append(users, usr)
 	}
 	defer rows.Close()
@@ -48,7 +48,7 @@ func (usr Usuario) FetchUserLogin(usuario_rut string, usuario_pass string) (user
     db := GetConnection()
 
     // SQL query
-	rows, err := db.Query("SELECT id, rut, password FROM usuarios WHERE rut = ? AND password = ?", usuario_rut, usuario_pass)
+	rows, err := db.Query("SELECT id, rut, password, nombre FROM usuarios WHERE rut = ? AND password = ?", usuario_rut, usuario_pass)
 	if err != nil {
 		return
 	}
@@ -57,13 +57,14 @@ func (usr Usuario) FetchUserLogin(usuario_rut string, usuario_pass string) (user
 	for rows.Next() {
 		var usr Usuario
 
-        rows.Scan(&usr.Id, &usr.Rut, &usr.Password)
+        rows.Scan(&usr.Id, &usr.Rut, &usr.Password, &usr.Nombre)
 
         token := jwt.New(jwt.SigningMethodHS256)
         claims := token.Claims.(jwt.MapClaims)
         claims["id"] = usr.Id
         claims["rut"] = usr.Rut
         claims["password"] = usr.Password
+	claims["nombre"] = usr.Nombre
         claims["level"] = "admin"
         usr_token, err := token.SignedString( SecretKey() )
         usr.Token = usr_token
