@@ -208,15 +208,14 @@ func GetDptoID(c *gin.Context){
 	})
 }
 
+//get bodega y estacionamiento----------------------------------------------------------------------
 
-//SELECT TODOS LOS DATOS CON ID---------------------------------------------------------------------
-
-func (de Departamento) FetchTodoDptoID(id_departamento string) (departamentos []Departamento, err error) {
+func (de Departamento) FetchDepartamentosEstBod(id_dpto string) (departamentos []Departamento, err error) {
     // Opens DB
     db := GetConnection()
 
     // SQL query
-	rows, err := db.Query("select * from departamentos JOIN tickets on departamentos.id = tickets.id_departamentos JOIN bodegas on tickets.id_departamentos = bodegas.id_departamentos JOIN estacionamientos on bodegas.id_departamentos = estacionamientos.id_departamentos JOIN gastos_comunes on estacionamientos.id_departamentos = gastos_comunes.id_departamentos JOIN mediciones_agua on gastos_comunes.id_departamentos = mediciones_agua.id_departamentos JOIN multas on mediciones_agua.id_departamentos = multas.id_departamentos JOIN pagos_gastos_comunes on multas.id_departamentos = pagos_gastos_comunes.id_departamentos where departamentos.id= ?", id_departamento)
+	rows, err := db.Query("SELECT departamentos.id, departamentos.numero, departamentos.password, departamentos.dueno, departamentos.residente, departamentos.telefono, departamentos.correo, departamentos.id_condominio, departamentos.telefono_residente, departamentos.correo_residente, departamentos.prorrateo, estacionamientos.numero, bodegas.numero FROM departamentos join estacionamientos on departamentos.id = estacionamientos.id_departamentos join bodegas on estacionamientos.id_departamentos = bodegas.id_departamentos where departamentos.id =?", id_dpto)
 	if err != nil {
 		return
 	}
@@ -224,13 +223,6 @@ func (de Departamento) FetchTodoDptoID(id_departamento string) (departamentos []
     // Take all data
 	for rows.Next() {
 		var dpto Departamento
-		//var tick Ticket
-		//var bode Bodega
-		//var esta Estacionamiento
-		//var gast Gasto_comun
-		//var medi Medicion_agua
-		//var mult Multa
-		//var pago Pago_gastos_comunes
         rows.Scan(&dpto.Id, &dpto.Numero, &dpto.Password, &dpto.Dueno, &dpto.Residente, &dpto.Telefono, &dpto.Correo, &dpto.Id_condominio, &dpto.Telefono_residente, &dpto.Correo_residente, &dpto.Prorrateo)
         fmt.Println(dpto.Id, dpto.Numero, dpto.Password, dpto.Dueno, dpto.Residente, dpto.Telefono, dpto.Correo, dpto.Id_condominio, dpto.Telefono_residente, dpto.Correo_residente, dpto.Prorrateo)
         departamentos = append(departamentos, dpto)
@@ -240,16 +232,15 @@ func (de Departamento) FetchTodoDptoID(id_departamento string) (departamentos []
 	return
 }
 
-func GetTodoDptoID(c *gin.Context){
+func GetDepartamentosEstBod(c *gin.Context){
     // URL parameters
     var iddpto = c.Param("iddpto")
 
     fmt.Println(iddpto);
-
     // Results container
     de := Departamento{}
     // Fetch from database
-	departamentos, err := de.FetchTodoDptoID(iddpto)
+	departamentos, err := de.FetchDepartamentosEstBod(iddpto)
 	if err != nil {
         panic(err.Error())
 	}
@@ -260,3 +251,4 @@ func GetTodoDptoID(c *gin.Context){
 		"count": len(departamentos),
 	})
 }
+

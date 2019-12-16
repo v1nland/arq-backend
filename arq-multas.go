@@ -44,7 +44,7 @@ func GetMultas(c *gin.Context){
 	})
 }
 
-//Select todas las multas en el mes y ano del depto con id_dpto-----------------------------------------
+//Select todas las multas en el mes y ano del depto con id_dpto--------------------------------------
 
 func (mu Multa) FetchMultasFecha(ano_inicio string, mes_inicio string, ano_final string, mes_final string, id_dpto string) (multas []Multa, err error) {
     // Opens DB

@@ -251,8 +251,8 @@ func (Ti Ticket) InsertarTickets(id_departamentos string, id_condominio string, 
 
 func GetInsertarTickets(c *gin.Context){
     // URL parameters
-    var id_departamentos = c.Param("id_departamentos")
-    var id_condominio = c.Param("id_condominio")
+    var iddepartamentos = c.Param("iddepartamentos")
+    var idcondominio = c.Param("idcondominio")
     var consulta = c.Param("consulta")
     var asunto = c.Param("asunto")
 
