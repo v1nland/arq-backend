@@ -63,7 +63,7 @@ type Gasto_comun struct{
 type Medicion_agua struct{
     Id int `json:"id"`
     Fecha string `json:"fecha" form:"fecha"`
-    Litros float64 `json:"monto" form:"monto"`
+    Litros float64 `json:"litros" form:"litros"`
     Id_departamentos int `json:"id_departamentos" form:"id_departamentos"`
 }
 
