@@ -51,7 +51,7 @@ func (Ti Ticket) FetchTicketsIdcond(id_cond string) (tickets []Ticket, err error
     db := GetConnection()
 
     // SQL query
-	rows, err := db.Query("select * from tickets where id_condominio=?)", id_cond)
+	rows, err := db.Query("select * from tickets where id_departamentos in (select id from departamentos where id_condominio=?)", id_cond)
 	if err != nil {
 		return
 	}
@@ -96,7 +96,7 @@ func (Ti Ticket) FetchTicketsIdcondFinal(id_cond string) (tickets []Ticket, err 
     db := GetConnection()
 
     // SQL query
-	rows, err := db.Query("select * from tickets where id_condominio=? and finalizado = 1", id_cond)
+	rows, err := db.Query("select * from tickets where id_departamentos in (select id from departamentos where id_condominio =?) and finalizado = 1", id_cond)
 	if err != nil {
 		return
 	}
@@ -232,7 +232,7 @@ func (Ti Ticket) InsertarTickets(id_departamentos string, id_condominio string, 
     db := GetConnection()
 
     // SQL query
-	rows, err := db.Query("insert into tickets (id_departamentos, id_condominio, consulta, respuesta, finalizado, asunto) values (?, ?, ?, null, 0, ?)", id_departamentos, id_condominio, consulta, asunto)
+	rows, err := db.Query("insert into tickets (id_departamentos, id_usuarios, consulta, respuesta, finalizado, asunto) values (?, ?, ?, null, 0, ?)", id_departamentos, id_condominio, consulta, asunto)
 	if err != nil {
 		return
 	}
@@ -256,15 +256,15 @@ func GetInsertarTickets(c *gin.Context){
     var consulta = c.Param("consulta")
     var asunto = c.Param("asunto")
 
-    fmt.Println(id_departamentos);
-    fmt.Println(id_condominio);
+    fmt.Println(iddepartamentos);
+    fmt.Println(idcondominio);
     fmt.Println(consulta);
     fmt.Println(asunto);
 
     // Results container
     ti := Ticket{}
     // Fetch from database
-	tickets, err := ti.InsertarTickets(id_departamentos, id_condominio, consulta, asunto)
+	tickets, err := ti.InsertarTickets(iddepartamentos, idcondominio, consulta, asunto)
 	if err != nil {
         panic(err.Error())
 	}

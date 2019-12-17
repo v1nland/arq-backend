@@ -210,21 +210,22 @@ func GetDptoID(c *gin.Context){
 
 //get bodega y estacionamiento----------------------------------------------------------------------
 
-func (de Departamento) FetchDepartamentosEstBod(id_dpto string) (departamentos []Departamento, err error) {
+func (de DepartamentoBodEst) FetchDepartamentosEstBod(id_dpto string) (departamentos []DepartamentoBodEst, err error) {
     // Opens DB
     db := GetConnection()
 
     // SQL query
-	rows, err := db.Query("SELECT departamentos.id, departamentos.numero, departamentos.password, departamentos.dueno, departamentos.residente, departamentos.telefono, departamentos.correo, departamentos.id_condominio, departamentos.telefono_residente, departamentos.correo_residente, departamentos.prorrateo, estacionamientos.numero, bodegas.numero FROM departamentos join estacionamientos on departamentos.id = estacionamientos.id_departamentos join bodegas on estacionamientos.id_departamentos = bodegas.id_departamentos where departamentos.id =?", id_dpto)
+	rows, err := db.Query("SELECT departamentos.id, departamentos.numero, departamentos.password, departamentos.dueno, departamentos.residente, departamentos.telefono, departamentos.correo, departamentos.id_condominio, departamentos.telefono_residente, departamentos.correo_residente, departamentos.prorrateo, estacionamientos.numero as n_estacionamientos, bodegas.numero as n_bodegas FROM departamentos join estacionamientos on departamentos.id = estacionamientos.id_departamentos join bodegas on estacionamientos.id_departamentos = bodegas.id_departamentos where departamentos.id = ?", id_dpto)
 	if err != nil {
 		return
 	}
 
     // Take all data
 	for rows.Next() {
-		var dpto Departamento
-        rows.Scan(&dpto.Id, &dpto.Numero, &dpto.Password, &dpto.Dueno, &dpto.Residente, &dpto.Telefono, &dpto.Correo, &dpto.Id_condominio, &dpto.Telefono_residente, &dpto.Correo_residente, &dpto.Prorrateo)
-        fmt.Println(dpto.Id, dpto.Numero, dpto.Password, dpto.Dueno, dpto.Residente, dpto.Telefono, dpto.Correo, dpto.Id_condominio, dpto.Telefono_residente, dpto.Correo_residente, dpto.Prorrateo)
+		var dpto DepartamentoBodEst
+        rows.Scan(&dpto.Id, &dpto.Numero, &dpto.Password, &dpto.Dueno, &dpto.Residente, &dpto.Telefono, &dpto.Correo, &dpto.Id_condominio, &dpto.Telefono_residente, &dpto.Correo_residente, &dpto.Prorrateo, &dpto.N_bodega, &dpto.N_estacionamiento)
+	dpto.Level = "user"
+        fmt.Println(dpto.Id, dpto.Numero, dpto.Password, dpto.Dueno, dpto.Residente, dpto.Telefono, dpto.Correo, dpto.Id_condominio, dpto.Telefono_residente, dpto.Correo_residente, dpto.Prorrateo, dpto.N_bodega, dpto.N_estacionamiento)
         departamentos = append(departamentos, dpto)
 	}
 	defer rows.Close()
@@ -238,7 +239,7 @@ func GetDepartamentosEstBod(c *gin.Context){
 
     fmt.Println(iddpto);
     // Results container
-    de := Departamento{}
+    de := DepartamentoBodEst{}
     // Fetch from database
 	departamentos, err := de.FetchDepartamentosEstBod(iddpto)
 	if err != nil {

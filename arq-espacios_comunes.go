@@ -94,8 +94,8 @@ func (Ec Espacio_comun) UpdateEspacios_comunesIdcond(estado string, id_espacio s
     // Opens DB
     db := GetConnection()
 
-    // SQL query
-	rows, err := db.Query("update espacios_comunes set estado= ? where id_espacio = ?", estado, id_espacio)
+    // SQL queryGetPorCond/2/
+	rows, err := db.Query("update espacios_comunes set estado= ? where id = ?", estado, id_espacio)
 	if err != nil {
 		return
 	}

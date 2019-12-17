@@ -51,7 +51,7 @@ func (mu Multa) FetchMultasFecha(ano_inicio string, mes_inicio string, ano_final
     db := GetConnection()
 
     // SQL query
-	rows, err := db.Query("select * from multas where fecha between '?-?-01 00:00:00' and '?-?-01 00:00:00' and departamentos_id = ?", ano_inicio, mes_inicio, ano_final, mes_final, id_dpto)
+	rows, err := db.Query("select * from multas where fecha between '?-?-01 00:00:00' and '?-?-01 00:00:00' and id_departamentos = ?", ano_inicio, mes_inicio, ano_final, mes_final, id_dpto)
 	if err != nil {
 		return
 	}
@@ -104,7 +104,7 @@ func (mu Multa) FetchCountMultasFecha(ano_inicio string, mes_inicio string, ano_
     db := GetConnection()
 
     // SQL query
-	rows, err := db.Query("select count(*) from multas where fecha between '?-?-01 00:00:00' and '?-?-01 00:00:00' and departamentos_id = ?", ano_inicio, mes_inicio, ano_final, mes_final, id_dpto)
+	rows, err := db.Query("select count(*) from multas where fecha between '?-?-01 00:00:00' and '?-?-01 00:00:00' and id_departamentos = ?", ano_inicio, mes_inicio, ano_final, mes_final, id_dpto)
 	if err != nil {
 		return
 	}

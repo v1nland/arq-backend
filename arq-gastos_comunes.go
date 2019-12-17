@@ -51,7 +51,7 @@ func (Gc Gasto_comun) BalanceGastos_comunes(id_dpto string) (gastos_comunes []Ga
     db := GetConnection()
 
     // SQL query
-	rows, err := db.Query("SELECT departamentos.numero, pagos_gastos_comunes.fecha, departamentos.dueno, gastos_comunes.monto, pagos_gastos_comunes.monto from departamentos join pagos_gastos_comunes on departamentos.id = pagos_gastos_comunes.id_departamentos join gastos_comunes on pagos_gastos_comunes.id_departamentos = gastos_comunes.id_departamentos where departamentos.id = 2", id_dpto)
+	rows, err := db.Query("SELECT departamentos.numero, pagos_gastos_comunes.fecha, departamentos.dueno, gastos_comunes.monto as 'montogc', pagos_gastos_comunes.monto as 'pagosgc' from departamentos join pagos_gastos_comunes on departamentos.id = pagos_gastos_comunes.id_departamentos join gastos_comunes on pagos_gastos_comunes.id_departamentos = gastos_comunes.id_departamentos where departamentos.id = ?", id_dpto)
 	if err != nil {
 		return
 	}

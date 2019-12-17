@@ -37,6 +37,24 @@ type Departamento struct{
     Token string `json:"token" form:"token"`
 }
 
+type DepartamentoBodEst struct{
+    Id int `json:"id"`
+    Numero int `json:"numero" form:"numero"`
+    Password string `json:"password" form:"password"`
+    Dueno string `json:"dueno" form:"dueno"`
+    Residente string `json:"residente" form:"residente"`
+    Telefono string `json:"telefono" form:"telefono"`
+    Correo string `json:"correo" form:"correo"`
+    Id_condominio string `json:"id_condominio" form:"id_condominio"`
+    Telefono_residente string `json:"telefono_residente" form:"telefono_residente"`
+    Correo_residente string `json:"correo_residente" form:"correo_residente"`
+    Prorrateo float64 `json:"prorrateo" form:"prorrateo"`
+    Level string `json:"level" form:"level"`
+    N_bodega string `json:"n_bodega" form:"n_bodega"`
+    N_estacionamiento string `json:"n_estacionamiento" form:"n_estacionamiento"`
+
+}
+
 type Espacio_comun struct{
     Id int `json:"id"`
     Nombre string `json:"nombre" form:"nombre"`
