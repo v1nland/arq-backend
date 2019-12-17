@@ -227,7 +227,7 @@ func (Ti Ticket) FetchInsertarTicket(id_dpto string, id_cond string, consulta st
     db := GetConnection()
 
     // SQL query
-	rows, err := db.Query("insert into tickets (id_departamentos, id_usuarios, consulta, respuesta, finalizado, asunto) values (?, ?, ?, 0, 0, ?)", id_dpto, id_cond, consulta, asunto)
+	rows, err := db.Query("insert into tickets (id_departamentos, id_usuarios, consulta, respuesta, finalizado, asunto, fecha) values (?, ?, ?, 0, 0, ?, current_timestamp)", id_dpto, id_cond, consulta, asunto)
 	if err != nil {
 		return
 	}
@@ -316,3 +316,43 @@ func GetTicketsByDptoID(c *gin.Context){
 	})
 }
 
+// // // COUNT PENDING TICKETS // // //
+
+func (Ti Ticket) CountPendingTickets() (tickets []Ticket, err error) {
+    // Opens DB
+    db := GetConnection()
+
+    // SQL query
+	rows, err := db.Query("select * from tickets where finalizado = 0")
+	if err != nil {
+		return
+	}
+
+    // Take all data
+	for rows.Next() {
+		var tic Ticket
+        rows.Scan(&tic.Id, &tic.Id_departamentos, &tic.Id_usuarios, &tic.Consulta, &tic.Respuesta, &tic.Finalizado, &tic.Asunto, &tic.Fecha)
+        fmt.Println(tic.Id, tic.Id_departamentos, tic.Id_usuarios, tic.Consulta, tic.Respuesta, tic.Finalizado, tic.Asunto, tic.Fecha)
+        tickets = append(tickets, tic)
+	}
+	defer rows.Close()
+
+	return
+}
+
+func GetCountPendingTickets(c *gin.Context){
+    // URL parameters
+
+    // Results container
+    ti := Ticket{}
+    // Fetch from database
+	tickets, err := ti.CountPendingTickets()
+	if err != nil {
+        panic(err.Error())
+	}
+
+    // Show via GET method
+	c.JSON(200, gin.H{
+		"count": len(tickets),
+	})
+}

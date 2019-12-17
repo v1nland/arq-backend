@@ -74,6 +74,7 @@ func StartServer() {
     router.GET("/MedicionesAgua/", GetMedicionesAgua)
     router.GET("/MedicionesAgua/byDptoID/:id_dpto/", GetMedicionesAguaByDptoID)
     router.GET("/MedicionesAgua/byCondominioID/:id_cond/", GetMedicionesAguaByCondID)
+    router.GET("/MedicionesAgua/Insertar/:litros/:num_dpto/:cod_cond", GetInsertMedicionesAgua)
 
     // needs fix
     router.GET("/MedicionesAgua/MedicionesFecha/:ano_inicio/:mes_inicio/:ano_final/:mes_final/", GetMedicionesAguaByFecha)
@@ -84,6 +85,7 @@ func StartServer() {
     // needs fix
     router.GET("/Multas/ObtenerMultas/:ano_inicio/:mes_inicio/:ano_final/:mes_final/:id_dpto/", GetMultasByFecha)
     router.GET("/Multas/ContarMultas/:ano_inicio/:mes_inicio/:ano_final/:mes_final/:iddpto/", GetCountMultasByFecha)
+
 
     // Pagos gastos comunes queries
     router.GET("/PagosGC/", GetPagos)
@@ -101,6 +103,7 @@ func StartServer() {
     router.GET("/Tickets/Finalizar/:id/", GetEndTicketByID)
     router.GET("/Tickets/Responder/:id/:respuesta/", GetResponderTicketByID) // falta que marque el ticket como finalizado una vez respondido
     router.GET("/Tickets/Insertar/:id_dpto/:id_cond/:consulta/:asunto/", GetInsertarTicket)
+    router.GET("/Tickets/CountPending/", GetCountPendingTickets)
 
     // Tokens queries
     router.GET("/DatosUsuario/Decode/:token/", DecodeToken)
