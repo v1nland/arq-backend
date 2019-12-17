@@ -4,9 +4,8 @@ import (
     "github.com/gin-gonic/gin"
 )
 
-//Take all data----------------------------------------------------------------------------------
-
-func (Gc Gasto_comun) FetchGastos_comunes() (gastos_comunes []Gasto_comun, err error) {
+// // // // TAKE ALL GASTOSCOMUNES // // // //
+func (Gc GastoComun) FetchGastosComunes() (gastos_comunes []GastoComun, err error) {
     // Opens DB
     db := GetConnection()
 
@@ -18,7 +17,7 @@ func (Gc Gasto_comun) FetchGastos_comunes() (gastos_comunes []Gasto_comun, err e
 
     // Take all data
 	for rows.Next() {
-		var gac Gasto_comun
+		var gac GastoComun
         rows.Scan(&gac.Id, &gac.Monto, &gac.Detalle, &gac.Fecha, &gac.Id_departamentos)
         fmt.Println(gac.Id, gac.Monto, gac.Detalle, gac.Fecha, gac.Id_departamentos)
         gastos_comunes = append(gastos_comunes, gac)
@@ -28,11 +27,11 @@ func (Gc Gasto_comun) FetchGastos_comunes() (gastos_comunes []Gasto_comun, err e
 	return
 }
 
-func GetGastos_comunes(c *gin.Context){
+func GetGastosComunes(c *gin.Context){
     // Results container
-    gc := Gasto_comun{}
+    gc := GastoComun{}
     // Fetch from database
-	gastos_comunes, err := gc.FetchGastos_comunes()
+	gastos_comunes, err := gc.FetchGastosComunes()
 	if err != nil {
         panic(err.Error())
 	}
@@ -44,9 +43,8 @@ func GetGastos_comunes(c *gin.Context){
 	})
 }
 
-//balances de gastos-----------------------------------------------------------------------------
-
-func (Gc Gasto_comun) BalanceGastos_comunes(id_dpto string) (gastos_comunes []Gasto_comun, err error) {
+// // // // GASTOSCOMUNES BALANCE // // // //
+func (Gc GastoComun) BalanceGastosComunes(id_dpto string) (gastos_comunes []GastoComun, err error) {
     // Opens DB
     db := GetConnection()
 
@@ -58,7 +56,7 @@ func (Gc Gasto_comun) BalanceGastos_comunes(id_dpto string) (gastos_comunes []Ga
 
     // Take all data
 	for rows.Next() {
-		var gac Gasto_comun
+		var gac GastoComun
         rows.Scan(&gac.Id, &gac.Monto, &gac.Detalle, &gac.Fecha, &gac.Id_departamentos)
         fmt.Println(gac.Id, gac.Monto, gac.Detalle, gac.Fecha, gac.Id_departamentos)
         gastos_comunes = append(gastos_comunes, gac)
@@ -68,15 +66,15 @@ func (Gc Gasto_comun) BalanceGastos_comunes(id_dpto string) (gastos_comunes []Ga
 	return
 }
 
-func GetBalanceGastos_comunes(c *gin.Context){
+func GetBalanceGastosComunes(c *gin.Context){
     //URL parameters
-    var iddpto = c.Param("iddpto")
+    var id_dpto = c.Param("id_dpto")
 
-    fmt.Println(iddpto);
+    fmt.Println(id_dpto);
     // Results container
-    gc := Gasto_comun{}
+    gc := GastoComun{}
     // Fetch from database
-	gastos_comunes, err := gc.BalanceGastos_comunes(iddpto)
+	gastos_comunes, err := gc.BalanceGastosComunes(id_dpto)
 	if err != nil {
         panic(err.Error())
 	}

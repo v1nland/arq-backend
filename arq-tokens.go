@@ -31,6 +31,7 @@ func DecodeToken(c *gin.Context){
 	} else if token.Valid && claims["level"] == "user" {
         c.JSON(200, gin.H{
     		"valid": "true",
+            "id": claims["id"],
             "numero": claims["numero"],
             "dueno": claims["dueno"],
             "residente": claims["residente"],

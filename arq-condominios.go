@@ -4,7 +4,7 @@ import (
     "github.com/gin-gonic/gin"
 )
 
-// Fetch all condominios---------------------------------------------------------------------------
+// // // // TAKE ALL CONDOMINIOS // // // //
 func (co Condominio) FetchCondominios() (condominios []Condominio, err error) {
     // Opens DB
     db := GetConnection()
@@ -43,13 +43,13 @@ func GetCondominios(c *gin.Context){
 	})
 }
 
-// Fetch all condominios where ID = condominio_id----------------------------------------------------
-func (co Condominio) FetchCondominiosPorID(condominio_id string) (condominios []Condominio, err error) {
+// // // // TAKE ALL CONDOMINIOS WITH ID=id_condominios // // // //
+func (co Condominio) FetchCondominiosByID(id_condominios string) (condominios []Condominio, err error) {
     // Opens DB
     db := GetConnection()
 
     // SQL query
-	rows, err := db.Query("SELECT id, codigo, nombre, ubicacion FROM condominios WHERE id = ?", condominio_id)
+	rows, err := db.Query("SELECT id, codigo, nombre, ubicacion FROM condominios WHERE id = ?", id_condominios)
 	if err != nil {
 		return
 	}
@@ -66,7 +66,7 @@ func (co Condominio) FetchCondominiosPorID(condominio_id string) (condominios []
 	return
 }
 
-func GetCondominiosPorID(c *gin.Context){
+func GetCondominiosByID(c *gin.Context){
     // Get URL parameters
     var id = c.Param("id")
 
@@ -74,7 +74,7 @@ func GetCondominiosPorID(c *gin.Context){
     co := Condominio{}
 
     // Fetch from database
-	condominios, err := co.FetchCondominiosPorID(id)
+	condominios, err := co.FetchCondominiosByID(id)
 	if err != nil {
         panic(err.Error())
 	}
@@ -86,14 +86,13 @@ func GetCondominiosPorID(c *gin.Context){
 	})
 }
 
-//Fetch all condominios con id de usuario -----------------------------------------------------------
-
-func (co Condominio) FetchCondominiosIDusuario(usuario_id string) (condominios []Condominio, err error) {
+// // // // TAKE ALL BODEGAS WITH USUARIO_ID=id_departamentos // // // //
+func (co Condominio) FetchCondominiosByUserID(id_usr string) (condominios []Condominio, err error) {
     // Opens DB
     db := GetConnection()
 
     // SQL query
-	rows, err := db.Query("SELECT id, codigo, nombre, ubicacion FROM condominios WHERE id in (select id_condominio from usuarios_condominios where id_usuarios = ?)", usuario_id)
+	rows, err := db.Query("SELECT id, codigo, nombre, ubicacion FROM condominios WHERE id in (select id_condominio from usuarios_condominios where id_usuarios = ?)", id_usr)
 	if err != nil {
 		return
 	}
@@ -110,15 +109,15 @@ func (co Condominio) FetchCondominiosIDusuario(usuario_id string) (condominios [
 	return
 }
 
-func GetCondominiosPorIDusuario(c *gin.Context){
+func GetCondominiosByUserID(c *gin.Context){
     // Get URL parameters
-    var idusuario = c.Param("idusuario")
+    var id_usr = c.Param("id_usr")
 
     // Results container
     co := Condominio{}
 
     // Fetch from database
-	condominios, err := co.FetchCondominiosIDusuario(idusuario)
+	condominios, err := co.FetchCondominiosByUserID(id_usr)
 	if err != nil {
         panic(err.Error())
 	}

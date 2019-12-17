@@ -4,9 +4,8 @@ import (
     "github.com/gin-gonic/gin"
 )
 
-//Take all data----------------------------------------------------------------------------------
-
-func (Ma Medicion_agua) FetchMediciones_agua() (mediciones_agua []Medicion_agua, err error) {
+// // // // TAKE ALL MEDICIONESAGUA // // // //
+func (Ma MedicionAgua) FetchMedicionesAgua() (mediciones_agua []MedicionAgua, err error) {
     // Opens DB
     db := GetConnection()
 
@@ -18,7 +17,7 @@ func (Ma Medicion_agua) FetchMediciones_agua() (mediciones_agua []Medicion_agua,
 
     // Take all data
 	for rows.Next() {
-		var med Medicion_agua
+		var med MedicionAgua
         rows.Scan(&med.Id, &med.Fecha, &med.Litros, &med.Id_departamentos)
         fmt.Println(med.Id, med.Fecha, med.Litros, med.Id_departamentos)
         mediciones_agua = append(mediciones_agua, med)
@@ -28,11 +27,11 @@ func (Ma Medicion_agua) FetchMediciones_agua() (mediciones_agua []Medicion_agua,
 	return
 }
 
-func GetMediciones_agua(c *gin.Context){
+func GetMedicionesAgua(c *gin.Context){
     // Results container
-    ma := Medicion_agua{}
+    ma := MedicionAgua{}
     // Fetch from database
-	mediciones_agua, err := ma.FetchMediciones_agua()
+	mediciones_agua, err := ma.FetchMedicionesAgua()
 	if err != nil {
         panic(err.Error())
 	}
@@ -44,21 +43,20 @@ func GetMediciones_agua(c *gin.Context){
 	})
 }
 
-//SELECT MEDICIONES DE AGUA POR ID_DPTO-------------------------------------------------------------
-
-func (Ma Medicion_agua) FetchMediciones_aguaIddpto(id_departamentos string) (mediciones_agua []Medicion_agua, err error) {
+// // // // TAKE ALL MEDICIONESAGUA WITH ID_DPTO=id_dpto // // // //
+func (Ma MedicionAgua) FetchMedicionesAguaByDptoID(id_dpto string) (mediciones_agua []MedicionAgua, err error) {
     // Opens DB
     db := GetConnection()
 
     // SQL query
-	rows, err := db.Query("select * from mediciones_agua where id_departamentos=?", id_departamentos)
+	rows, err := db.Query("select * from mediciones_agua where id_departamentos=?", id_dpto)
 	if err != nil {
 		return
 	}
 
     // Take all data
 	for rows.Next() {
-		var med Medicion_agua
+		var med MedicionAgua
         rows.Scan(&med.Id, &med.Fecha, &med.Litros, &med.Id_departamentos)
         fmt.Println(med.Id, med.Fecha, med.Litros, med.Id_departamentos)
         mediciones_agua = append(mediciones_agua, med)
@@ -68,15 +66,15 @@ func (Ma Medicion_agua) FetchMediciones_aguaIddpto(id_departamentos string) (med
 	return
 }
 
-func GetMediciones_aguaIddpto(c *gin.Context){
+func GetMedicionesAguaByDptoID(c *gin.Context){
     // URL parameters
-    var iddepartamento = c.Param("iddepartamento")
+    var id_dpto = c.Param("id_dpto")
 
-    fmt.Println(iddepartamento);
+    fmt.Println(id_dpto);
     // Results container
-    ma := Medicion_agua{}
+    ma := MedicionAgua{}
     // Fetch from database
-	mediciones_agua, err := ma.FetchMediciones_aguaIddpto(iddepartamento)
+	mediciones_agua, err := ma.FetchMedicionesAguaByDptoID(id_dpto)
 	if err != nil {
         panic(err.Error())
 	}
@@ -88,24 +86,22 @@ func GetMediciones_aguaIddpto(c *gin.Context){
 	})
 }
 
-//select mediciones por idcondominio--------------------------------------------------------------
-
-func (Ma Medicion_agua) FetchMediciones_aguaIdcond(id_condominio string) (mediciones_agua []Medicion_agua, err error) {
+// // // // TAKE ALL MEDICIONESAGUA WITH ID_COND=id_cond // // // //
+func (Ma MedicionAgua) FetchMedicionesAguaByCondID(id_cond string) (mediciones_agua []MedicionAgua, err error) {
     // Opens DB
     db := GetConnection()
 
     // SQL query
-	rows, err := db.Query("select * from mediciones_agua where id_departamentos in (select id from departamentos where id_condominio=?)", id_condominio)
+	rows, err := db.Query("select * from mediciones_agua where id_departamentos in (select id from departamentos where id_condominio=?)", id_cond)
 	if err != nil {
 		return
 	}
 
     // Take all data
 	for rows.Next() {
-		var med Medicion_agua
-		var dep Departamento
-        rows.Scan(&med.Id, &med.Fecha, &med.Litros, &med.Id_departamentos, &dep.Id_condominio)
-        fmt.Println(med.Id, med.Fecha, med.Litros, med.Id_departamentos, dep.Id_condominio)
+		var med MedicionAgua
+        rows.Scan(&med.Id, &med.Fecha, &med.Litros, &med.Id_departamentos)
+        fmt.Println(med.Id, med.Fecha, med.Litros, med.Id_departamentos)
         mediciones_agua = append(mediciones_agua, med)
 	}
 	defer rows.Close()
@@ -113,15 +109,15 @@ func (Ma Medicion_agua) FetchMediciones_aguaIdcond(id_condominio string) (medici
 	return
 }
 
-func GetMediciones_aguaIdcond(c *gin.Context){
+func GetMedicionesAguaByCondID(c *gin.Context){
     // URL parameters
-    var idcond = c.Param("idcond")
+    var id_cond = c.Param("id_cond")
 
-    fmt.Println(idcond);
+    fmt.Println(id_cond);
     // Results container
-    ma := Medicion_agua{}
+    ma := MedicionAgua{}
     // Fetch from database
-	mediciones_agua, err := ma.FetchMediciones_aguaIdcond(idcond)
+	mediciones_agua, err := ma.FetchMedicionesAguaByCondID(id_cond)
 	if err != nil {
         panic(err.Error())
 	}
@@ -133,9 +129,16 @@ func GetMediciones_aguaIdcond(c *gin.Context){
 	})
 }
 
-//select todas las mediciones en un mes, año entregado-----------------------------------------------
 
-func (Ma Medicion_agua) FetchMediciones_aguaFecha(ano_inicio string, mes_inicio string, ano_final string, mes_final string) (mediciones_agua []Medicion_agua, err error) {
+// // // // QUERIES NEEDING FIX // // // //
+// // // // QUERIES NEEDING FIX // // // //
+// // // // QUERIES NEEDING FIX // // // //
+// // // // QUERIES NEEDING FIX // // // //
+// // // // QUERIES NEEDING FIX // // // //
+// // // // QUERIES NEEDING FIX // // // //
+// // // // QUERIES NEEDING FIX // // // // 
+// // // // TAKE ALL MEDICIONESAGUA WITH FECHA BETWEEN (ano_mes_inicial, ano_mes_final) // // // //
+func (Ma MedicionAgua) FetchMedicionesAguaByFecha(ano_inicio string, mes_inicio string, ano_final string, mes_final string) (mediciones_agua []MedicionAgua, err error) {
     // Opens DB
     db := GetConnection()
 
@@ -147,7 +150,7 @@ func (Ma Medicion_agua) FetchMediciones_aguaFecha(ano_inicio string, mes_inicio 
 
     // Take all data
 	for rows.Next() {
-		var med Medicion_agua
+		var med MedicionAgua
         rows.Scan(&med.Id, &med.Fecha, &med.Litros, &med.Id_departamentos)
         fmt.Println(med.Id, med.Fecha, med.Litros, med.Id_departamentos)
         mediciones_agua = append(mediciones_agua, med)
@@ -157,7 +160,7 @@ func (Ma Medicion_agua) FetchMediciones_aguaFecha(ano_inicio string, mes_inicio 
 	return
 }
 
-func GetMediciones_aguaFecha(c *gin.Context){
+func GetMedicionesAguaByFecha(c *gin.Context){
     // URL parameters
     var ano_inicio = c.Param("ano_inicio")
     var mes_inicio = c.Param("mes_inicio")
@@ -169,9 +172,9 @@ func GetMediciones_aguaFecha(c *gin.Context){
     fmt.Println(ano_final);
     fmt.Println(mes_final);
     // Results container
-    ma := Medicion_agua{}
+    ma := MedicionAgua{}
     // Fetch from database
-	mediciones_agua, err := ma.FetchMediciones_aguaFecha(ano_inicio, mes_inicio, ano_final, mes_final)
+	mediciones_agua, err := ma.FetchMedicionesAguaByFecha(ano_inicio, mes_inicio, ano_final, mes_final)
 	if err != nil {
         panic(err.Error())
 	}

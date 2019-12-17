@@ -37,66 +37,71 @@ func StartServer() {
 
     // Bodegas queries
     router.GET("/Bodegas/", GetBodegas)
-    router.GET("/Bodegas/:iddepartamento/", GetBodegasIddpto)
+    router.GET("/Bodegas/:id_dpto/", GetBodegasByDptoID)
 
     // Condominios queries
     router.GET("/Condominios/", GetCondominios)
-    router.GET("/Condominios/PorID/:id/", GetCondominiosPorID)
-    router.GET("/Condominios/PorUsuarioID/:idusuario/", GetCondominiosPorIDusuario)
+    router.GET("/Condominios/byID/:id/", GetCondominiosByID)
+    router.GET("/Condominios/byUsuarioID/:id_usr/", GetCondominiosByUserID)
 
     // Conserjes queries
     router.GET("/Conserjes/", GetConserjes)
-    router.GET("/Conserjes/:idcondominio/", GetConserjesIdcond)
+    router.GET("/Conserjes/:id_cond/", GetConserjesByCondID)
 
     // Departamentos queries
     router.GET("/Departamentos/", GetDepartamentos)
     router.GET("/Departamentos/GetLogin/:codigo/:numero/:password/", GetDptoLogin)
-    router.GET("/Departamentos/PorCondominio/:idcondominio/", GetDptoCondominio)
-    router.GET("/Departamentos/Deptoporid/:iddpto/", GetDptoID)
-    router.GET("/Departamentos/DeptoEstBod/:iddpto/", GetDepartamentosEstBod)
+    router.GET("/Departamentos/byCondominioID/:id_cond/", GetDptoByCondominioID)
+    router.GET("/Departamentos/byID/:id_dpto/", GetDptoByID)
+    router.GET("/Departamentos/AllData/byID/:id_dpto/", GetDepartamentosAllDataByID)
 
     // Espacios comunes queries
-    router.GET("/EspaciosComunes/", GetEspacios_comunes)
-    router.GET("/EspaciosComunes/GetPorCond/:idcond/", GetEspacios_comunesIdcond)
-    router.GET("/EspaciosComunes/UpdateEspacio/:estado/:idespacio/",GetUpdateEspacios_comunesIdcond)
+    router.GET("/EspaciosComunes/", GetEspaciosComunes)
+    router.GET("/EspaciosComunes/byCondominioID/:id_cond/", GetEspaciosComunesByCondID)
+    router.GET("/EspaciosComunes/Update/:estado/:id_ec/", GetUpdateEspaciosComunesByID)
 
     // Estacionamientos queries
     router.GET("/Estacionamientos/", GetEstacionamientos)
-    router.GET("/Estacionamientos/:iddepartamento/", GetEstacionamientosIddpto)
+    router.GET("/Estacionamientos/:id_dpto/", GetEstacionamientosByDptoID)
+
+    // Gastos comunes queries
+    router.GET("/GastosComunes/", GetGastosComunes)
+    router.GET("/GastosComunes/Balance/:id_dpto/", GetBalanceGastosComunes)
+
+    // Mediciones agua queries
+    router.GET("/MedicionesAgua/", GetMedicionesAgua)
+    router.GET("/MedicionesAgua/byDptoID/:id_dpto/", GetMedicionesAguaByDptoID)
+    router.GET("/MedicionesAgua/byCondominioID/:id_cond/", GetMedicionesAguaByCondID)
+    // needs fix
+    router.GET("/MedicionesAgua/MedicionesFecha/:ano_inicio/:mes_inicio/:ano_final/:mes_final/", GetMedicionesAguaByFecha)
+
+    // Multas queries
+    router.GET("/Multas/", GetMultas)
+    // needs fix
+    router.GET("/Multas/ObtenerMultas/:ano_inicio/:mes_inicio/:ano_final/:mes_final/:id_dpto/", GetMultasByFecha)
+    router.GET("/Multas/ContarMultas/:ano_inicio/:mes_inicio/:ano_final/:mes_final/:iddpto/", GetCountMultasByFecha)
+
+    // Pagos gastos comunes queries
+    router.GET("/PagosGC/", GetPagos)
+    router.GET("/PagosGC/byDptoID/:id_dpto/", GetPagosByDptoID)
+    router.GET("/PagosGC/byCondominioID/:id_cond/", GetPagosByCondominioID)
+    // needs fix
+    router.GET("/PagosGC/PagosCondMes/:id_cond/:anoinicio/:mesinicio/:anofinal/:mesfinal/", GetPagosByFechaAndCondominioID)
+
+    //Tickets queries
+    router.GET("/Tickets/", GetTickets)
+    router.GET("/Tickets/byCondID/:id_cond/", GetTicketsByCondID)
+    router.GET("/Tickets/FinalizadosByCondID/:id_cond/", GetTicketsFinalizadosByCondID)
+    router.GET("/Tickets/Finalizar/:id/", GetEndTicketByID)
+    router.GET("/Tickets/Responder/:id/:respuesta/", GetResponderTicketByID) // falta que marque el ticket como finalizado una vez respondido
+    router.GET("/Tickets/Insertar/:id_dpto/:id_cond/:consulta/:asunto/", GetInsertarTicket)
+
+    // Tokens queries
+    router.GET("/DatosUsuario/Decode/:token/", DecodeToken)
 
     // Usuarios queries
     router.GET("/Usuarios/", GetUsuarios)
     router.GET("/Usuarios/Login/:rut/:password/", GetUserLogin)
-    router.GET("/DatosUsuario/Decode/:token/", DecodeToken)
-
-    // Gastos comunes queries
-    router.GET("/GastosComunes/", GetGastos_comunes)
-    router.GET("/GastosComunes/GetporID/:iddpto/", GetBalanceGastos_comunes)
-
-    // Mediciones agua queries
-    router.GET("/MedicionesAgua/", GetMediciones_agua)
-    router.GET("/MedicionesAgua/MedicionesDepto/:iddepartamento/", GetMediciones_aguaIddpto)
-    router.GET("/MedicionesAgua/MedicionesCond/:idcond/", GetMediciones_aguaIdcond)
-    router.GET("/MedicionesAgua/MedicionesFecha/:ano_inicio/:mes_inicio/:ano_final/:mes_final/", GetMediciones_aguaFecha)
-
-    // Multas queries
-    router.GET("/Multas/", GetMultas)
-    router.GET("/Multas/ObtenerMultas/:ano_inicio/:mes_inicio/:ano_final/:mes_final/:iddpto/", GetMultasFecha)
-    router.GET("/Multas/ContarMultas/:ano_inicio/:mes_inicio/:ano_final/:mes_final/:iddpto/", GetCountMultasFecha)
-
-    //Tickets queries
-    router.GET("/Tickets/", GetTickets)
-    router.GET("/Tickets/TicketsCond/:idcondominio/", GetTicketsIdcond)
-    router.GET("/Tickets/TicketsCondFinal/:idcondominio/", GetTicketsIdcondFinal)
-    router.GET("/Tickets/Finalizar/:idtic/", GetUpdateTicketsFinal)
-    router.GET("/Tickets/Responder/:idtic/:respuesta/", GetResponderTickets)
-    router.GET("/Tickets/Insertar/:iddepartamentos/:idcondominio/:consulta/:asunto/", GetInsertarTickets)
-
-    // Pagos gastos comunes queries
-    router.GET("/Pagos_gastos_comunes/", GetPagos)
-    router.GET("/Pagos_gastos_comunes/PagosDpto/:iddepartamento/", GetPagosIddpto)
-    router.GET("/Pagos_gastos_comunes/PagosCond/:idcondominio/", GetPagosIdcondominio)
-    router.GET("/Pagos_gastos_comunes/PagosCondMes/:idcondominio/:anoinicio/:mesinicio/:anofinal/:mesfinal/", GetPagosIdcondominiomes)
 
     // Run API
     router.Run()

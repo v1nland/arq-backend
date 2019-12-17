@@ -37,7 +37,7 @@ type Departamento struct{
     Token string `json:"token" form:"token"`
 }
 
-type DepartamentoBodEst struct{
+type DepartamentoAllData struct{
     Id int `json:"id"`
     Numero int `json:"numero" form:"numero"`
     Password string `json:"password" form:"password"`
@@ -55,7 +55,7 @@ type DepartamentoBodEst struct{
 
 }
 
-type Espacio_comun struct{
+type EspacioComun struct{
     Id int `json:"id"`
     Nombre string `json:"nombre" form:"nombre"`
     Id_condominio int `json:"id_condominio" form:"id_condominio"`
@@ -70,7 +70,7 @@ type Estacionamiento struct{
     Patente_frecuente string `json:"patente_frecuente" form:"patente_frecuente"`
 }
 
-type Gasto_comun struct{
+type GastoComun struct{
     Id int `json:"id"`
     Monto int `json:"monto" form:"monto"`
     Detalle string `json:"detalle" form:"detalle"`
@@ -78,7 +78,7 @@ type Gasto_comun struct{
     Id_departamentos int `json:"id_departamentos" form:"id_departamentos"`
 }
 
-type Medicion_agua struct{
+type MedicionAgua struct{
     Id int `json:"id"`
     Fecha string `json:"fecha" form:"fecha"`
     Litros float64 `json:"litros" form:"litros"`
@@ -94,7 +94,7 @@ type Multa struct{
     Causa string `json:"causa" form:"causa"`
 }
 
-type Pagos_gastos_comunes struct{
+type PagosGastosComunes struct{
     Id int `json:"id"`
     Monto int `json:"monto" form:"monto"`
     Fecha string `json:"fecha" form:"fecha"`
@@ -104,7 +104,7 @@ type Pagos_gastos_comunes struct{
 type Ticket struct{
     Id int `json:"id"`
     Id_departamentos int `json:"id_departamentos" form:"id_departamentos"`
-    Id_condominio int `json:"id_condominio" form:"id_condominio"`
+    Id_usuarios int `json:"id_usuarios" form:"id_usuarios"`
     Consulta string `json:"consulta" form:"consulta"`
     Respuesta string `json:"respuesta" form:"respuesta"`
     Finalizado int `json:"finalizado" form:"finalizado"`

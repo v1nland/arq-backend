@@ -4,8 +4,7 @@ import (
     "github.com/gin-gonic/gin"
 )
 
-//Take all data-------------------------------------------------------------------------------------
-
+// // // // TAKE ALL MULTAS // // // //
 func (mu Multa) FetchMultas() (multas []Multa, err error) {
     // Opens DB
     db := GetConnection()
@@ -44,9 +43,15 @@ func GetMultas(c *gin.Context){
 	})
 }
 
-//Select todas las multas en el mes y ano del depto con id_dpto--------------------------------------
-
-func (mu Multa) FetchMultasFecha(ano_inicio string, mes_inicio string, ano_final string, mes_final string, id_dpto string) (multas []Multa, err error) {
+// // // // QUERIES NEEDING FIX // // // //
+// // // // QUERIES NEEDING FIX // // // //
+// // // // QUERIES NEEDING FIX // // // //
+// // // // QUERIES NEEDING FIX // // // //
+// // // // QUERIES NEEDING FIX // // // //
+// // // // QUERIES NEEDING FIX // // // //
+// // // // QUERIES NEEDING FIX // // // // 
+// // // // TAKE ALL MULTAS WITH FECHA BETWEEN (ano_mes_inicial, ano_mes_final) // // // //
+func (mu Multa) FetchMultasByFecha(ano_inicio string, mes_inicio string, ano_final string, mes_final string, id_dpto string) (multas []Multa, err error) {
     // Opens DB
     db := GetConnection()
 
@@ -68,24 +73,24 @@ func (mu Multa) FetchMultasFecha(ano_inicio string, mes_inicio string, ano_final
 	return
 }
 
-func GetMultasFecha(c *gin.Context){
+func GetMultasByFecha(c *gin.Context){
     // URL parameters
     var anoinicio = c.Param("anoinicio")
     var mesinicio = c.Param("mesinicio")
     var anofinal = c.Param("anofinal")
     var mesfinal = c.Param("mesfinal")
-    var iddpto = c.Param("iddpto")
+    var id_dpto = c.Param("id_dpto")
 
     fmt.Println(anoinicio);
     fmt.Println(mesinicio);
     fmt.Println(anofinal);
     fmt.Println(mesfinal);
-    fmt.Println(iddpto);
+    fmt.Println(id_dpto);
 
     // Results container
     mu := Multa{}
     // Fetch from database
-	multas, err := mu.FetchMultasFecha(anoinicio, mesinicio, anofinal, mesfinal, iddpto)
+	multas, err := mu.FetchMultasByFecha(anoinicio, mesinicio, anofinal, mesfinal, id_dpto)
 	if err != nil {
         panic(err.Error())
 	}
@@ -97,9 +102,8 @@ func GetMultasFecha(c *gin.Context){
 	})
 }
 
-//Count cantidad de multas en el mes entregado, dpto con id----------------------------------------------
-
-func (mu Multa) FetchCountMultasFecha(ano_inicio string, mes_inicio string, ano_final string, mes_final string, id_dpto string) (multas []Multa, err error) {
+// // // // TAKE COUNT (MULTAS) WITH FECHA BETWEEN (ano_mes_inicial, ano_mes_final) // // // //
+func (mu Multa) FetchCountMultasByFecha(ano_inicio string, mes_inicio string, ano_final string, mes_final string, id_dpto string) (multas []Multa, err error) {
     // Opens DB
     db := GetConnection()
 
@@ -121,24 +125,24 @@ func (mu Multa) FetchCountMultasFecha(ano_inicio string, mes_inicio string, ano_
 	return
 }
 
-func GetCountMultasFecha(c *gin.Context){
+func GetCountMultasByFecha(c *gin.Context){
     // URL parameters
     var anoinicio = c.Param("anoinicio")
     var mesinicio = c.Param("mesinicio")
     var anofinal = c.Param("anofinal")
     var mesfinal = c.Param("mesfinal")
-    var iddpto = c.Param("iddpto")
+    var id_dpto = c.Param("id_dpto")
 
     fmt.Println(anoinicio);
     fmt.Println(mesinicio);
     fmt.Println(anofinal);
     fmt.Println(mesfinal);
-    fmt.Println(iddpto);
+    fmt.Println(id_dpto);
 
     // Results container
     mu := Multa{}
     // Fetch from database
-	multas, err := mu.FetchCountMultasFecha(anoinicio, mesinicio, anofinal, mesfinal,iddpto)
+	multas, err := mu.FetchCountMultasByFecha(anoinicio, mesinicio, anofinal, mesfinal,id_dpto)
 	if err != nil {
         panic(err.Error())
 	}
@@ -149,4 +153,3 @@ func GetCountMultasFecha(c *gin.Context){
 		"count": len(multas),
 	})
 }
-

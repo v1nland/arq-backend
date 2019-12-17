@@ -4,8 +4,7 @@ import (
     "github.com/gin-gonic/gin"
 )
 
-//Take all data-------------------------------------------------------------------------------------
-
+// // // // TAKE ALL ESTACIONAMIENTOS // // // //
 func (est Estacionamiento) FetchEstacionamientos() (estacionamientos []Estacionamiento, err error) {
     // Opens DB
     db := GetConnection()
@@ -44,15 +43,13 @@ func GetEstacionamientos(c *gin.Context){
 	})
 }
 
-
-//Select con id_departamentos------------------------------------------------------------------------
-
-func (est Estacionamiento) FetchEstacionamientosIddpto(id_departamentos string) (estacionamientos []Estacionamiento, err error) {
+// // // // TAKE ALL ESTACIONAMIENTOS WITH ID_DPTO=id_dpto // // // //
+func (est Estacionamiento) FetchEstacionamientosByDptoID(id_dpto string) (estacionamientos []Estacionamiento, err error) {
     // Opens DB
     db := GetConnection()
 
     // SQL query
-	rows, err := db.Query("select * from estacionamientos where id_departamentos=?", id_departamentos)
+	rows, err := db.Query("select * from estacionamientos where id_departamentos=?", id_dpto)
 	if err != nil {
 		return
 	}
@@ -69,15 +66,15 @@ func (est Estacionamiento) FetchEstacionamientosIddpto(id_departamentos string) 
 	return
 }
 
-func GetEstacionamientosIddpto(c *gin.Context){
+func GetEstacionamientosByDptoID(c *gin.Context){
     // URL parameters
-    var iddepartamento = c.Param("iddepartamento")
+    var id_dpto = c.Param("id_dpto")
 
-    fmt.Println(iddepartamento);
+    fmt.Println(id_dpto);
     // Results container
     est := Estacionamiento{}
     // Fetch from database
-	estacionamientos, err := est.FetchEstacionamientosIddpto(iddepartamento)
+	estacionamientos, err := est.FetchEstacionamientosByDptoID(id_dpto)
 	if err != nil {
         panic(err.Error())
 	}

@@ -5,8 +5,7 @@ import (
     "github.com/dgrijalva/jwt-go"
 )
 
-// Fetch all departamentos ---------------------------------------------------------------------------
-
+// // // // TAKE ALL DEPARTAMENTOS // // // //
 func (de Departamento) FetchDepartamentos() (departamentos []Departamento, err error) {
     // Opens DB
     db := GetConnection()
@@ -45,10 +44,7 @@ func GetDepartamentos(c *gin.Context){
 	})
 }
 
-
-
-//SELECT PARA LOGIN ------------------------------------------------------------------------------
-
+// // // // LOGIN DEPARTAMENTOS // // // //
 func (de Departamento) FetchDptoLogin(cond_code string, dpto_num string, dpto_pass string) (departamentos []Departamento, err error) {
     // Opens DB
     db := GetConnection()
@@ -76,7 +72,7 @@ func (de Departamento) FetchDptoLogin(cond_code string, dpto_num string, dpto_pa
         claims["id_cond"] = dpto.Id_condominio
         claims["telefono_residente"] = dpto.Telefono_residente
         claims["correo_residente"] = dpto.Correo_residente
-	claims["prorrateo"] = dpto.Prorrateo
+        claims["prorrateo"] = dpto.Prorrateo
         claims["level"] = "user"
         dpto_token, err := token.SignedString( SecretKey() )
         dpto.Token = dpto_token
@@ -117,15 +113,13 @@ func GetDptoLogin(c *gin.Context){
 	})
 }
 
-
-//SELECT DEPARTAMENTOS POR ID_CONDOMINIO-------------------------------------------------------------
-
-func (de Departamento) FetchDptoCondominio(id_condominio string) (departamentos []Departamento, err error) {
+// // // // SELECT DEPARTAMENTOS BY ID_COND=id_cond // // // //
+func (de Departamento) FetchDptoByCondominioID(id_cond string) (departamentos []Departamento, err error) {
     // Opens DB
     db := GetConnection()
 
     // SQL query
-	rows, err := db.Query("select * from departamentos where id_condominio = ?", id_condominio)
+	rows, err := db.Query("select * from departamentos where id_condominio = ?", id_cond)
 	if err != nil {
 		return
 	}
@@ -142,16 +136,16 @@ func (de Departamento) FetchDptoCondominio(id_condominio string) (departamentos 
 	return
 }
 
-func GetDptoCondominio(c *gin.Context){
+func GetDptoByCondominioID(c *gin.Context){
     // URL parameters
-    var idcondominio = c.Param("idcondominio")
+    var id_cond = c.Param("id_cond")
 
-    fmt.Println(idcondominio);
+    fmt.Println(id_cond);
 
     // Results container
     de := Departamento{}
     // Fetch from database
-	departamentos, err := de.FetchDptoCondominio(idcondominio)
+	departamentos, err := de.FetchDptoByCondominioID(id_cond)
 	if err != nil {
         panic(err.Error())
 	}
@@ -163,14 +157,13 @@ func GetDptoCondominio(c *gin.Context){
 	})
 }
 
-//SELECT DEPARTAMENTOS POR ID--------------------------------------------------------------------
-
-func (de Departamento) FetchDptoID(id_departamento string) (departamentos []Departamento, err error) {
+// // // // SELECT DEPARTAMENTOS BY ID=id_dpto // // // //
+func (de Departamento) FetchDptoByID(id_dpto string) (departamentos []Departamento, err error) {
     // Opens DB
     db := GetConnection()
 
     // SQL query
-	rows, err := db.Query("select * from departamentos where id= ?", id_departamento)
+	rows, err := db.Query("select * from departamentos where id= ?", id_dpto)
 	if err != nil {
 		return
 	}
@@ -187,16 +180,16 @@ func (de Departamento) FetchDptoID(id_departamento string) (departamentos []Depa
 	return
 }
 
-func GetDptoID(c *gin.Context){
+func GetDptoByID(c *gin.Context){
     // URL parameters
-    var iddpto = c.Param("iddpto")
+    var id_dpto = c.Param("id_dpto")
 
-    fmt.Println(iddpto);
+    fmt.Println(id_dpto);
 
     // Results container
     de := Departamento{}
     // Fetch from database
-	departamentos, err := de.FetchDptoID(iddpto)
+	departamentos, err := de.FetchDptoByID(id_dpto)
 	if err != nil {
         panic(err.Error())
 	}
@@ -208,9 +201,8 @@ func GetDptoID(c *gin.Context){
 	})
 }
 
-//get bodega y estacionamiento----------------------------------------------------------------------
-
-func (de DepartamentoBodEst) FetchDepartamentosEstBod(id_dpto string) (departamentos []DepartamentoBodEst, err error) {
+// // // // SELECT DEPARTAMENTOS BY ID=id_dpto AND bodegas AND estacionamientos // // // //
+func (de DepartamentoAllData) FetchDepartamentosAllDataByID(id_dpto string) (departamentos []DepartamentoAllData, err error) {
     // Opens DB
     db := GetConnection()
 
@@ -222,9 +214,9 @@ func (de DepartamentoBodEst) FetchDepartamentosEstBod(id_dpto string) (departame
 
     // Take all data
 	for rows.Next() {
-		var dpto DepartamentoBodEst
+		var dpto DepartamentoAllData
         rows.Scan(&dpto.Id, &dpto.Numero, &dpto.Password, &dpto.Dueno, &dpto.Residente, &dpto.Telefono, &dpto.Correo, &dpto.Id_condominio, &dpto.Telefono_residente, &dpto.Correo_residente, &dpto.Prorrateo, &dpto.N_bodega, &dpto.N_estacionamiento)
-	dpto.Level = "user"
+        dpto.Level = "user"
         fmt.Println(dpto.Id, dpto.Numero, dpto.Password, dpto.Dueno, dpto.Residente, dpto.Telefono, dpto.Correo, dpto.Id_condominio, dpto.Telefono_residente, dpto.Correo_residente, dpto.Prorrateo, dpto.N_bodega, dpto.N_estacionamiento)
         departamentos = append(departamentos, dpto)
 	}
@@ -233,15 +225,15 @@ func (de DepartamentoBodEst) FetchDepartamentosEstBod(id_dpto string) (departame
 	return
 }
 
-func GetDepartamentosEstBod(c *gin.Context){
+func GetDepartamentosAllDataByID(c *gin.Context){
     // URL parameters
-    var iddpto = c.Param("iddpto")
+    var id_dpto = c.Param("id_dpto")
 
-    fmt.Println(iddpto);
+    fmt.Println(id_dpto);
     // Results container
-    de := DepartamentoBodEst{}
+    de := DepartamentoAllData{}
     // Fetch from database
-	departamentos, err := de.FetchDepartamentosEstBod(iddpto)
+	departamentos, err := de.FetchDepartamentosAllDataByID(id_dpto)
 	if err != nil {
         panic(err.Error())
 	}
@@ -252,4 +244,3 @@ func GetDepartamentosEstBod(c *gin.Context){
 		"count": len(departamentos),
 	})
 }
-

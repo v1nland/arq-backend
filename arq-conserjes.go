@@ -4,8 +4,7 @@ import (
     "github.com/gin-gonic/gin"
 )
 
-//Take all data----------------------------------------------------------------------------------
-
+// // // // TAKE ALL CONSERJES // // // //
 func (Cs Conserje) FetchConserjes() (conserjes []Conserje, err error) {
     // Opens DB
     db := GetConnection()
@@ -44,14 +43,13 @@ func GetConserjes(c *gin.Context){
 	})
 }
 
-//select conserjes por condominio--------------------------------------------------------------------
-
-func (Cs Conserje) FetchConserjesIdcond(id_condominio string) (conserjes []Conserje, err error) {
+// // // // TAKE ALL CONSERJES WITH CONDOMINIO_ID=id_cond // // // //
+func (Cs Conserje) FetchConserjesByCondID(id_cond string) (conserjes []Conserje, err error) {
     // Opens DB
     db := GetConnection()
 
     // SQL query
-	rows, err := db.Query("select * from conserjes where id_condominio=?", id_condominio)
+	rows, err := db.Query("select * from conserjes where id_condominio=?", id_cond)
 	if err != nil {
 		return
 	}
@@ -68,15 +66,15 @@ func (Cs Conserje) FetchConserjesIdcond(id_condominio string) (conserjes []Conse
 	return
 }
 
-func GetConserjesIdcond(c *gin.Context){
+func GetConserjesByCondID(c *gin.Context){
     // URL parameters
-    var idcondominio = c.Param("idcondominio")
+    var id_cond = c.Param("id_cond")
 
-    fmt.Println(idcondominio);
+    fmt.Println(id_cond);
     // Results container
     cs := Conserje{}
     // Fetch from database
-	conserjes, err := cs.FetchConserjesIdcond(idcondominio)
+	conserjes, err := cs.FetchConserjesByCondID(id_cond)
 	if err != nil {
         panic(err.Error())
 	}

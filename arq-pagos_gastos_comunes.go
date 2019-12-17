@@ -4,9 +4,8 @@ import (
     "github.com/gin-gonic/gin"
 )
 
-//Take all data-------------------------------------------------------------------------------------
-
-func (pag Pagos_gastos_comunes) FetchPagos() (pagos_gastos_comunes []Pagos_gastos_comunes, err error) {
+// // // // TAKE ALL PAGOSGASTOSCOMUNES // // // //
+func (pag PagosGastosComunes) FetchPagos() (pagos_gastos_comunes []PagosGastosComunes, err error) {
     // Opens DB
     db := GetConnection()
 
@@ -18,7 +17,7 @@ func (pag Pagos_gastos_comunes) FetchPagos() (pagos_gastos_comunes []Pagos_gasto
 
     // Take all data
 	for rows.Next() {
-		var pago Pagos_gastos_comunes
+		var pago PagosGastosComunes
         rows.Scan(&pago.Id, &pago.Monto, &pago.Fecha, &pago.Id_departamento)
         fmt.Println(pago.Id, pago.Monto, pago.Fecha, pago.Id_departamento)
         pagos_gastos_comunes = append(pagos_gastos_comunes, pago)
@@ -30,7 +29,7 @@ func (pag Pagos_gastos_comunes) FetchPagos() (pagos_gastos_comunes []Pagos_gasto
 
 func GetPagos(c *gin.Context){
     // Results container
-    pag := Pagos_gastos_comunes{}
+    pag := PagosGastosComunes{}
     // Fetch from database
 	pagos_gastos_comunes, err := pag.FetchPagos()
 	if err != nil {
@@ -44,10 +43,8 @@ func GetPagos(c *gin.Context){
 	})
 }
 
-
-//Select con id_departamentos------------------------------------------------------------------------
-
-func (pag Pagos_gastos_comunes) FetchPagosIddpto(id_dpto string) (pagos_gastos_comunes []Pagos_gastos_comunes, err error) {
+// // // // TAKE ALL PAGOSGASTOSCOMUNES WITH ID_DPTO=id_dpto // // // //
+func (pag PagosGastosComunes) FetchPagosByDptoID(id_dpto string) (pagos_gastos_comunes []PagosGastosComunes, err error) {
     // Opens DB
     db := GetConnection()
 
@@ -59,7 +56,7 @@ func (pag Pagos_gastos_comunes) FetchPagosIddpto(id_dpto string) (pagos_gastos_c
 
     // Take all data
 	for rows.Next() {
-		var pago Pagos_gastos_comunes
+		var pago PagosGastosComunes
         rows.Scan(&pago.Id, &pago.Monto, &pago.Fecha, &pago.Id_departamento)
         fmt.Println(pago.Id, pago.Monto, pago.Fecha, pago.Id_departamento)
         pagos_gastos_comunes = append(pagos_gastos_comunes, pago)
@@ -69,15 +66,15 @@ func (pag Pagos_gastos_comunes) FetchPagosIddpto(id_dpto string) (pagos_gastos_c
 	return
 }
 
-func GetPagosIddpto(c *gin.Context){
+func GetPagosByDptoID(c *gin.Context){
     // URL parameters
-    var iddepartamento = c.Param("iddepartamento")
+    var id_dpto = c.Param("id_dpto")
 
-    fmt.Println(iddepartamento);
+    fmt.Println(id_dpto);
     // Results container
-    pag := Pagos_gastos_comunes{}
+    pag := PagosGastosComunes{}
     // Fetch from database
-	pagos_gastos_comunes, err := pag.FetchPagosIddpto(iddepartamento)
+	pagos_gastos_comunes, err := pag.FetchPagosByDptoID(id_dpto)
 	if err != nil {
         panic(err.Error())
 	}
@@ -89,21 +86,20 @@ func GetPagosIddpto(c *gin.Context){
 	})
 }
 
-//select con id condominio---------------------------------------------------------------------------
-
-func (pag Pagos_gastos_comunes) FetchPagosIdcondominio(id_condominio string) (pagos_gastos_comunes []Pagos_gastos_comunes, err error) {
+// // // // TAKE ALL PAGOSGASTOSCOMUNES WITH ID_COND=id_cond // // // //
+func (pag PagosGastosComunes) FetchPagosByCondominioID(id_cond string) (pagos_gastos_comunes []PagosGastosComunes, err error) {
     // Opens DB
     db := GetConnection()
 
     // SQL query
-	rows, err := db.Query("select * from pagos_gastos_comunes where id_departamentos in (select id from departamentos where id_condominio = ?)", id_condominio)
+	rows, err := db.Query("select * from pagos_gastos_comunes where id_departamentos in (select id from departamentos where id_condominio = ?)", id_cond)
 	if err != nil {
         return
     }
 
     // Take all data
 	for rows.Next() {
-		var pago Pagos_gastos_comunes
+		var pago PagosGastosComunes
         rows.Scan(&pago.Id, &pago.Monto, &pago.Fecha, &pago.Id_departamento)
         fmt.Println(pago.Id, pago.Monto, pago.Fecha, pago.Id_departamento)
         pagos_gastos_comunes = append(pagos_gastos_comunes, pago)
@@ -113,15 +109,15 @@ func (pag Pagos_gastos_comunes) FetchPagosIdcondominio(id_condominio string) (pa
 	return
 }
 
-func GetPagosIdcondominio(c *gin.Context){
+func GetPagosByCondominioID(c *gin.Context){
     // URL parameters
-    var idcondominio = c.Param("idcondominio")
+    var id_cond = c.Param("id_cond")
 
-    fmt.Println(idcondominio);
+    fmt.Println(id_cond);
     // Results container
-    pag := Pagos_gastos_comunes{}
+    pag := PagosGastosComunes{}
     // Fetch from database
-	pagos_gastos_comunes, err := pag.FetchPagosIdcondominio(idcondominio)
+	pagos_gastos_comunes, err := pag.FetchPagosByCondominioID(id_cond)
 	if err != nil {
         panic(err.Error())
 	}
@@ -133,21 +129,20 @@ func GetPagosIdcondominio(c *gin.Context){
 	})
 }
 
-//Select con id_condominio y mes------------------------------------------------------------------
-
-func (pag Pagos_gastos_comunes) FetchPagosIdcondominiomes(id_condominio string, anoinicio string, mesinicio string, anofinal string, mesfinal string) (pagos_gastos_comunes []Pagos_gastos_comunes, err error) {
+// // // // TAKE ALL MEDICIONESAGUA WITH ID_DPTO=id_dpto AND FECHA BETWEEN (ano_mes_inicial, ano_mes_final) // // // //
+func (pag PagosGastosComunes) FetchPagosByFechaAndCondominioID(id_cond string, anoinicio string, mesinicio string, anofinal string, mesfinal string) (pagos_gastos_comunes []PagosGastosComunes, err error) {
     // Opens DB
     db := GetConnection()
 
     // SQL query
-	rows, err := db.Query("select * from pagos_gastos_comunes where id_departamentos in (select id from departamentos where id_condominio = ?) and fecha between '?-?-01 00:00:00' and '?-?-01 00:00:00", id_condominio, anoinicio, mesinicio, anofinal, mesfinal)
+	rows, err := db.Query("select * from pagos_gastos_comunes where id_departamentos in (select id from departamentos where id_condominio = ?) and fecha between '?-?-01 00:00:00' and '?-?-01 00:00:00", id_cond, anoinicio, mesinicio, anofinal, mesfinal)
 	if err != nil {
         return
     }
 
     // Take all data
 	for rows.Next() {
-		var pago Pagos_gastos_comunes
+		var pago PagosGastosComunes
         rows.Scan(&pago.Id, &pago.Monto, &pago.Fecha, &pago.Id_departamento)
         fmt.Println(pago.Id, pago.Monto, pago.Fecha, pago.Id_departamento)
         pagos_gastos_comunes = append(pagos_gastos_comunes, pago)
@@ -157,23 +152,23 @@ func (pag Pagos_gastos_comunes) FetchPagosIdcondominiomes(id_condominio string, 
 	return
 }
 
-func GetPagosIdcondominiomes(c *gin.Context){
+func GetPagosByFechaAndCondominioID(c *gin.Context){
     // URL parameters
-    var idcondominio = c.Param("idcondominio")
+    var id_cond = c.Param("id_cond")
     var anoinicio = c.Param("anoinicio")
     var mesinicio = c.Param("mesinicio")
     var anofinal = c.Param("anofinal")
     var mesfinal = c.Param("mesfinal")
 
-    fmt.Println(idcondominio);
+    fmt.Println(id_cond);
     fmt.Println(anoinicio);
     fmt.Println(mesinicio);
     fmt.Println(anofinal);
     fmt.Println(mesfinal);
     // Results container
-    pag := Pagos_gastos_comunes{}
+    pag := PagosGastosComunes{}
     // Fetch from database
-	pagos_gastos_comunes, err := pag.FetchPagosIdcondominiomes(idcondominio, anoinicio, mesinicio, anofinal, mesfinal)
+	pagos_gastos_comunes, err := pag.FetchPagosByFechaAndCondominioID(id_cond, anoinicio, mesinicio, anofinal, mesfinal)
 	if err != nil {
         panic(err.Error())
 	}
@@ -184,6 +179,3 @@ func GetPagosIdcondominiomes(c *gin.Context){
 		"count": len(pagos_gastos_comunes),
 	})
 }
-
-
-

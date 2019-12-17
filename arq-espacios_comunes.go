@@ -4,9 +4,8 @@ import (
     "github.com/gin-gonic/gin"
 )
 
-//Take all data----------------------------------------------------------------------------------
-
-func (Ec Espacio_comun) FetchEspacios_comunes() (espacios_comunes []Espacio_comun, err error) {
+// // // // TAKE ALL ESPACIOSCOMUNES // // // //
+func (Ec EspacioComun) FetchEspaciosComunes() (espacios_comunes []EspacioComun, err error) {
     // Opens DB
     db := GetConnection()
 
@@ -18,7 +17,7 @@ func (Ec Espacio_comun) FetchEspacios_comunes() (espacios_comunes []Espacio_comu
 
     // Take all data
 	for rows.Next() {
-		var esc Espacio_comun
+		var esc EspacioComun
         rows.Scan(&esc.Id, &esc.Nombre, &esc.Id_condominio, &esc.Estado)
         fmt.Println(esc.Id, esc.Nombre, esc.Id_condominio, esc.Estado)
         espacios_comunes = append(espacios_comunes, esc)
@@ -28,11 +27,11 @@ func (Ec Espacio_comun) FetchEspacios_comunes() (espacios_comunes []Espacio_comu
 	return
 }
 
-func GetEspacios_comunes(c *gin.Context){
+func GetEspaciosComunes(c *gin.Context){
     // Results container
-    ec := Espacio_comun{}
+    ec := EspacioComun{}
     // Fetch from database
-	espacios_comunes, err := ec.FetchEspacios_comunes()
+	espacios_comunes, err := ec.FetchEspaciosComunes()
 	if err != nil {
         panic(err.Error())
 	}
@@ -44,21 +43,20 @@ func GetEspacios_comunes(c *gin.Context){
 	})
 }
 
-//select espacios por id_condominio------------------------------------------------------------------
-
-func (Ec Espacio_comun) FetchEspacios_comunesIdcond(id_condominios string) (espacios_comunes []Espacio_comun, err error) {
+// // // // TAKE ALL ESPACIOSCOMUNES WITH ID_COND=id_cond // // // //
+func (Ec EspacioComun) FetchEspaciosComunesByCondID(id_cond string) (espacios_comunes []EspacioComun, err error) {
     // Opens DB
     db := GetConnection()
 
     // SQL query
-	rows, err := db.Query("select * from espacios_comunes where id_condominio =?", id_condominios)
+	rows, err := db.Query("select * from espacios_comunes where id_condominio =?", id_cond)
 	if err != nil {
 		return
 	}
 
     // Take all data
 	for rows.Next() {
-		var esc Espacio_comun
+		var esc EspacioComun
         rows.Scan(&esc.Id, &esc.Nombre, &esc.Id_condominio, &esc.Estado)
         fmt.Println(esc.Id, esc.Nombre, esc.Id_condominio, esc.Estado)
         espacios_comunes = append(espacios_comunes, esc)
@@ -68,15 +66,15 @@ func (Ec Espacio_comun) FetchEspacios_comunesIdcond(id_condominios string) (espa
 	return
 }
 
-func GetEspacios_comunesIdcond(c *gin.Context){
+func GetEspaciosComunesByCondID(c *gin.Context){
     //URL parameters
-    var idcond = c.Param("idcond")
+    var idcond = c.Param("id_cond")
 
     fmt.Println(idcond);
     // Results container
-    ec := Espacio_comun{}
+    ec := EspacioComun{}
     // Fetch from database
-	espacios_comunes, err := ec.FetchEspacios_comunesIdcond(idcond)
+	espacios_comunes, err := ec.FetchEspaciosComunesByCondID(idcond)
 	if err != nil {
         panic(err.Error())
 	}
@@ -88,21 +86,20 @@ func GetEspacios_comunesIdcond(c *gin.Context){
 	})
 }
 
-//update espacio comun con idcond, actualiza el estado----------------------------------------------
-
-func (Ec Espacio_comun) UpdateEspacios_comunesIdcond(estado string, id_espacio string) (espacios_comunes []Espacio_comun, err error) {
+// // // // UPDATE ALL ESPACIOSCOMUNES WITH ID_COND=id_cond // // // //
+func (Ec EspacioComun) UpdateEspaciosComunesByID(estado string, id_ec string) (espacios_comunes []EspacioComun, err error) {
     // Opens DB
     db := GetConnection()
 
     // SQL queryGetPorCond/2/
-	rows, err := db.Query("update espacios_comunes set estado= ? where id = ?", estado, id_espacio)
+	rows, err := db.Query("update espacios_comunes set estado= ? where id = ?", estado, id_ec)
 	if err != nil {
 		return
 	}
 
     // Take all data
 	for rows.Next() {
-		var esc Espacio_comun
+		var esc EspacioComun
         rows.Scan(&esc.Id, &esc.Nombre, &esc.Id_condominio, &esc.Estado)
         fmt.Println(esc.Id, esc.Nombre, esc.Id_condominio, esc.Estado)
         espacios_comunes = append(espacios_comunes, esc)
@@ -112,17 +109,17 @@ func (Ec Espacio_comun) UpdateEspacios_comunesIdcond(estado string, id_espacio s
 	return
 }
 
-func GetUpdateEspacios_comunesIdcond(c *gin.Context){
+func GetUpdateEspaciosComunesByID(c *gin.Context){
     //URL parameters
     var estado = c.Param("estado")
-    var idcond = c.Param("idcond")
+    var id_ec = c.Param("id_ec")
 
     fmt.Println(estado);
-    fmt.Println(idcond);
+    fmt.Println(id_ec);
     // Results container
-    ec := Espacio_comun{}
+    ec := EspacioComun{}
     // Fetch from database
-	espacios_comunes, err := ec.UpdateEspacios_comunesIdcond(estado, idcond)
+	espacios_comunes, err := ec.UpdateEspaciosComunesByID(estado, id_ec)
 	if err != nil {
         panic(err.Error())
 	}

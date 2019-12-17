@@ -4,8 +4,7 @@ import (
     "github.com/gin-gonic/gin"
 )
 
-//Take all data----------------------------------------------------------------------------------
-
+// // // // TAKE ALL TICKETS // // // //
 func (Ti Ticket) FetchTickets() (tickets []Ticket, err error) {
     // Opens DB
     db := GetConnection()
@@ -19,8 +18,8 @@ func (Ti Ticket) FetchTickets() (tickets []Ticket, err error) {
     // Take all data
 	for rows.Next() {
 		var tic Ticket
-        rows.Scan(&tic.Id, &tic.Id_departamentos, &tic.Id_condominio, &tic.Consulta, &tic.Respuesta, &tic.Finalizado, &tic.Asunto)
-        fmt.Println(tic.Id, tic.Id_departamentos, tic.Id_condominio, tic.Consulta, tic.Respuesta, tic.Finalizado, tic.Asunto)
+        rows.Scan(&tic.Id, &tic.Id_departamentos, &tic.Id_usuarios, &tic.Consulta, &tic.Respuesta, &tic.Finalizado, &tic.Asunto)
+        fmt.Println(tic.Id, tic.Id_departamentos, tic.Id_usuarios, tic.Consulta, tic.Respuesta, tic.Finalizado, tic.Asunto)
         tickets = append(tickets, tic)
 	}
 	defer rows.Close()
@@ -44,9 +43,8 @@ func GetTickets(c *gin.Context){
 	})
 }
 
-//Select con id_condominio-------------------------------------------------------------------------
-
-func (Ti Ticket) FetchTicketsIdcond(id_cond string) (tickets []Ticket, err error) {
+// // // // TAKE ALL TICKETS WITH ID_COND=id_cond // // // //
+func (Ti Ticket) FetchTicketsByCondID(id_cond string) (tickets []Ticket, err error) {
     // Opens DB
     db := GetConnection()
 
@@ -59,8 +57,8 @@ func (Ti Ticket) FetchTicketsIdcond(id_cond string) (tickets []Ticket, err error
     // Take all data
 	for rows.Next() {
 		var tic Ticket
-        rows.Scan(&tic.Id, &tic.Id_departamentos, &tic.Id_condominio, &tic.Consulta, &tic.Respuesta, &tic.Finalizado, &tic.Asunto)
-        fmt.Println(tic.Id, tic.Id_departamentos, tic.Id_condominio, tic.Consulta, tic.Respuesta, tic.Finalizado, tic.Asunto)
+        rows.Scan(&tic.Id, &tic.Id_departamentos, &tic.Id_usuarios, &tic.Consulta, &tic.Respuesta, &tic.Finalizado, &tic.Asunto)
+        fmt.Println(tic.Id, tic.Id_departamentos, tic.Id_usuarios, tic.Consulta, tic.Respuesta, tic.Finalizado, tic.Asunto)
         tickets = append(tickets, tic)
 	}
 	defer rows.Close()
@@ -68,16 +66,16 @@ func (Ti Ticket) FetchTicketsIdcond(id_cond string) (tickets []Ticket, err error
 	return
 }
 
-func GetTicketsIdcond(c *gin.Context){
+func GetTicketsByCondID(c *gin.Context){
     // URL parameters
-    var idcondominio = c.Param("idcondominio")
+    var id_cond = c.Param("id_cond")
 
-    fmt.Println(idcondominio);
+    fmt.Println(id_cond);
 
     // Results container
     ti := Ticket{}
     // Fetch from database
-	tickets, err := ti.FetchTicketsIdcond(idcondominio)
+	tickets, err := ti.FetchTicketsByCondID(id_cond)
 	if err != nil {
         panic(err.Error())
 	}
@@ -89,9 +87,8 @@ func GetTicketsIdcond(c *gin.Context){
 	})
 }
 
-//Select con id_ticket y finalizados---------------------------------------------------------------
-
-func (Ti Ticket) FetchTicketsIdcondFinal(id_cond string) (tickets []Ticket, err error) {
+// // // // TAKE ALL TICKETS WITH ID_COND=id_cond AND finalizado=1 // // // //
+func (Ti Ticket) FetchTicketsFinalizadosByCondID(id_cond string) (tickets []Ticket, err error) {
     // Opens DB
     db := GetConnection()
 
@@ -104,8 +101,8 @@ func (Ti Ticket) FetchTicketsIdcondFinal(id_cond string) (tickets []Ticket, err 
     // Take all data
 	for rows.Next() {
 		var tic Ticket
-        rows.Scan(&tic.Id, &tic.Id_departamentos, &tic.Id_condominio, &tic.Consulta, &tic.Respuesta, &tic.Finalizado, &tic.Asunto)
-        fmt.Println(tic.Id, tic.Id_departamentos, tic.Id_condominio, tic.Consulta, tic.Respuesta, tic.Finalizado, tic.Asunto)
+        rows.Scan(&tic.Id, &tic.Id_departamentos, &tic.Id_usuarios, &tic.Consulta, &tic.Respuesta, &tic.Finalizado, &tic.Asunto)
+        fmt.Println(tic.Id, tic.Id_departamentos, tic.Id_usuarios, tic.Consulta, tic.Respuesta, tic.Finalizado, tic.Asunto)
         tickets = append(tickets, tic)
 	}
 	defer rows.Close()
@@ -113,16 +110,16 @@ func (Ti Ticket) FetchTicketsIdcondFinal(id_cond string) (tickets []Ticket, err 
 	return
 }
 
-func GetTicketsIdcondFinal(c *gin.Context){
+func GetTicketsFinalizadosByCondID(c *gin.Context){
     // URL parameters
-    var idcondominio = c.Param("idcondominio")
+    var id_cond = c.Param("id_cond")
 
-    fmt.Println(idcondominio);
+    fmt.Println(id_cond);
 
     // Results container
     ti := Ticket{}
     // Fetch from database
-	tickets, err := ti.FetchTicketsIdcondFinal(idcondominio)
+	tickets, err := ti.FetchTicketsFinalizadosByCondID(id_cond)
 	if err != nil {
         panic(err.Error())
 	}
@@ -134,14 +131,13 @@ func GetTicketsIdcondFinal(c *gin.Context){
 	})
 }
 
-//Update con id_ticket para poner finalizado=1-----------------------------------------------------
-
-func (Ti Ticket) UpdateTicketsFinal(id_tic string) (tickets []Ticket, err error) {
+// // // // END TICKET WITH ID=id // // // //
+func (Ti Ticket) FetchEndTicketByID(id string) (tickets []Ticket, err error) {
     // Opens DB
     db := GetConnection()
 
     // SQL que
-	rows, err := db.Query("update tickets set finalizado= 1 where id=?", id_tic)
+	rows, err := db.Query("update tickets set finalizado= 1 where id=?", id)
 	if err != nil {
 		return
 	}
@@ -149,8 +145,8 @@ func (Ti Ticket) UpdateTicketsFinal(id_tic string) (tickets []Ticket, err error)
     // Take all data
 	for rows.Next() {
 		var tic Ticket
-        rows.Scan(&tic.Id, &tic.Id_departamentos, &tic.Id_condominio, &tic.Consulta, &tic.Respuesta, &tic.Finalizado, &tic.Asunto)
-        fmt.Println(tic.Id, tic.Id_departamentos, tic.Id_condominio, tic.Consulta, tic.Respuesta, tic.Finalizado, tic.Asunto)
+        rows.Scan(&tic.Id, &tic.Id_departamentos, &tic.Id_usuarios, &tic.Consulta, &tic.Respuesta, &tic.Finalizado, &tic.Asunto)
+        fmt.Println(tic.Id, tic.Id_departamentos, tic.Id_usuarios, tic.Consulta, tic.Respuesta, tic.Finalizado, tic.Asunto)
         tickets = append(tickets, tic)
 	}
 	defer rows.Close()
@@ -158,16 +154,16 @@ func (Ti Ticket) UpdateTicketsFinal(id_tic string) (tickets []Ticket, err error)
 	return
 }
 
-func GetUpdateTicketsFinal(c *gin.Context){
+func GetEndTicketByID(c *gin.Context){
     // URL parameters
-    var idtic = c.Param("idtic")
+    var id = c.Param("id")
 
-    fmt.Println(idtic);
+    fmt.Println(id);
 
     // Results container
     ti := Ticket{}
     // Fetch from database
-	tickets, err := ti.UpdateTicketsFinal(idtic)
+	tickets, err := ti.FetchEndTicketByID(id)
 	if err != nil {
         panic(err.Error())
 	}
@@ -179,14 +175,13 @@ func GetUpdateTicketsFinal(c *gin.Context){
 	})
 }
 
-//Respuesta ticket--------------------------------------------------------------------------------
-
-func (Ti Ticket) ResponderTickets(id_ticket string, respuesta string) (tickets []Ticket, err error) {
+// // // // RESPONSE TICKET WITH ID=id // // // //
+func (Ti Ticket) FetchResponderTicketByID(id string, respuesta string) (tickets []Ticket, err error) {
     // Opens DB
     db := GetConnection()
 
     // SQL query
-	rows, err := db.Query("update tickets set respuesta = ? where id = ?", respuesta, id_ticket)
+	rows, err := db.Query("update tickets set respuesta = ? where id = ?", respuesta, id)
 	if err != nil {
 		return
 	}
@@ -194,8 +189,8 @@ func (Ti Ticket) ResponderTickets(id_ticket string, respuesta string) (tickets [
     // Take all data
 	for rows.Next() {
 		var tic Ticket
-        rows.Scan(&tic.Id, &tic.Id_departamentos, &tic.Id_condominio, &tic.Consulta, &tic.Respuesta, &tic.Finalizado, &tic.Asunto)
-        fmt.Println(tic.Id, tic.Id_departamentos, tic.Id_condominio, tic.Consulta, tic.Respuesta, tic.Finalizado, tic.Asunto)
+        rows.Scan(&tic.Id, &tic.Id_departamentos, &tic.Id_usuarios, &tic.Consulta, &tic.Respuesta, &tic.Finalizado, &tic.Asunto)
+        fmt.Println(tic.Id, tic.Id_departamentos, tic.Id_usuarios, tic.Consulta, tic.Respuesta, tic.Finalizado, tic.Asunto)
         tickets = append(tickets, tic)
 	}
 	defer rows.Close()
@@ -203,18 +198,18 @@ func (Ti Ticket) ResponderTickets(id_ticket string, respuesta string) (tickets [
 	return
 }
 
-func GetResponderTickets(c *gin.Context){
+func GetResponderTicketByID(c *gin.Context){
     // URL parameters
-    var id_ticket = c.Param("id_ticket")
+    var id = c.Param("id")
     var respuesta = c.Param("respuesta")
 
-    fmt.Println(id_ticket);
+    fmt.Println(id);
     fmt.Println(respuesta);
 
     // Results container
     ti := Ticket{}
     // Fetch from database
-	tickets, err := ti.ResponderTickets(id_ticket, respuesta)
+	tickets, err := ti.FetchResponderTicketByID(id, respuesta)
 	if err != nil {
         panic(err.Error())
 	}
@@ -226,13 +221,13 @@ func GetResponderTickets(c *gin.Context){
 	})
 }
 
-//Insertar nuevo ticket--------------------------------------------------------------------------
-func (Ti Ticket) InsertarTickets(id_departamentos string, id_condominio string, consulta string, asunto string) (tickets []Ticket, err error) {
+// // // // INSERT NEW TICKET // // // //
+func (Ti Ticket) FetchInsertarTicket(id_dpto string, id_cond string, consulta string, asunto string) (tickets []Ticket, err error) {
     // Opens DB
     db := GetConnection()
 
     // SQL query
-	rows, err := db.Query("insert into tickets (id_departamentos, id_usuarios, consulta, respuesta, finalizado, asunto) values (?, ?, ?, 0, 0, ?)", id_departamentos, id_condominio, consulta, asunto)
+	rows, err := db.Query("insert into tickets (id_departamentos, id_usuarios, consulta, respuesta, finalizado, asunto) values (?, ?, ?, 0, 0, ?)", id_dpto, id_cond, consulta, asunto)
 	if err != nil {
 		return
 	}
@@ -240,8 +235,8 @@ func (Ti Ticket) InsertarTickets(id_departamentos string, id_condominio string, 
     // Take all data
 	for rows.Next() {
 		var tic Ticket
-        rows.Scan(&tic.Id, &tic.Id_departamentos, &tic.Id_condominio, &tic.Consulta, &tic.Respuesta, &tic.Finalizado, &tic.Asunto)
-        fmt.Println(tic.Id, tic.Id_departamentos, tic.Id_condominio, tic.Consulta, tic.Respuesta, tic.Finalizado, tic.Asunto)
+        rows.Scan(&tic.Id, &tic.Id_departamentos, &tic.Id_usuarios, &tic.Consulta, &tic.Respuesta, &tic.Finalizado, &tic.Asunto)
+        fmt.Println(tic.Id, tic.Id_departamentos, tic.Id_usuarios, tic.Consulta, tic.Respuesta, tic.Finalizado, tic.Asunto)
         tickets = append(tickets, tic)
 	}
 	defer rows.Close()
@@ -249,22 +244,22 @@ func (Ti Ticket) InsertarTickets(id_departamentos string, id_condominio string, 
 	return
 }
 
-func GetInsertarTickets(c *gin.Context){
+func GetInsertarTicket(c *gin.Context){
     // URL parameters
-    var iddepartamentos = c.Param("iddepartamentos")
-    var idcondominio = c.Param("idcondominio")
+    var id_dpto = c.Param("id_dpto")
+    var id_cond = c.Param("id_cond")
     var consulta = c.Param("consulta")
     var asunto = c.Param("asunto")
 
-    fmt.Println(iddepartamentos);
-    fmt.Println(idcondominio);
+    fmt.Println(id_dpto);
+    fmt.Println(id_cond);
     fmt.Println(consulta);
     fmt.Println(asunto);
 
     // Results container
     ti := Ticket{}
     // Fetch from database
-	tickets, err := ti.InsertarTickets(iddepartamentos, idcondominio, consulta, asunto)
+	tickets, err := ti.FetchInsertarTicket(id_dpto, id_cond, consulta, asunto)
 	if err != nil {
         panic(err.Error())
 	}

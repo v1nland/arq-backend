@@ -4,8 +4,7 @@ import (
     "github.com/gin-gonic/gin"
 )
 
-//Take all data----------------------------------------------------------------------------------
-
+// // // // TAKE ALL BODEGAS // // // //
 func (bo Bodega) FetchBodegas() (bodegas []Bodega, err error) {
     // Opens DB
     db := GetConnection()
@@ -44,10 +43,8 @@ func GetBodegas(c *gin.Context){
 	})
 }
 
-
-//Select todas las bodegas con id_departamentos-----------------------------------------------------
-
-func (bo Bodega) FetchBodegasIddepto(id_dpto string) (bodegas []Bodega, err error) {
+// // // // TAKE ALL BODEGAS WITH DPTO_ID=id_departamentos // // // //
+func (bo Bodega) FetchBodegasByDptoID(id_dpto string) (bodegas []Bodega, err error) {
     // Opens DB
     db := GetConnection()
 
@@ -69,15 +66,15 @@ func (bo Bodega) FetchBodegasIddepto(id_dpto string) (bodegas []Bodega, err erro
 	return
 }
 
-func GetBodegasIddpto(c *gin.Context){
+func GetBodegasByDptoID(c *gin.Context){
     // URL parameters
-    var iddepartamento = c.Param("iddepartamento")
+    var id_dpto = c.Param("id_dpto")
 
-    fmt.Println(iddepartamento);
+    fmt.Println(id_dpto);
     // Results container
     bo := Bodega{}
     // Fetch from database
-	bodegas, err := bo.FetchBodegasIddepto(iddepartamento)
+	bodegas, err := bo.FetchBodegasByDptoID(id_dpto)
 	if err != nil {
         panic(err.Error())
 	}
