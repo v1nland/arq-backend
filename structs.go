@@ -109,6 +109,7 @@ type Ticket struct{
     Respuesta string `json:"respuesta" form:"respuesta"`
     Finalizado int `json:"finalizado" form:"finalizado"`
     Asunto string `json:"asunto" form:"asunto"`
+    Fecha string `json:"fecha" form:"fecha"`
 
 }
 

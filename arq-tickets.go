@@ -18,8 +18,8 @@ func (Ti Ticket) FetchTickets() (tickets []Ticket, err error) {
     // Take all data
 	for rows.Next() {
 		var tic Ticket
-        rows.Scan(&tic.Id, &tic.Id_departamentos, &tic.Id_usuarios, &tic.Consulta, &tic.Respuesta, &tic.Finalizado, &tic.Asunto)
-        fmt.Println(tic.Id, tic.Id_departamentos, tic.Id_usuarios, tic.Consulta, tic.Respuesta, tic.Finalizado, tic.Asunto)
+        rows.Scan(&tic.Id, &tic.Id_departamentos, &tic.Id_usuarios, &tic.Consulta, &tic.Respuesta, &tic.Finalizado, &tic.Asunto, &tic.Fecha)
+        fmt.Println(tic.Id, tic.Id_departamentos, tic.Id_usuarios, tic.Consulta, tic.Respuesta, tic.Finalizado, tic.Asunto, tic.Fecha)
         tickets = append(tickets, tic)
 	}
 	defer rows.Close()
@@ -57,8 +57,8 @@ func (Ti Ticket) FetchTicketsByCondID(id_cond string) (tickets []Ticket, err err
     // Take all data
 	for rows.Next() {
 		var tic Ticket
-        rows.Scan(&tic.Id, &tic.Id_departamentos, &tic.Id_usuarios, &tic.Consulta, &tic.Respuesta, &tic.Finalizado, &tic.Asunto)
-        fmt.Println(tic.Id, tic.Id_departamentos, tic.Id_usuarios, tic.Consulta, tic.Respuesta, tic.Finalizado, tic.Asunto)
+        rows.Scan(&tic.Id, &tic.Id_departamentos, &tic.Id_usuarios, &tic.Consulta, &tic.Respuesta, &tic.Finalizado, &tic.Asunto, &tic.Fecha)
+        fmt.Println(tic.Id, tic.Id_departamentos, tic.Id_usuarios, tic.Consulta, tic.Respuesta, tic.Finalizado, tic.Asunto, tic.Fecha)
         tickets = append(tickets, tic)
 	}
 	defer rows.Close()
@@ -101,8 +101,8 @@ func (Ti Ticket) FetchTicketsFinalizadosByCondID(id_cond string) (tickets []Tick
     // Take all data
 	for rows.Next() {
 		var tic Ticket
-        rows.Scan(&tic.Id, &tic.Id_departamentos, &tic.Id_usuarios, &tic.Consulta, &tic.Respuesta, &tic.Finalizado, &tic.Asunto)
-        fmt.Println(tic.Id, tic.Id_departamentos, tic.Id_usuarios, tic.Consulta, tic.Respuesta, tic.Finalizado, tic.Asunto)
+        rows.Scan(&tic.Id, &tic.Id_departamentos, &tic.Id_usuarios, &tic.Consulta, &tic.Respuesta, &tic.Finalizado, &tic.Asunto, &tic.Fecha)
+        fmt.Println(tic.Id, tic.Id_departamentos, tic.Id_usuarios, tic.Consulta, tic.Respuesta, tic.Finalizado, tic.Asunto, tic.Fecha)
         tickets = append(tickets, tic)
 	}
 	defer rows.Close()
@@ -145,8 +145,8 @@ func (Ti Ticket) FetchEndTicketByID(id string) (tickets []Ticket, err error) {
     // Take all data
 	for rows.Next() {
 		var tic Ticket
-        rows.Scan(&tic.Id, &tic.Id_departamentos, &tic.Id_usuarios, &tic.Consulta, &tic.Respuesta, &tic.Finalizado, &tic.Asunto)
-        fmt.Println(tic.Id, tic.Id_departamentos, tic.Id_usuarios, tic.Consulta, tic.Respuesta, tic.Finalizado, tic.Asunto)
+        rows.Scan(&tic.Id, &tic.Id_departamentos, &tic.Id_usuarios, &tic.Consulta, &tic.Respuesta, &tic.Finalizado, &tic.Asunto, &tic.Fecha)
+        fmt.Println(tic.Id, tic.Id_departamentos, tic.Id_usuarios, tic.Consulta, tic.Respuesta, tic.Finalizado, tic.Asunto, tic.Fecha)
         tickets = append(tickets, tic)
 	}
 	defer rows.Close()
@@ -189,8 +189,8 @@ func (Ti Ticket) FetchResponderTicketByID(id string, respuesta string) (tickets 
     // Take all data
 	for rows.Next() {
 		var tic Ticket
-        rows.Scan(&tic.Id, &tic.Id_departamentos, &tic.Id_usuarios, &tic.Consulta, &tic.Respuesta, &tic.Finalizado, &tic.Asunto)
-        fmt.Println(tic.Id, tic.Id_departamentos, tic.Id_usuarios, tic.Consulta, tic.Respuesta, tic.Finalizado, tic.Asunto)
+        rows.Scan(&tic.Id, &tic.Id_departamentos, &tic.Id_usuarios, &tic.Consulta, &tic.Respuesta, &tic.Finalizado, &tic.Asunto, &tic.Fecha)
+        fmt.Println(tic.Id, tic.Id_departamentos, tic.Id_usuarios, tic.Consulta, tic.Respuesta, tic.Finalizado, tic.Asunto, tic.Fecha)
         tickets = append(tickets, tic)
 	}
 	defer rows.Close()
@@ -235,8 +235,8 @@ func (Ti Ticket) FetchInsertarTicket(id_dpto string, id_cond string, consulta st
     // Take all data
 	for rows.Next() {
 		var tic Ticket
-        rows.Scan(&tic.Id, &tic.Id_departamentos, &tic.Id_usuarios, &tic.Consulta, &tic.Respuesta, &tic.Finalizado, &tic.Asunto)
-        fmt.Println(tic.Id, tic.Id_departamentos, tic.Id_usuarios, tic.Consulta, tic.Respuesta, tic.Finalizado, tic.Asunto)
+        rows.Scan(&tic.Id, &tic.Id_departamentos, &tic.Id_usuarios, &tic.Consulta, &tic.Respuesta, &tic.Finalizado, &tic.Asunto, &tic.Fecha)
+        fmt.Println(tic.Id, tic.Id_departamentos, tic.Id_usuarios, tic.Consulta, tic.Respuesta, tic.Finalizado, tic.Asunto, tic.Fecha)
         tickets = append(tickets, tic)
 	}
 	defer rows.Close()
@@ -270,3 +270,49 @@ func GetInsertarTicket(c *gin.Context){
 		"count": len(tickets),
 	})
 }
+
+// // // TAKE ALL TICKETS WITH ID_DPTO=id_dpto // // //
+
+func (Ti Ticket) FetchTicketsByDptoID(id_dpto string) (tickets []Ticket, err error) {
+    // Opens DB
+    db := GetConnection()
+
+    // SQL query
+	rows, err := db.Query("select * from tickets where id_departamentos = ?", id_dpto)
+	if err != nil {
+		return
+	}
+
+    // Take all data
+	for rows.Next() {
+		var tic Ticket
+        rows.Scan(&tic.Id, &tic.Id_departamentos, &tic.Id_usuarios, &tic.Consulta, &tic.Respuesta, &tic.Finalizado, &tic.Asunto, &tic.Fecha)
+        fmt.Println(tic.Id, tic.Id_departamentos, tic.Id_usuarios, tic.Consulta, tic.Respuesta, tic.Finalizado, tic.Asunto, tic.Fecha)
+        tickets = append(tickets, tic)
+	}
+	defer rows.Close()
+
+	return
+}
+
+func GetTicketsByDptoID(c *gin.Context){
+    // URL parameters
+    var id_dpto = c.Param("id_dpto")
+
+    fmt.Println(id_dpto);
+
+    // Results container
+    ti := Ticket{}
+    // Fetch from database
+	tickets, err := ti.FetchTicketsByCondID(id_dpto)
+	if err != nil {
+        panic(err.Error())
+	}
+
+    // Show via GET method
+	c.JSON(200, gin.H{
+		"rows": tickets,
+		"count": len(tickets),
+	})
+}
+

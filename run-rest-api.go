@@ -96,7 +96,7 @@ func StartServer() {
     //Tickets queries
     router.GET("/Tickets/", GetTickets)
     router.GET("/Tickets/byCondID/:id_cond/", GetTicketsByCondID)
-    // agregar tickets byDptoID
+    router.GET("/Tickets/byDptoID/:id_dpto/", GetTicketsByDptoID)
     router.GET("/Tickets/FinalizadosByCondID/:id_cond/", GetTicketsFinalizadosByCondID)
     router.GET("/Tickets/Finalizar/:id/", GetEndTicketByID)
     router.GET("/Tickets/Responder/:id/:respuesta/", GetResponderTicketByID) // falta que marque el ticket como finalizado una vez respondido
