@@ -181,7 +181,7 @@ func (Ti Ticket) FetchResponderTicketByID(id string, respuesta string) (tickets 
     db := GetConnection()
 
     // SQL query
-	rows, err := db.Query("update tickets set respuesta = ? where id = ?", respuesta, id)
+	rows, err := db.Query("update tickets set respuesta = ?, finalizado = 1 where id = ?", respuesta, id)
 	if err != nil {
 		return
 	}
