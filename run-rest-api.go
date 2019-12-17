@@ -50,7 +50,7 @@ func StartServer() {
 
     // Departamentos queries
     router.GET("/Departamentos/", GetDepartamentos)
-    router.GET("/Departamentos/GetLogin/:codigo/:numero/:password/", GetDptoLogin)
+    router.GET("/Departamentos/Login/:codigo/:numero/:password/", GetDptoLogin)
     router.GET("/Departamentos/byCondominioID/:id_cond/", GetDptoByCondominioID)
     router.GET("/Departamentos/byID/:id_dpto/", GetDptoByID)
     router.GET("/Departamentos/AllData/byID/:id_dpto/", GetDepartamentosAllDataByID)
@@ -66,17 +66,21 @@ func StartServer() {
 
     // Gastos comunes queries
     router.GET("/GastosComunes/", GetGastosComunes)
+
+    // needs fix
     router.GET("/GastosComunes/Balance/:id_dpto/", GetBalanceGastosComunes)
 
     // Mediciones agua queries
     router.GET("/MedicionesAgua/", GetMedicionesAgua)
     router.GET("/MedicionesAgua/byDptoID/:id_dpto/", GetMedicionesAguaByDptoID)
     router.GET("/MedicionesAgua/byCondominioID/:id_cond/", GetMedicionesAguaByCondID)
+
     // needs fix
     router.GET("/MedicionesAgua/MedicionesFecha/:ano_inicio/:mes_inicio/:ano_final/:mes_final/", GetMedicionesAguaByFecha)
 
     // Multas queries
     router.GET("/Multas/", GetMultas)
+
     // needs fix
     router.GET("/Multas/ObtenerMultas/:ano_inicio/:mes_inicio/:ano_final/:mes_final/:id_dpto/", GetMultasByFecha)
     router.GET("/Multas/ContarMultas/:ano_inicio/:mes_inicio/:ano_final/:mes_final/:iddpto/", GetCountMultasByFecha)
@@ -85,12 +89,14 @@ func StartServer() {
     router.GET("/PagosGC/", GetPagos)
     router.GET("/PagosGC/byDptoID/:id_dpto/", GetPagosByDptoID)
     router.GET("/PagosGC/byCondominioID/:id_cond/", GetPagosByCondominioID)
+
     // needs fix
     router.GET("/PagosGC/PagosCondMes/:id_cond/:anoinicio/:mesinicio/:anofinal/:mesfinal/", GetPagosByFechaAndCondominioID)
 
     //Tickets queries
     router.GET("/Tickets/", GetTickets)
     router.GET("/Tickets/byCondID/:id_cond/", GetTicketsByCondID)
+    // agregar tickets byDptoID
     router.GET("/Tickets/FinalizadosByCondID/:id_cond/", GetTicketsFinalizadosByCondID)
     router.GET("/Tickets/Finalizar/:id/", GetEndTicketByID)
     router.GET("/Tickets/Responder/:id/:respuesta/", GetResponderTicketByID) // falta que marque el ticket como finalizado una vez respondido
