@@ -74,7 +74,7 @@ func StartServer() {
     router.GET("/MedicionesAgua/", GetMedicionesAgua)
     router.GET("/MedicionesAgua/byDptoID/:id_dpto/", GetMedicionesAguaByDptoID)
     router.GET("/MedicionesAgua/byCondominioID/:id_cond/", GetMedicionesAguaByCondID)
-    router.GET("/MedicionesAgua/Insertar/:litros/:num_dpto/:cod_cond", GetInsertMedicionesAgua)
+    router.GET("/MedicionesAgua/Insertar/:litros/:num_dpto/:cod_cond/", GetInsertMedicionesAgua)
 
     // needs fix
     router.GET("/MedicionesAgua/MedicionesFecha/:ano_inicio/:mes_inicio/:ano_final/:mes_final/", GetMedicionesAguaByFecha)
