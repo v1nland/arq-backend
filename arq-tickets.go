@@ -232,7 +232,7 @@ func (Ti Ticket) InsertarTickets(id_departamentos string, id_condominio string, 
     db := GetConnection()
 
     // SQL query
-	rows, err := db.Query("insert into tickets (id_departamentos, id_usuarios, consulta, respuesta, finalizado, asunto) values (?, ?, ?, null, 0, ?)", id_departamentos, id_condominio, consulta, asunto)
+	rows, err := db.Query("insert into tickets (id_departamentos, id_usuarios, consulta, respuesta, finalizado, asunto) values (?, ?, ?, 0, 0, ?)", id_departamentos, id_condominio, consulta, asunto)
 	if err != nil {
 		return
 	}
@@ -275,4 +275,3 @@ func GetInsertarTickets(c *gin.Context){
 		"count": len(tickets),
 	})
 }
-
