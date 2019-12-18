@@ -130,12 +130,12 @@ func GetPagosByCondominioID(c *gin.Context){
 }
 
 // // // // TAKE ALL MEDICIONESAGUA WITH ID_DPTO=id_dpto AND FECHA BETWEEN (ano_mes_inicial, ano_mes_final) // // // //
-func (pag PagosGastosComunes) FetchPagosByFechaAndCondominioID(id_cond string, anoinicio string, mesinicio string, anofinal string, mesfinal string) (pagos_gastos_comunes []PagosGastosComunes, err error) {
+func (pag PagosGastosComunes) FetchPagosByFechaAndCondominioID(id_cond string, fechai string, fechaf string) (pagos_gastos_comunes []PagosGastosComunes, err error) {
     // Opens DB
     db := GetConnection()
 
     // SQL query
-	rows, err := db.Query("select * from pagos_gastos_comunes where id_departamentos in (select id from departamentos where id_condominio = ?) and fecha between '?-?-01 00:00:00' and '?-?-01 00:00:00", id_cond, anoinicio, mesinicio, anofinal, mesfinal)
+	rows, err := db.Query("select * from pagos_gastos_comunes where id_departamentos in (select id from departamentos where id_condominio = ?) and fecha between ? and ?", id_cond, fechai, fechaf)
 	if err != nil {
         return
     }
@@ -155,20 +155,17 @@ func (pag PagosGastosComunes) FetchPagosByFechaAndCondominioID(id_cond string, a
 func GetPagosByFechaAndCondominioID(c *gin.Context){
     // URL parameters
     var id_cond = c.Param("id_cond")
-    var anoinicio = c.Param("anoinicio")
-    var mesinicio = c.Param("mesinicio")
-    var anofinal = c.Param("anofinal")
-    var mesfinal = c.Param("mesfinal")
+    var fechai = c.Param("fechai")
+    var fechaf = c.Param("fechaf")
 
     fmt.Println(id_cond);
-    fmt.Println(anoinicio);
-    fmt.Println(mesinicio);
-    fmt.Println(anofinal);
-    fmt.Println(mesfinal);
+    fmt.Println(fechai);
+    fmt.Println(fechaf);
+
     // Results container
     pag := PagosGastosComunes{}
     // Fetch from database
-	pagos_gastos_comunes, err := pag.FetchPagosByFechaAndCondominioID(id_cond, anoinicio, mesinicio, anofinal, mesfinal)
+	pagos_gastos_comunes, err := pag.FetchPagosByFechaAndCondominioID(id_cond, fechai, fechaf)
 	if err != nil {
         panic(err.Error())
 	}

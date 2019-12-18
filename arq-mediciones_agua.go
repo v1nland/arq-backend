@@ -130,20 +130,17 @@ func GetMedicionesAguaByCondID(c *gin.Context){
 }
 
 
-// // // // QUERIES NEEDING FIX // // // //
-// // // // QUERIES NEEDING FIX // // // //
-// // // // QUERIES NEEDING FIX // // // //
-// // // // QUERIES NEEDING FIX // // // //
-// // // // QUERIES NEEDING FIX // // // //
-// // // // QUERIES NEEDING FIX // // // //
-// // // // QUERIES NEEDING FIX // // // // 
+// // // // QUERY FIXED// // // //
+// // // // QUERY FIXED// // // //
+// // // // QUERY FIXED// // // //
+// // // // QUERY FIXED// // // //
 // // // // TAKE ALL MEDICIONESAGUA WITH FECHA BETWEEN (ano_mes_inicial, ano_mes_final) // // // //
-func (Ma MedicionAgua) FetchMedicionesAguaByFecha(ano_inicio string, mes_inicio string, ano_final string, mes_final string) (mediciones_agua []MedicionAgua, err error) {
+func (Ma MedicionAgua) FetchMedicionesAguaByFecha(fechai string, fechaf string) (mediciones_agua []MedicionAgua, err error) {
     // Opens DB
     db := GetConnection()
 
     // SQL query
-	rows, err := db.Query("select * from mediciones_agua where fecha between '?-?-01 00:00:00' and '?-?-01 00:00:00'", ano_inicio, mes_inicio, ano_final, mes_final)
+	rows, err := db.Query("select * from mediciones_agua where fecha between ? and ?", fechai, fechaf)
 	if err != nil {
 		return
 	}
@@ -162,19 +159,16 @@ func (Ma MedicionAgua) FetchMedicionesAguaByFecha(ano_inicio string, mes_inicio 
 
 func GetMedicionesAguaByFecha(c *gin.Context){
     // URL parameters
-    var ano_inicio = c.Param("ano_inicio")
-    var mes_inicio = c.Param("mes_inicio")
-    var ano_final = c.Param("ano_final")
-    var mes_final = c.Param("mes_final")
+    var fechai = c.Param("fechai")
+    var fechaf = c.Param("fechaf")
 
-    fmt.Println(ano_inicio);
-    fmt.Println(mes_inicio);
-    fmt.Println(ano_final);
-    fmt.Println(mes_final);
+    fmt.Println(fechai);
+    fmt.Println(fechaf);
+
     // Results container
     ma := MedicionAgua{}
     // Fetch from database
-	mediciones_agua, err := ma.FetchMedicionesAguaByFecha(ano_inicio, mes_inicio, ano_final, mes_final)
+	mediciones_agua, err := ma.FetchMedicionesAguaByFecha(fechai, fechaf)
 	if err != nil {
         panic(err.Error())
 	}

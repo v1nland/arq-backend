@@ -76,15 +76,15 @@ func StartServer() {
     router.GET("/MedicionesAgua/byCondominioID/:id_cond/", GetMedicionesAguaByCondID)
     router.GET("/MedicionesAgua/Insertar/:litros/:num_dpto/:cod_cond/", GetInsertMedicionesAgua)
 
-    // needs fix
-    router.GET("/MedicionesAgua/MedicionesFecha/:ano_inicio/:mes_inicio/:ano_final/:mes_final/", GetMedicionesAguaByFecha)
+    // fixed
+    router.GET("/MedicionesAgua/MedicionesFecha/:fechai/:fechaf/", GetMedicionesAguaByFecha)
 
     // Multas queries
     router.GET("/Multas/", GetMultas)
 
-    // needs fix
-    router.GET("/Multas/ObtenerMultas/:ano_inicio/:mes_inicio/:ano_final/:mes_final/:id_dpto/", GetMultasByFecha)
-    router.GET("/Multas/ContarMultas/:ano_inicio/:mes_inicio/:ano_final/:mes_final/:iddpto/", GetCountMultasByFecha)
+    // fixed
+    router.GET("/Multas/ObtenerMultas/:fechai/:fechaf/:id_dpto/", GetMultasByFecha)
+    router.GET("/Multas/ContarMultas/:fechai/:fechaf/:iddpto/", GetCountMultasByFecha)
 
 
     // Pagos gastos comunes queries
@@ -92,8 +92,8 @@ func StartServer() {
     router.GET("/PagosGC/byDptoID/:id_dpto/", GetPagosByDptoID)
     router.GET("/PagosGC/byCondominioID/:id_cond/", GetPagosByCondominioID)
 
-    // needs fix
-    router.GET("/PagosGC/PagosCondMes/:id_cond/:anoinicio/:mesinicio/:anofinal/:mesfinal/", GetPagosByFechaAndCondominioID)
+    // fixed
+    router.GET("/PagosGC/PagosCondMes/:fechai/:fechaf/", GetPagosByFechaAndCondominioID)
 
     //Tickets queries
     router.GET("/Tickets/", GetTickets)
@@ -101,7 +101,7 @@ func StartServer() {
     router.GET("/Tickets/byDptoID/:id_dpto/", GetTicketsByDptoID)
     router.GET("/Tickets/FinalizadosByCondID/:id_cond/", GetTicketsFinalizadosByCondID)
     router.GET("/Tickets/Finalizar/:id/", GetEndTicketByID)
-    router.GET("/Tickets/Responder/:id/:respuesta/", GetResponderTicketByID) // falta que marque el ticket como finalizado una vez respondido
+    router.GET("/Tickets/Responder/:id/:respuesta/", GetResponderTicketByID) // fixed
     router.GET("/Tickets/Insertar/:id_dpto/:id_cond/:consulta/:asunto/", GetInsertarTicket)
     router.GET("/Tickets/CountPending/", GetCountPendingTickets)
 
