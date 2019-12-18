@@ -304,7 +304,7 @@ func GetTicketsByDptoID(c *gin.Context){
     // Results container
     ti := Ticket{}
     // Fetch from database
-	tickets, err := ti.FetchTicketsByCondID(id_dpto)
+	tickets, err := ti.FetchTicketsByDptoID(id_dpto)
 	if err != nil {
         panic(err.Error())
 	}
