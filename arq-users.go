@@ -64,7 +64,7 @@ func (usr Usuario) FetchUserLogin(usuario_rut string, usuario_pass string) (user
         claims["id"] = usr.Id
         claims["rut"] = usr.Rut
         claims["password"] = usr.Password
-	claims["nombre"] = usr.Nombre
+	    claims["nombre"] = usr.Nombre
         claims["level"] = "admin"
         usr_token, err := token.SignedString( SecretKey() )
         usr.Token = usr_token

@@ -24,6 +24,7 @@ func DecodeToken(c *gin.Context){
         c.JSON(200, gin.H{
     		"valid": "true",
             "id": claims["id"],
+            "nombre": claims["nombre"],
             "rut": claims["rut"],
             "password": claims["password"],
             "level": claims["level"],
