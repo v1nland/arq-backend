@@ -130,3 +130,51 @@ func GetUpdateEspaciosComunesByID(c *gin.Context){
 		"count": len(espacios_comunes),
 	})
 }
+
+// // // // INSERT ESPACIOSCOMUNES// // // //
+func (Ec EspacioComun) InsertEspaciosComunes(nombre string, idcond string, estado string) (espacios_comunes []EspacioComun, err error) {
+    // Opens DB
+    db := GetConnection()
+
+    // SQL queryGetPorCond/2/
+	rows, err := db.Query("insert into espacios_comunes(nombre, id_condominio, estado) values (?, ?, ?)",nombre, idcond, estado)
+	if err != nil {
+		return
+	}
+
+    // Take all data
+	for rows.Next() {
+		var esc EspacioComun
+        rows.Scan(&esc.Id, &esc.Nombre, &esc.Id_condominio, &esc.Estado)
+        fmt.Println(esc.Id, esc.Nombre, esc.Id_condominio, esc.Estado)
+        espacios_comunes = append(espacios_comunes, esc)
+	}
+	defer rows.Close()
+
+	return
+}
+
+func GetInsertEspaciosComunes(c *gin.Context){
+    //URL parameters
+    var nombre = c.Param("nombre")
+    var id_condominio = c.Param("id_condominio")
+    var estado = c.Param("estado")
+
+    fmt.Println(nombre);
+    fmt.Println(id_condominio);
+    fmt.Println(estado);
+
+    // Results container
+    ec := EspacioComun{}
+    // Fetch from database
+	espacios_comunes, err := ec.InsertEspaciosComunes(nombre, id_condominio, estado)
+	if err != nil {
+        panic(err.Error())
+	}
+
+    // Show via GET method
+	c.JSON(200, gin.H{
+		"rows": espacios_comunes,
+		"count": len(espacios_comunes),
+	})
+}

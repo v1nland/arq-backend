@@ -207,7 +207,7 @@ func (de DepartamentoAllData) FetchDepartamentosAllDataByID(id_dpto string) (dep
     db := GetConnection()
 
     // SQL query
-	rows, err := db.Query("SELECT departamentos.id, departamentos.numero, departamentos.password, departamentos.dueno, departamentos.residente, departamentos.telefono, departamentos.correo, departamentos.id_condominio, departamentos.telefono_residente, departamentos.correo_residente, departamentos.prorrateo, estacionamientos.numero as n_estacionamientos, bodegas.numero as n_bodegas FROM departamentos join estacionamientos on departamentos.id = estacionamientos.id_departamentos join bodegas on estacionamientos.id_departamentos = bodegas.id_departamentos where departamentos.id = ?", id_dpto)
+	rows, err := db.Query("SELECT departamentos.id, departamentos.numero, departamentos.password, departamentos.dueno, departamentos.residente, departamentos.telefono, departamentos.correo, departamentos.id_condominio, departamentos.telefono_residente, departamentos.correo_residente, departamentos.prorrateo, coalesce(estacionamientos.numero, -1) as n_estacionamientos, coalesce(bodegas.numero, -1) as n_bodegas FROM departamentos left outer join estacionamientos on departamentos.id = estacionamientos.id_departamentos left outer join bodegas on estacionamientos.id_departamentos = bodegas.id_departamentos where departamentos.id = ?", id_dpto)
 	if err != nil {
 		return
 	}
@@ -234,6 +234,70 @@ func GetDepartamentosAllDataByID(c *gin.Context){
     de := DepartamentoAllData{}
     // Fetch from database
 	departamentos, err := de.FetchDepartamentosAllDataByID(id_dpto)
+	if err != nil {
+        panic(err.Error())
+	}
+
+    // Show via GET method
+	c.JSON(200, gin.H{
+		"rows": departamentos,
+		"count": len(departamentos),
+	})
+}
+
+// // // UPDATE DEPARTAMENTO CON ID_DPTO // // //
+func (de Departamento) UpdateDpto(password string, dueno string, residente string, telefono string, correo string, id_condominio string, telefono_residente string, correo_residente string, prorrateo string, id_dpto string) (departamentos []Departamento, err error) {
+    // Opens DB
+    db := GetConnection()
+
+    // SQL query
+	rows, err := db.Query("update departamentos set password = ?, dueno = ?, residente = ?, telefono = ?, correo = ?, id_condominio= ?, telefono_residente = ?, correo_residente = ?, prorrateo = ? where id = ?", password, dueno, residente, telefono, correo, id_condominio, telefono_residente, correo_residente, prorrateo, id_dpto)
+	if err != nil {
+		return
+	}
+
+    // Take all data
+	for rows.Next() {
+		var dpto Departamento
+        rows.Scan(&dpto.Id, &dpto.Numero, &dpto.Password, &dpto.Dueno, &dpto.Residente, &dpto.Telefono, &dpto.Correo, &dpto.Id_condominio, &dpto.Telefono_residente, &dpto.Correo_residente, &dpto.Prorrateo)
+        dpto.Level = "user"
+        fmt.Println(dpto.Id, dpto.Numero, dpto.Password, dpto.Dueno, dpto.Residente, dpto.Telefono, dpto.Correo, dpto.Id_condominio, dpto.Telefono_residente, dpto.Correo_residente, dpto.Prorrateo)
+        departamentos = append(departamentos, dpto)
+	}
+	defer rows.Close()
+
+	return
+}
+
+func GetUpdateDpto(c *gin.Context){
+    // URL parameters
+    var password = c.Param("password")
+    var dueno = c.Param("dueno")
+    var residente = c.Param("residente")
+    var telefono = c.Param("telefono")
+    var correo = c.Param("correo")
+    var id_condominio = c.Param("id_condominio")
+    var telefono_residente = c.Param("telefono_residente")
+    var correo_residente = c.Param("correo_residente")
+    var prorrateo = c.Param("prorrateo")
+    var iddpto = c.Param("iddpto")
+
+    fmt.Println(password);
+    fmt.Println(dueno);
+    fmt.Println(residente);
+    fmt.Println(telefono);
+    fmt.Println(correo);
+    fmt.Println(id_condominio);
+    fmt.Println(telefono_residente);
+    fmt.Println(correo_residente);
+    fmt.Println(prorrateo);
+    fmt.Println(iddpto);
+
+
+    // Results container
+    de := Departamento{}
+    // Fetch from database
+	departamentos, err := de.UpdateDpto(password, dueno, residente, telefono, correo, id_condominio, telefono_residente, correo_residente, prorrateo, iddpto)
 	if err != nil {
         panic(err.Error())
 	}

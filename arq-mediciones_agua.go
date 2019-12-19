@@ -129,11 +129,6 @@ func GetMedicionesAguaByCondID(c *gin.Context){
 	})
 }
 
-
-// // // // QUERY FIXED// // // //
-// // // // QUERY FIXED// // // //
-// // // // QUERY FIXED// // // //
-// // // // QUERY FIXED// // // //
 // // // // TAKE ALL MEDICIONESAGUA WITH FECHA BETWEEN (ano_mes_inicial, ano_mes_final) // // // //
 func (Ma MedicionAgua) FetchMedicionesAguaByFecha(fechai string, fechaf string) (mediciones_agua []MedicionAgua, err error) {
     // Opens DB

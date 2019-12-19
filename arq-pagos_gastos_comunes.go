@@ -129,7 +129,7 @@ func GetPagosByCondominioID(c *gin.Context){
 	})
 }
 
-// // // // TAKE ALL MEDICIONESAGUA WITH ID_DPTO=id_dpto AND FECHA BETWEEN (ano_mes_inicial, ano_mes_final) // // // //
+// // // // TAKE ALL PAGOSGASTOSCOMUNES WITH ID_DPTO=id_dpto AND FECHA BETWEEN (fechai, fechaf) // // // //
 func (pag PagosGastosComunes) FetchPagosByFechaAndCondominioID(id_cond string, fechai string, fechaf string) (pagos_gastos_comunes []PagosGastosComunes, err error) {
     // Opens DB
     db := GetConnection()
@@ -166,6 +166,52 @@ func GetPagosByFechaAndCondominioID(c *gin.Context){
     pag := PagosGastosComunes{}
     // Fetch from database
 	pagos_gastos_comunes, err := pag.FetchPagosByFechaAndCondominioID(id_cond, fechai, fechaf)
+	if err != nil {
+        panic(err.Error())
+	}
+
+    // Show via GET method
+	c.JSON(200, gin.H{
+		"rows": pagos_gastos_comunes,
+		"count": len(pagos_gastos_comunes),
+	})
+}
+
+// // // // INSERT PAGOS_GASTOS_COMUNES // // // //
+func (pag PagosGastosComunes) InsertPagos(monto string, id_dpto string) (pagos_gastos_comunes []PagosGastosComunes, err error) {
+    // Opens DB
+    db := GetConnection()
+
+    // SQL query
+	rows, err := db.Query("insert into pagos_gastos_comunes(monto, fecha, id_departamentos) values (?, current_timestamp, ?)", monto, id_dpto)
+	if err != nil {
+        return
+    }
+
+    // Take all data
+	for rows.Next() {
+		var pago PagosGastosComunes
+        rows.Scan(&pago.Id, &pago.Monto, &pago.Fecha, &pago.Id_departamento)
+        fmt.Println(pago.Id, pago.Monto, pago.Fecha, pago.Id_departamento)
+        pagos_gastos_comunes = append(pagos_gastos_comunes, pago)
+	}
+	defer rows.Close()
+
+	return
+}
+
+func GetInsertPagos(c *gin.Context){
+    // URL parameters
+    var monto = c.Param("monto")
+    var id_dpto = c.Param("id_dpto")
+
+    fmt.Println(monto);
+    fmt.Println(id_dpto);
+
+    // Results container
+    pag := PagosGastosComunes{}
+    // Fetch from database
+	pagos_gastos_comunes, err := pag.InsertPagos(monto, id_dpto)
 	if err != nil {
         panic(err.Error())
 	}

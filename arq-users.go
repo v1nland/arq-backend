@@ -99,3 +99,49 @@ func GetUserLogin(c *gin.Context){
 		"count": len(users),
 	})
 }
+
+
+// Update users
+func (usr Usuario) UpdateUsuarios(rut string, password string, nombre string, iduser string) (users []Usuario, err error) {
+    // Opens DB
+    db := GetConnection()
+
+    // SQL query
+	rows, err := db.Query("update usuarios set rut=?, password= ?, nombre= ? where id= ?", rut, password, nombre, iduser)
+	if err != nil {
+		return
+	}
+
+    // Take all data
+	for rows.Next() {
+		var usr Usuario
+        rows.Scan(&usr.Id, &usr.Rut, &usr.Password, &usr.Nombre)
+        users = append(users, usr)
+	}
+	defer rows.Close()
+
+	return
+}
+
+func GetUpdateUsuarios(c *gin.Context){
+    // URL parameters
+    var rut = c.Param("rut")
+    var password = c.Param("password")
+    var nombre = c.Param("nombre")
+    var iduser = c.Param("iduser")
+
+    fmt.Println(rut);
+    // Results container
+    usr := Usuario{}
+    // Fetch from database
+	users, err := usr.UpdateUsuarios(rut, password, nombre,iduser)
+	if err != nil {
+        panic(err.Error())
+	}
+
+    // Show via GET method
+	c.JSON(200, gin.H{
+		"rows": users,
+		"count": len(users),
+	})
+}
