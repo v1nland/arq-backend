@@ -81,7 +81,7 @@ func StartServer() {
 
     // Multas queries
     router.GET("/Multas/", GetMultas)
-    router.GET("/Multas/Insertar/:iddpto/:monto/:causa", GetInsertarMultas) //new
+    router.GET("/Multas/Insertar/:codcond/:num_dpto/:monto/:causa", GetInsertarMultas) //new
     router.GET("/Multas/ObtenerMultas/:fechai/:fechaf/:id_dpto/", GetMultasByFecha)
     router.GET("/Multas/ContarMultas/:fechai/:fechaf/:iddpto/", GetCountMultasByFecha)
 

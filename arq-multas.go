@@ -139,16 +139,15 @@ func GetCountMultasByFecha(c *gin.Context){
 }
 
 // // // // INSERT MULTAS // // // //
-func (mu Multa) InsertarMultas(id_dpto string) (multas []Multa, err error) {
+func (mu Multa) InsertarMultas(cod_cond string, num_dpto string) (multas []Multa, err error) {
     // Opens DB
     db := GetConnection()
 
     // SQL query
-	rows1, err := db.Query("select * from multas where id_departamentos = ?", id_dpto)
+	rows1, err := db.Query("select * from multas where id_departamentos in (select id from departamentos where id_condominio in (select id from condominios where codigo = ?) and numero = ?)", cod_cond, num_dpto)
 	if err != nil {
 		return
 	}
-
     // Take all data
 	for rows1.Next() {
 		var mul Multa
@@ -161,12 +160,12 @@ func (mu Multa) InsertarMultas(id_dpto string) (multas []Multa, err error) {
 	return
 }
 
-func (mu Multa) InsertarMultasgr1(id_dpto string, monto string, causa string) (multasgr1 []Multa, err error) {
+func (mu Multa) InsertarMultasgr1(cod_cond string, num_dpto string, monto string, causa string) (multasgr1 []Multa, err error) {
     // Opens DB
     db := GetConnection()
 
     // SQL query
-	rows2, err := db.Query("insert into multas(grado, id_departamentos, monto, fecha, causa) values (1, ?, ?, current_timestamp, ?)", id_dpto, monto, causa)
+	rows2, err := db.Query("insert into multas(grado, id_departamentos, monto, fecha, causa) values (1, (select id from departamentos where id_condominio in (select id from condominios where codigo = ?) and numero = ?), ?, current_timestamp, ?)", cod_cond, num_dpto, monto, causa)
 	if err != nil {
 		return
 	}
@@ -183,12 +182,12 @@ func (mu Multa) InsertarMultasgr1(id_dpto string, monto string, causa string) (m
 	return
 }
 
-func (mu Multa) InsertarMultasgr2(id_dpto string, monto string, causa string) (multasgr2 []Multa, err error) {
+func (mu Multa) InsertarMultasgr2(cod_cond string, num_dpto string, monto string, causa string) (multasgr2 []Multa, err error) {
     // Opens DB
     db := GetConnection()
 
     // SQL query
-	rows3, err := db.Query("insert into multas(grado, id_departamentos, monto, fecha, causa) values (2, ?, ?, current_timestamp, ?)", id_dpto, monto, causa)
+	rows3, err := db.Query("insert into multas(grado, id_departamentos, monto, fecha, causa) values (2, (select id from departamentos where id_condominio in (select id from condominios where codigo = ?) and numero = ?), ?, current_timestamp, ?)", cod_cond, num_dpto, monto, causa)
 	if err != nil {
 		return
 	}
@@ -205,13 +204,12 @@ func (mu Multa) InsertarMultasgr2(id_dpto string, monto string, causa string) (m
 	return
 }
 
-func (mu Multa) InsertarMultasgr3(id_dpto string, monto string, causa string) (multasgr3 []Multa, err error) {
+func (mu Multa) InsertarMultasgr3(cod_cond string, num_dpto string, monto string, causa string) (multasgr3 []Multa, err error) {
     // Opens DB
     db := GetConnection()
-    fmt.Println("Entré a insertar3")
 
     // SQL query
-	rows4, err := db.Query("insert into multas(grado, id_departamentos, monto, fecha, causa) values (3, ?, ?, current_timestamp, ?)", id_dpto, monto, causa)
+	rows4, err := db.Query("insert into multas(grado, id_departamentos, monto, fecha, causa) values (3, (select id from departamentos where id_condominio in (select id from condominios where codigo = ?) and numero = ?), ?, current_timestamp, ?)", cod_cond, num_dpto, monto, causa)
 	if err != nil {
 		return
 	}
@@ -224,17 +222,18 @@ func (mu Multa) InsertarMultasgr3(id_dpto string, monto string, causa string) (m
 	multasgr3 = append(multasgr3, mul)
 	}
 	defer rows4.Close()
-	fmt.Println("Estoy saliendo de insertar3")
 	return
 }
 
 func GetInsertarMultas(c *gin.Context){
     // URL parameters
-    var iddpto = c.Param("iddpto")
+    var codcond = c.Param("codcond")
+    var num_dpto = c.Param("num_dpto")
     var monto = c.Param("monto")
     var causa = c.Param("causa")
 
-    fmt.Println(iddpto);
+    fmt.Println(codcond);
+    fmt.Println(num_dpto);
     fmt.Println(monto);
     fmt.Println(causa);
 
@@ -242,12 +241,12 @@ func GetInsertarMultas(c *gin.Context){
     mu := Multa{}
 
     // Fetch from database
-	multas, err := mu.InsertarMultas(iddpto)
+	multas, err := mu.InsertarMultas(codcond, num_dpto)
 	if err != nil {
         panic(err.Error())
 	} 
 	if len(multas) <=1{
-	multasgr1, err := mu.InsertarMultasgr1(iddpto, monto, causa)
+	multasgr1, err := mu.InsertarMultasgr1(codcond, num_dpto, monto, causa)
 	if err != nil {
 	panic(err.Error())
 	}
@@ -255,7 +254,7 @@ func GetInsertarMultas(c *gin.Context){
 		"rows2":multasgr1,
 	})
 	} else if len(multas) > 5{
-	multasgr3, err := mu.InsertarMultasgr3(iddpto, monto, causa)
+	multasgr3, err := mu.InsertarMultasgr3(codcond, num_dpto, monto, causa)
 	if err != nil {
 	panic(err.Error())
 	}
@@ -263,7 +262,7 @@ func GetInsertarMultas(c *gin.Context){
 		"rows4":multasgr3,
 	})
 	} else{
-	multasgr2, err := mu.InsertarMultasgr2(iddpto, monto, causa)
+	multasgr2, err := mu.InsertarMultasgr2(codcond, num_dpto, monto, causa)
 	if err != nil {
 	panic(err.Error())
 	}
