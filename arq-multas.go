@@ -5,21 +5,21 @@ import (
 )
 
 // // // // TAKE ALL MULTAS // // // //
-func (mu Multa) FetchMultas() (multas []Multa, err error) {
+func (mu MultaDpto) FetchMultas() (multas []MultaDpto, err error) {
     // Opens DB
     db := GetConnection()
 
     // SQL query
-	rows, err := db.Query("SELECT id, grado, id_departamentos, monto, fecha, causa FROM multas")
+	rows, err := db.Query("SELECT multas.id, multas.grado, multas.id_departamentos, multas.monto, multas.fecha, multas.causa, departamentos.numero as numero_dpto, departamentos.dueno, departamentos.residente, departamentos.correo as correo_dueno, departamentos.correo_residente, departamentos.telefono as telefono_dueno, departamentos.telefono_residente FROM multas join departamentos on multas.id_departamentos = departamentos.id")
 	if err != nil {
 		return
 	}
 
     // Take all data
 	for rows.Next() {
-		var mul Multa
-        rows.Scan(&mul.Id, &mul.Grado, &mul.Id_departamentos, &mul.Monto, &mul.Fecha, &mul.Causa)
-        fmt.Println(mul.Id, mul.Grado, mul.Id_departamentos, mul.Monto, mul.Fecha, mul.Causa)
+		var mul MultaDpto
+        rows.Scan(&mul.Id, &mul.Grado, &mul.Id_departamentos, &mul.Monto, &mul.Fecha, &mul.Causa,  &mul.Num_dpto, &mul.Dueno_dpto, &mul.Residente_dpto, &mul.Correo_dueno, &mul.Correo_residente, &mul.Telefono_dueno, &mul.Telefono_residente)
+        fmt.Println(mul.Id, mul.Grado, mul.Id_departamentos, mul.Monto, mul.Fecha, mul.Causa, mul.Num_dpto, mul.Dueno_dpto, mul.Residente_dpto, mul.Correo_dueno, mul.Correo_residente, mul.Telefono_dueno, mul.Telefono_residente)
         multas = append(multas, mul)
 	}
 	defer rows.Close()
@@ -29,7 +29,7 @@ func (mu Multa) FetchMultas() (multas []Multa, err error) {
 
 func GetMultas(c *gin.Context){
     // Results container
-    mu := Multa{}
+    mu := MultaDpto{}
     // Fetch from database
 	multas, err := mu.FetchMultas()
 	if err != nil {
@@ -274,6 +274,61 @@ func GetInsertarMultas(c *gin.Context){
     // Show via GET method
 	c.JSON(200, gin.H{
 		"rows1": multas,
+		"count": len(multas),
+	})
+}
+
+
+// // // // UPDATE MULTAS // // // //
+func (mu Multa) UpdateMultas(grado string, id_dpto string, monto string, fecha string, causa string, idmul string) (multas []Multa, err error) {
+    // Opens DB
+    db := GetConnection()
+
+    // SQL query
+	rows, err := db.Query("update multas set grado = ?, id_departamentos = ?, monto = ?, fecha = ?, causa = ? where id = ?", grado, id_dpto, monto, fecha, causa, idmul)
+	if err != nil {
+		return
+	}
+
+    // Take all data
+	for rows.Next() {
+		var mul Multa
+        rows.Scan(&mul.Id, &mul.Grado, &mul.Id_departamentos, &mul.Monto, &mul.Fecha, &mul.Causa)
+        fmt.Println(mul.Id, mul.Grado, mul.Id_departamentos, mul.Monto, mul.Fecha, mul.Causa)
+        multas = append(multas, mul)
+	}
+	defer rows.Close()
+
+	return
+}
+
+func GetUpdateMultas(c *gin.Context){
+    // URL parameters
+    var grado = c.Param("grado")
+    var id_dpto = c.Param("id_dpto")
+    var monto = c.Param("monto")
+    var fecha = c.Param("fecha")
+    var causa = c.Param("causa")
+    var idmul = c.Param("idmul")
+
+    fmt.Println(grado);
+    fmt.Println(id_dpto);
+    fmt.Println(monto);
+    fmt.Println(fecha);
+    fmt.Println(causa);
+    fmt.Println(idmul);
+
+    // Results container
+    mu := Multa{}
+    // Fetch from database
+	multas, err := mu.UpdateMultas(grado, id_dpto, monto, fecha, causa, idmul)
+	if err != nil {
+        panic(err.Error())
+	}
+
+    // Show via GET method
+	c.JSON(200, gin.H{
+		"rows": multas,
 		"count": len(multas),
 	})
 }

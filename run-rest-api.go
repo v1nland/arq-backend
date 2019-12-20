@@ -54,13 +54,14 @@ func StartServer() {
     router.GET("/Departamentos/byCondominioID/:id_cond/", GetDptoByCondominioID)
     router.GET("/Departamentos/byID/:id_dpto/", GetDptoByID)
     router.GET("/Departamentos/AllData/byID/:id_dpto/", GetDepartamentosAllDataByID)
-    router.GET("/Departamentos/UpdateDpto/:password/:dueno/:residente/:telefono/:correo/:id_condominio/:telefono_residente/:correo_residente/:prorrateo/:iddpto/", GetUpdateDpto)//new
+    router.GET("/Departamentos/UpdateDpto/:password/:dueno/:residente/:telefono/:correo/:id_condominio/:telefono_residente/:correo_residente/:prorrateo/:iddpto/", GetUpdateDpto)
 
     // Espacios comunes queries
     router.GET("/EspaciosComunes/", GetEspaciosComunes)
     router.GET("/EspaciosComunes/byCondominioID/:id_cond/", GetEspaciosComunesByCondID)
-    router.GET("/EspaciosComunes/Update/:estado/:id_ec/", GetUpdateEspaciosComunesByID)
-    router.GET("/EspaciosComunes/Insert/:nombre/:id_condominio/:estado/", GetInsertEspaciosComunes) //new
+    router.GET("/EspaciosComunes/Update/:nombre/:estado/:descripcion/:id_ec/", GetUpdateEspaciosComunesByID)
+    router.GET("/EspaciosComunes/Insert/:nombre/:id_condominio/:estado/:descripcion", GetInsertEspaciosComunes)
+    router.GET("/EspaciosComunes/byID/:idesp/", GetEspaciosComunesByID) //new
 
     // Estacionamientos queries
     router.GET("/Estacionamientos/", GetEstacionamientos)
@@ -68,6 +69,8 @@ func StartServer() {
 
     // Gastos comunes queries
     router.GET("/GastosComunes/", GetGastosComunes)
+    router.GET("/GastosComunes/Insert/:monto/:detalle/:id_dpto/", GetInsertGastosComunes)
+    router.GET("/GastosComunes/Update/:monto/:detalle/:fecha/:id_dpto/:id_gc/", GetUpdateGastosComunes)
 
     // needs fix
     router.GET("/GastosComunes/Balance/:id_dpto/", GetBalanceGastosComunes)
@@ -78,12 +81,14 @@ func StartServer() {
     router.GET("/MedicionesAgua/byCondominioID/:id_cond/", GetMedicionesAguaByCondID)
     router.GET("/MedicionesAgua/Insertar/:litros/:num_dpto/:cod_cond/", GetInsertMedicionesAgua)
     router.GET("/MedicionesAgua/MedicionesFecha/:fechai/:fechaf/", GetMedicionesAguaByFecha)
+    router.GET("/MedicionesAgua/byID/:idmed/", GetMedicionesAguaByID) //new
 
     // Multas queries
     router.GET("/Multas/", GetMultas)
-    router.GET("/Multas/Insertar/:codcond/:num_dpto/:monto/:causa", GetInsertarMultas) //new
+    router.GET("/Multas/Insertar/:codcond/:num_dpto/:monto/:causa", GetInsertarMultas)
     router.GET("/Multas/ObtenerMultas/:fechai/:fechaf/:id_dpto/", GetMultasByFecha)
     router.GET("/Multas/ContarMultas/:fechai/:fechaf/:iddpto/", GetCountMultasByFecha)
+    router.GET("/Multas/UpdateMultas/:grado/:id_dpto/:monto/:fecha/:causa/:idmul/", GetUpdateMultas)
 
 
     // Pagos gastos comunes queries
@@ -91,7 +96,8 @@ func StartServer() {
     router.GET("/PagosGC/byDptoID/:id_dpto/", GetPagosByDptoID)
     router.GET("/PagosGC/byCondominioID/:id_cond/", GetPagosByCondominioID)
     router.GET("/PagosGC/PagosCondMes/:fechai/:fechaf/", GetPagosByFechaAndCondominioID)
-    router.GET("/PagosGC/Insert/:monto/:id_dpto/", GetInsertPagos) //new
+    router.GET("/PagosGC/Insert/:monto/:num_dpto/:cod_cond/", GetInsertPagos)
+    router.GET("/PagosGC/Update/:monto/:fecha/:id_dpto/:idpago/", GetUpdatePagos)
 
     //Tickets queries
     router.GET("/Tickets/", GetTickets)
@@ -109,7 +115,7 @@ func StartServer() {
     // Usuarios queries
     router.GET("/Usuarios/", GetUsuarios)
     router.GET("/Usuarios/Login/:rut/:password/", GetUserLogin)
-    router.GET("/Usuarios/Update/:rut/:password/:nombre/:iduser", GetUpdateUsuarios) //new
+    router.GET("/Usuarios/Update/:rut/:password/:nombre/:iduser", GetUpdateUsuarios)
 
     // Run API
     router.Run()

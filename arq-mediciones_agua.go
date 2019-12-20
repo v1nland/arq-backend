@@ -5,21 +5,21 @@ import (
 )
 
 // // // // TAKE ALL MEDICIONESAGUA // // // //
-func (Ma MedicionAgua) FetchMedicionesAgua() (mediciones_agua []MedicionAgua, err error) {
+func (Ma MedicionAguaDpto) FetchMedicionesAgua() (mediciones_agua []MedicionAguaDpto, err error) {
     // Opens DB
     db := GetConnection()
 
     // SQL query
-	rows, err := db.Query("SELECT * FROM mediciones_agua")
+	rows, err := db.Query("SELECT mediciones_agua.id, mediciones_agua.fecha, mediciones_agua.litros, mediciones_agua.id_departamentos, departamentos.numero as numero_dpto, departamentos.dueno, departamentos.residente, departamentos.correo as correo_dueno, departamentos.correo_residente, departamentos.telefono as telefono_dueno, departamentos.telefono_residente FROM mediciones_agua join departamentos on mediciones_agua.id_departamentos = departamentos.id")
 	if err != nil {
 		return
 	}
 
     // Take all data
 	for rows.Next() {
-		var med MedicionAgua
-        rows.Scan(&med.Id, &med.Fecha, &med.Litros, &med.Id_departamentos)
-        fmt.Println(med.Id, med.Fecha, med.Litros, med.Id_departamentos)
+		var med MedicionAguaDpto
+        rows.Scan(&med.Id, &med.Fecha, &med.Litros, &med.Id_departamentos, &med.Num_dpto, &med.Dueno_dpto, &med.Residente_dpto, &med.Correo_dueno, &med.Correo_residente, &med.Telefono_dueno, &med.Telefono_residente)
+        fmt.Println(med.Id, med.Fecha, med.Litros, med.Id_departamentos, med.Num_dpto, med.Dueno_dpto, med.Residente_dpto, med.Correo_dueno, med.Correo_residente, med.Telefono_dueno, med.Telefono_residente)
         mediciones_agua = append(mediciones_agua, med)
 	}
 	defer rows.Close()
@@ -29,7 +29,7 @@ func (Ma MedicionAgua) FetchMedicionesAgua() (mediciones_agua []MedicionAgua, er
 
 func GetMedicionesAgua(c *gin.Context){
     // Results container
-    ma := MedicionAgua{}
+    ma := MedicionAguaDpto{}
     // Fetch from database
 	mediciones_agua, err := ma.FetchMedicionesAgua()
 	if err != nil {
@@ -212,6 +212,49 @@ func GetInsertMedicionesAgua(c *gin.Context){
     ma := MedicionAgua{}
     // Fetch from database
 	mediciones_agua, err := ma.InsertMedicionesAgua(litros, num_dpto, cod_cond)
+	if err != nil {
+        panic(err.Error())
+	}
+
+    // Show via GET method
+	c.JSON(200, gin.H{
+		"rows": mediciones_agua,
+		"count": len(mediciones_agua),
+	})
+}
+
+// // // // TAKE ALL MEDICIONESAGUA POR ID// // // //
+func (Ma MedicionAgua) FetchMedicionesAguaByID(idmed string) (mediciones_agua []MedicionAgua, err error) {
+    // Opens DB
+    db := GetConnection()
+
+    // SQL query
+	rows, err := db.Query("SELECT * FROM mediciones_agua where id = ?", idmed)
+	if err != nil {
+		return
+	}
+
+    // Take all data
+	for rows.Next() {
+		var med MedicionAgua
+        rows.Scan(&med.Id, &med.Fecha, &med.Litros, &med.Id_departamentos)
+        fmt.Println(med.Id, med.Fecha, med.Litros, med.Id_departamentos)
+        mediciones_agua = append(mediciones_agua, med)
+	}
+	defer rows.Close()
+
+	return
+}
+
+func GetMedicionesAguaByID(c *gin.Context){
+    // URL parameters
+    var idmed = c.Param("idmed")
+
+    fmt.Println(idmed);
+    // Results container
+    ma := MedicionAgua{}
+    // Fetch from database
+	mediciones_agua, err := ma.FetchMedicionesAguaByID(idmed)
 	if err != nil {
         panic(err.Error())
 	}

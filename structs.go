@@ -60,6 +60,17 @@ type EspacioComun struct{
     Nombre string `json:"nombre" form:"nombre"`
     Id_condominio int `json:"id_condominio" form:"id_condominio"`
     Estado string `json:"estado" form:"estado"`
+    Descripcion string `json:"descripcion" form:"descripcion"`
+}
+
+type EspacioComunCond struct{
+    Id int `json:"id"`
+    Nombre string `json:"nombre" form:"nombre"`
+    Id_condominio int `json:"id_condominio" form:"id_condominio"`
+    Estado string `json:"estado" form:"estado"`
+    Descripcion string `json:"descripcion" form:"descripcion"`
+    Codigo_cond string `json:"codigo_cond" form:"codigo_cond"`
+    Nombre_cond string `json:"nombre_cond" form:"nombre_cond"`
 }
 
 type Estacionamiento struct{
@@ -85,6 +96,21 @@ type MedicionAgua struct{
     Id_departamentos int `json:"id_departamentos" form:"id_departamentos"`
 }
 
+type MedicionAguaDpto struct{
+    Id int `json:"id"`
+    Fecha string `json:"fecha" form:"fecha"`
+    Litros float64 `json:"litros" form:"litros"`
+    Id_departamentos int `json:"id_departamentos" form:"id_departamentos"`
+    Num_dpto string `json:"num_dpto" form:"num_dpto"`
+    Dueno_dpto string `json:"dueno_dpto" form:"dueno_dpto"`
+    Residente_dpto string `json:"residente_dpto" form:"residente_dpto"`
+    Correo_dueno string `json:"correo_dueno" form:"correo_dueno"`
+    Correo_residente string `json:"correo_residente" form:"correo_residente"`
+    Telefono_dueno string `json:"telefono_dueno" form:"telefono_dueno"`
+    Telefono_residente string `json:"telefono_residente" form:"telefono_residente"`
+
+}
+
 type Multa struct{
     Id int `json:"id"`
     Grado int `json:"grado" form:"grado"`
@@ -92,6 +118,23 @@ type Multa struct{
     Monto int `json:"monto" form:"monto"`
     Fecha string `json:"fecha" form:"fecha"`
     Causa string `json:"causa" form:"causa"`
+
+}
+
+type MultaDpto struct{
+    Id int `json:"id"`
+    Grado int `json:"grado" form:"grado"`
+    Id_departamentos int `json:"id_departamentos" form:"id_departamentos"`
+    Monto int `json:"monto" form:"monto"`
+    Fecha string `json:"fecha" form:"fecha"`
+    Causa string `json:"causa" form:"causa"`
+    Num_dpto string `json:"num_dpto" form:"num_dpto"`
+    Dueno_dpto string `json:"dueno_dpto" form:"dueno_dpto"`
+    Residente_dpto string `json:"residente_dpto" form:"residente_dpto"`
+    Correo_dueno string `json:"correo_dueno" form:"correo_dueno"`
+    Correo_residente string `json:"correo_residente" form:"correo_residente"`
+    Telefono_dueno string `json:"telefono_dueno" form:"telefono_dueno"`
+    Telefono_residente string `json:"telefono_residente" form:"telefono_residente"`
 }
 
 type PagosGastosComunes struct{
@@ -99,8 +142,22 @@ type PagosGastosComunes struct{
     Monto int `json:"monto" form:"monto"`
     Fecha string `json:"fecha" form:"fecha"`
     Id_departamento int `json:"id_departamentos" form:"id_departamentos"`
+
 }
 
+type PagosGastosComunesDpto struct{
+    Id int `json:"id"`
+    Monto int `json:"monto" form:"monto"`
+    Fecha string `json:"fecha" form:"fecha"`
+    Id_departamento int `json:"id_departamentos" form:"id_departamentos"`
+    Num_dpto string `json:"num_dpto" form:"num_dpto"`
+    Dueno_dpto string `json:"dueno_dpto" form:"dueno_dpto"`
+    Residente_dpto string `json:"residente_dpto" form:"residente_dpto"`
+    Correo_dueno string `json:"correo_dueno" form:"correo_dueno"`
+    Correo_residente string `json:"correo_residente" form:"correo_residente"`
+    Telefono_dueno string `json:"telefono_dueno" form:"telefono_dueno"`
+    Telefono_residente string `json:"telefono_residente" form:"telefono_residente"`
+}
 type Ticket struct{
     Id int `json:"id"`
     Id_departamentos int `json:"id_departamentos" form:"id_departamentos"`
