@@ -6,21 +6,22 @@ import (
 )
 
 // // // // TAKE ALL DEPARTAMENTOS // // // //
-func (de Departamento) FetchDepartamentos() (departamentos []Departamento, err error) {
+func (de DepartamentoAllData) FetchDepartamentos() (departamentos []DepartamentoAllData, err error) {
     // Opens DB
     db := GetConnection()
 
     // SQL query
-	rows, err := db.Query("SELECT * FROM departamentos")
+	rows, err := db.Query("SELECT departamentos.id, departamentos.numero, departamentos.password, departamentos.dueno, departamentos.residente, departamentos.telefono, departamentos.correo, departamentos.id_condominio, departamentos.telefono_residente, departamentos.correo_residente, departamentos.prorrateo, coalesce(estacionamientos.numero, -1) as n_estacionamientos, coalesce(bodegas.numero, -1) as n_bodegas FROM departamentos left outer join estacionamientos on departamentos.id = estacionamientos.id_departamentos left outer join bodegas on estacionamientos.id_departamentos = bodegas.id_departamentos")
 	if err != nil {
 		return
 	}
 
     // Take all data
 	for rows.Next() {
-		var dpto Departamento
-        rows.Scan(&dpto.Id, &dpto.Numero, &dpto.Password, &dpto.Dueno, &dpto.Residente, &dpto.Telefono, &dpto.Correo, &dpto.Id_condominio, &dpto.Telefono_residente, &dpto.Correo_residente, &dpto.Prorrateo)
-        fmt.Println(dpto.Id, dpto.Numero, dpto.Password, dpto.Dueno, dpto.Residente, dpto.Telefono, dpto.Correo, dpto.Id_condominio, dpto.Telefono_residente, dpto.Correo_residente, dpto.Prorrateo)
+		var dpto DepartamentoAllData
+        rows.Scan(&dpto.Id, &dpto.Numero, &dpto.Password, &dpto.Dueno, &dpto.Residente, &dpto.Telefono, &dpto.Correo, &dpto.Id_condominio, &dpto.Telefono_residente, &dpto.Correo_residente, &dpto.Prorrateo, &dpto.N_bodega, &dpto.N_estacionamiento)
+        dpto.Level = "user"
+        fmt.Println(dpto.Id, dpto.Numero, dpto.Password, dpto.Dueno, dpto.Residente, dpto.Telefono, dpto.Correo, dpto.Id_condominio, dpto.Telefono_residente, dpto.Correo_residente, dpto.Prorrateo, dpto.N_bodega, dpto.N_estacionamiento)
         departamentos = append(departamentos, dpto)
 	}
 	defer rows.Close()
@@ -30,7 +31,7 @@ func (de Departamento) FetchDepartamentos() (departamentos []Departamento, err e
 
 func GetDepartamentos(c *gin.Context){
     // Results container
-    de := Departamento{}
+    de := DepartamentoAllData{}
     // Fetch from database
 	departamentos, err := de.FetchDepartamentos()
 	if err != nil {

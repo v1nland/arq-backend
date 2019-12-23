@@ -136,12 +136,12 @@ func GetUpdateEspaciosComunesByID(c *gin.Context){
 }
 
 // // // // INSERT ESPACIOSCOMUNES BY ID// // // //
-func (Ec EspacioComun) InsertEspaciosComunes(nombre string, idcond string, estado string, descripcion string) (espacios_comunes []EspacioComun, err error) {
+func (Ec EspacioComun) InsertEspaciosComunes(nombre string, cod_cond string, estado string, descripcion string) (espacios_comunes []EspacioComun, err error) {
     // Opens DB
     db := GetConnection()
 
     // SQL queryGetPorCond/2/
-	rows, err := db.Query("insert into espacios_comunes(nombre, id_condominio, estado, descripcion) values (?, ?, ?, ?)",nombre, idcond, estado, descripcion)
+	rows, err := db.Query("insert into espacios_comunes(nombre, id_condominio, estado, descripcion) values (?, (select id from condominios where codigo = ?), ?, ?)", nombre, cod_cond, estado, descripcion)
 	if err != nil {
 		return
 	}
@@ -162,18 +162,18 @@ func GetInsertEspaciosComunes(c *gin.Context){
     //URL parameters
     var nombre = c.Param("nombre")
     var estado = c.Param("estado")
-    var id_condominio = c.Param("id_condominio")
+    var cod_cond = c.Param("cod_cond")
     var descripcion = c.Param("descripcion")
 
     fmt.Println(nombre);
-    fmt.Println(id_condominio);
+    fmt.Println(cod_cond);
     fmt.Println(estado);
     fmt.Println(descripcion);
 
     // Results container
     ec := EspacioComun{}
     // Fetch from database
-	espacios_comunes, err := ec.InsertEspaciosComunes(nombre, id_condominio, estado, descripcion)
+	espacios_comunes, err := ec.InsertEspaciosComunes(nombre, cod_cond, estado, descripcion)
 	if err != nil {
         panic(err.Error())
 	}
@@ -217,6 +217,49 @@ func GetEspaciosComunesByID(c *gin.Context){
     ec := EspacioComun{}
     // Fetch from database
 	espacios_comunes, err := ec.FetchEspaciosComunesByID(idesp)
+	if err != nil {
+        panic(err.Error())
+	}
+
+    // Show via GET method
+	c.JSON(200, gin.H{
+		"rows": espacios_comunes,
+		"count": len(espacios_comunes),
+	})
+}
+
+// // // // DELETE ESPACIOSCOMUNES POR ID // // // //
+func (Ec EspacioComun) DeleteEspaciosComunesByID(idesp string) (espacios_comunes []EspacioComun, err error) {
+    // Opens DB
+    db := GetConnection()
+
+    // SQL query
+	rows, err := db.Query("DELETE FROM espacios_comunes where id = ?", idesp)
+	if err != nil {
+		return
+	}
+
+    // Take all data
+	for rows.Next() {
+		var esc EspacioComun
+        rows.Scan(&esc.Id, &esc.Nombre, &esc.Id_condominio, &esc.Estado, &esc.Descripcion)
+        fmt.Println(esc.Id, esc.Nombre, esc.Id_condominio, esc.Estado, esc.Descripcion)
+        espacios_comunes = append(espacios_comunes, esc)
+	}
+	defer rows.Close()
+
+	return
+}
+
+func GetDeleteEspaciosComunesByID(c *gin.Context){
+    //URL parameters
+    var idesp = c.Param("idesp")
+
+    fmt.Println(idesp);
+    // Results container
+    ec := EspacioComun{}
+    // Fetch from database
+	espacios_comunes, err := ec.DeleteEspaciosComunesByID(idesp)
 	if err != nil {
         panic(err.Error())
 	}

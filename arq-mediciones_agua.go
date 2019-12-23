@@ -265,3 +265,93 @@ func GetMedicionesAguaByID(c *gin.Context){
 		"count": len(mediciones_agua),
 	})
 }
+
+// // // // TAKE ALL MEDICIONESAGUA WITH FECHA BETWEEN (ano_mes_inicial, ano_mes_final) // // // //
+func (Ma SumaMedicionAgua) FetchSumaMedicionesAgua(fechai string, fechaf string) (mediciones_agua []SumaMedicionAgua, err error) {
+    // Opens DB
+    db := GetConnection()
+
+    // SQL query
+	rows, err := db.Query("select sum(round(litros, 4)) from mediciones_agua where fecha between ? and ?", fechai, fechaf)
+	if err != nil {
+		return
+	}
+
+    // Take all data
+	for rows.Next() {
+		var med SumaMedicionAgua
+        rows.Scan(&med.Suma)
+        fmt.Println(med.Suma)
+        mediciones_agua = append(mediciones_agua, med)
+	}
+	defer rows.Close()
+
+	return
+}
+
+func GetSumaMedicionesAgua(c *gin.Context){
+    // URL parameters
+    var fechai = c.Param("fechai")
+    var fechaf = c.Param("fechaf")
+
+    fmt.Println(fechai);
+    fmt.Println(fechaf);
+
+    // Results container
+    ma := SumaMedicionAgua{}
+    // Fetch from database
+	mediciones_agua, err := ma.FetchSumaMedicionesAgua(fechai, fechaf)
+	if err != nil {
+        panic(err.Error())
+	}
+
+    // Show via GET method
+	c.JSON(200, gin.H{
+		"rows": mediciones_agua,
+		"count": len(mediciones_agua),
+	})
+}
+
+
+// // // // DELETE BY ID// // // //
+func (Ma MedicionAguaDpto) DeleteMedicionesAgua(id_med string) (mediciones_agua []MedicionAguaDpto, err error) {
+    // Opens DB
+    db := GetConnection()
+
+    // SQL query
+	rows, err := db.Query("delete from mediciones_agua where id = ?", id_med)
+	if err != nil {
+		return
+	}
+
+    // Take all data
+	for rows.Next() {
+		var med MedicionAguaDpto
+        rows.Scan(&med.Id, &med.Fecha, &med.Litros, &med.Id_departamentos, &med.Num_dpto, &med.Dueno_dpto, &med.Residente_dpto, &med.Correo_dueno, &med.Correo_residente, &med.Telefono_dueno, &med.Telefono_residente)
+        fmt.Println(med.Id, med.Fecha, med.Litros, med.Id_departamentos, med.Num_dpto, med.Dueno_dpto, med.Residente_dpto, med.Correo_dueno, med.Correo_residente, med.Telefono_dueno, med.Telefono_residente)
+        mediciones_agua = append(mediciones_agua, med)
+	}
+	defer rows.Close()
+
+	return
+}
+
+func GetDeleteMedicionesAgua(c *gin.Context){
+    // URL parameters
+    var id_med = c.Param("id_med")
+
+    fmt.Println(id_med);
+    // Results container
+    ma := MedicionAguaDpto{}
+    // Fetch from database
+	mediciones_agua, err := ma.DeleteMedicionesAgua(id_med)
+	if err != nil {
+        panic(err.Error())
+	}
+
+    // Show via GET method
+	c.JSON(200, gin.H{
+		"rows": mediciones_agua,
+		"count": len(mediciones_agua),
+	})
+}

@@ -111,6 +111,11 @@ type MedicionAguaDpto struct{
 
 }
 
+type SumaMedicionAgua struct{
+    Suma float64 `json:"suma"`
+}
+
+
 type Multa struct{
     Id int `json:"id"`
     Grado int `json:"grado" form:"grado"`
@@ -158,6 +163,11 @@ type PagosGastosComunesDpto struct{
     Telefono_dueno string `json:"telefono_dueno" form:"telefono_dueno"`
     Telefono_residente string `json:"telefono_residente" form:"telefono_residente"`
 }
+
+type SumaPagosGastosComunes struct{
+    Suma int `json:"suma"`
+}
+
 type Ticket struct{
     Id int `json:"id"`
     Id_departamentos int `json:"id_departamentos" form:"id_departamentos"`
