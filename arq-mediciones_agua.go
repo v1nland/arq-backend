@@ -181,7 +181,7 @@ func (Ma MedicionAgua) InsertMedicionesAgua(litros string, num_dpto string, cod_
     db := GetConnection()
 
     // SQL query
-	rows, err := db.Query("insert into mediciones_agua(fecha, litros, id_departamentos) values (current_timestamp, ? , (select id from departamentos where departamentos.numero = ? and departamentos.id_condominio = ?))", litros, num_dpto, cod_cond)
+	rows, err := db.Query("insert into mediciones_agua(fecha, litros, id_departamentos) values (current_timestamp, ? , (select id from departamentos where numero = ? and id_condominio in (select id from condominios where codigo = ?)))", litros, num_dpto, cod_cond)
 	if err != nil {
 		return
 	}
