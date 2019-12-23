@@ -60,7 +60,7 @@ func StartServer() {
     router.GET("/EspaciosComunes/", GetEspaciosComunes)
     router.GET("/EspaciosComunes/byCondominioID/:id_cond/", GetEspaciosComunesByCondID)
     router.GET("/EspaciosComunes/Update/:nombre/:estado/:descripcion/:id_ec/", GetUpdateEspaciosComunesByID)
-    router.GET("/EspaciosComunes/Insert/:nombre/:id_condominio/:estado/:descripcion/", GetInsertEspaciosComunes)
+    router.GET("/EspaciosComunes/Insertar/:nombre/:id_condominio/:estado/:descripcion/", GetInsertEspaciosComunes)
     router.GET("/EspaciosComunes/byID/:idesp/", GetEspaciosComunesByID) //new
 
     // Estacionamientos queries
@@ -69,7 +69,7 @@ func StartServer() {
 
     // Gastos comunes queries
     router.GET("/GastosComunes/", GetGastosComunes)
-    router.GET("/GastosComunes/Insert/:monto/:detalle/:num_dpto/:cod_cond/", GetInsertGastosComunes)
+    router.GET("/GastosComunes/Insertar/:monto/:detalle/:num_dpto/:cod_cond/", GetInsertGastosComunes)
     router.GET("/GastosComunes/Update/:monto/:detalle/:fecha/:id_dpto/:id_gc/", GetUpdateGastosComunes)
 
     // needs fix
@@ -89,14 +89,14 @@ func StartServer() {
     router.GET("/Multas/ObtenerMultas/:fechai/:fechaf/:id_dpto/", GetMultasByFecha)
     router.GET("/Multas/ContarMultas/:fechai/:fechaf/:iddpto/", GetCountMultasByFecha)
     router.GET("/Multas/UpdateMultas/:grado/:id_dpto/:monto/:fecha/:causa/:idmul/", GetUpdateMultas)
-    router.GET("/Multas/ByID/:idmulta/", GetMultasByID)
+    router.GET("/Multas/byID/:idmulta/", GetMultasByID)
 
     // Pagos gastos comunes queries
     router.GET("/PagosGC/", GetPagos)
     router.GET("/PagosGC/byDptoID/:id_dpto/", GetPagosByDptoID)
     router.GET("/PagosGC/byCondominioID/:id_cond/", GetPagosByCondominioID)
     router.GET("/PagosGC/PagosCondMes/:fechai/:fechaf/", GetPagosByFechaAndCondominioID)
-    router.GET("/PagosGC/Insert/:monto/:num_dpto/:cod_cond/", GetInsertPagos)
+    router.GET("/PagosGC/Insertar/:monto/:num_dpto/:cod_cond/", GetInsertPagos)
     router.GET("/PagosGC/Update/:monto/:fecha/:id_dpto/:idpago/", GetUpdatePagos)
     router.GET("/PagosGC/ByID/:pago_id/", GetPagosByID)
 
