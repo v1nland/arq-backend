@@ -60,7 +60,7 @@ func StartServer() {
     router.GET("/EspaciosComunes/", GetEspaciosComunes)
     router.GET("/EspaciosComunes/byCondominioID/:id_cond/", GetEspaciosComunesByCondID)
     router.GET("/EspaciosComunes/Update/:nombre/:estado/:descripcion/:id_ec/", GetUpdateEspaciosComunesByID)
-    router.GET("/EspaciosComunes/Insert/:nombre/:id_condominio/:estado/:descripcion", GetInsertEspaciosComunes)
+    router.GET("/EspaciosComunes/Insert/:nombre/:id_condominio/:estado/:descripcion/", GetInsertEspaciosComunes)
     router.GET("/EspaciosComunes/byID/:idesp/", GetEspaciosComunesByID) //new
 
     // Estacionamientos queries
@@ -85,7 +85,7 @@ func StartServer() {
 
     // Multas queries
     router.GET("/Multas/", GetMultas)
-    router.GET("/Multas/Insertar/:codcond/:num_dpto/:monto/:causa", GetInsertarMultas)
+    router.GET("/Multas/Insertar/:codcond/:num_dpto/:monto/:causa/", GetInsertarMultas)
     router.GET("/Multas/ObtenerMultas/:fechai/:fechaf/:id_dpto/", GetMultasByFecha)
     router.GET("/Multas/ContarMultas/:fechai/:fechaf/:iddpto/", GetCountMultasByFecha)
     router.GET("/Multas/UpdateMultas/:grado/:id_dpto/:monto/:fecha/:causa/:idmul/", GetUpdateMultas)

@@ -25,5 +25,7 @@ func GetConnection() *sql.DB {
         panic(err)
     }
 
+    db.SetMaxIdleConns(0)
+
     return db
 }

@@ -244,38 +244,38 @@ func GetInsertarMultas(c *gin.Context){
 	multas, err := mu.InsertarMultas(codcond, num_dpto)
 	if err != nil {
         panic(err.Error())
-	} 
-	if len(multas) <=1{
-	multasgr1, err := mu.InsertarMultasgr1(codcond, num_dpto, monto, causa)
-	if err != nil {
-	panic(err.Error())
 	}
-	c.JSON(200,gin.H{
-		"rows2":multasgr1,
-	})
-	} else if len(multas) > 5{
-	multasgr3, err := mu.InsertarMultasgr3(codcond, num_dpto, monto, causa)
-	if err != nil {
-	panic(err.Error())
-	}
-	c.JSON(200,gin.H{
-		"rows4":multasgr3,
-	})
-	} else{
-	multasgr2, err := mu.InsertarMultasgr2(codcond, num_dpto, monto, causa)
-	if err != nil {
-	panic(err.Error())
-	}
-	c.JSON(200,gin.H{
-		"rows3":multasgr2,
-	})
-	}
+	if len(multas) <= 1{
+        multasgr1, err := mu.InsertarMultasgr1(codcond, num_dpto, monto, causa)
+	    if err != nil {
+            panic(err.Error())
+        }
 
-    // Show via GET method
-	c.JSON(200, gin.H{
-		"rows1": multas,
-		"count": len(multas),
-	})
+        c.JSON(200,gin.H{
+            "rows": multasgr1,
+            "count": len(multasgr1),
+        })
+	} else if len(multas) > 5 {
+        multasgr3, err := mu.InsertarMultasgr3(codcond, num_dpto, monto, causa)
+        if err != nil {
+            panic(err.Error())
+        }
+
+        c.JSON(200,gin.H{
+            "rows": multasgr3,
+            "count": len(multasgr3),
+        })
+	} else {
+        multasgr2, err := mu.InsertarMultasgr2(codcond, num_dpto, monto, causa)
+        if err != nil {
+            panic(err.Error())
+        }
+
+        c.JSON(200,gin.H{
+            "rows": multasgr2,
+            "count": len(multasgr2),
+        })
+	}
 }
 
 
@@ -377,4 +377,3 @@ func GetMultasByID(c *gin.Context){
 		"count": len(multas),
 	})
 }
-
