@@ -275,3 +275,47 @@ func GetUpdatePagos(c *gin.Context){
 		"count": len(pagos_gastos_comunes),
 	})
 }
+
+// // // // SELECT PAGOS_GASTOS_COMUNES BY ID // // // //
+func (pag PagosGastosComunes) FetchPagosByID(pago_id string) (pagos_gastos_comunes []PagosGastosComunes, err error) {
+    // Opens DB
+    db := GetConnection()
+
+    // SQL query
+	rows, err := db.Query("select * from pagos_gastos_comunes where id = ?", pago_id)
+	if err != nil {
+        return
+    }
+
+    // Take all data
+	for rows.Next() {
+		var pago PagosGastosComunes
+        rows.Scan(&pago.Id, &pago.Monto, &pago.Fecha, &pago.Id_departamento)
+        fmt.Println(pago.Id, pago.Monto, pago.Fecha, pago.Id_departamento)
+        pagos_gastos_comunes = append(pagos_gastos_comunes, pago)
+	}
+	defer rows.Close()
+
+	return
+}
+
+func GetPagosByID(c *gin.Context){
+    // URL parameters
+    var pago_id = c.Param("pago_id")
+
+    fmt.Println(pago_id);
+
+    // Results container
+    pag := PagosGastosComunes{}
+    // Fetch from database
+	pagos_gastos_comunes, err := pag.FetchPagosByID(pago_id)
+	if err != nil {
+        panic(err.Error())
+	}
+
+    // Show via GET method
+	c.JSON(200, gin.H{
+		"rows": pagos_gastos_comunes,
+		"count": len(pagos_gastos_comunes),
+	})
+}

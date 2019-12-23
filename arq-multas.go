@@ -332,3 +332,49 @@ func GetUpdateMultas(c *gin.Context){
 		"count": len(multas),
 	})
 }
+
+
+// // // // TAKE ALL MULTAS BY ID // // // //
+func (mu Multa) FetchMultasByID(idmulta string) (multas []Multa, err error) {
+    // Opens DB
+    db := GetConnection()
+
+    // SQL query
+	rows, err := db.Query("select * from multas where id = ?", idmulta)
+	if err != nil {
+		return
+	}
+
+    // Take all data
+	for rows.Next() {
+		var mul Multa
+        rows.Scan(&mul.Id, &mul.Grado, &mul.Id_departamentos, &mul.Monto, &mul.Fecha, &mul.Causa)
+        fmt.Println(mul.Id, mul.Grado, mul.Id_departamentos, mul.Monto, mul.Fecha, mul.Causa)
+        multas = append(multas, mul)
+	}
+	defer rows.Close()
+
+	return
+}
+
+func GetMultasByID(c *gin.Context){
+    // URL parameters
+    var idmulta = c.Param("idmulta")
+
+    fmt.Println(idmulta);
+
+    // Results container
+    mu := Multa{}
+    // Fetch from database
+	multas, err := mu.FetchMultasByID(idmulta)
+	if err != nil {
+        panic(err.Error())
+	}
+
+    // Show via GET method
+	c.JSON(200, gin.H{
+		"rows": multas,
+		"count": len(multas),
+	})
+}
+

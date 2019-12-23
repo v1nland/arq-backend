@@ -69,7 +69,7 @@ func StartServer() {
 
     // Gastos comunes queries
     router.GET("/GastosComunes/", GetGastosComunes)
-    router.GET("/GastosComunes/Insert/:monto/:detalle/:id_dpto/", GetInsertGastosComunes)
+    router.GET("/GastosComunes/Insert/:monto/:detalle/:num_dpto/:cod_cond/", GetInsertGastosComunes)
     router.GET("/GastosComunes/Update/:monto/:detalle/:fecha/:id_dpto/:id_gc/", GetUpdateGastosComunes)
 
     // needs fix
@@ -89,7 +89,7 @@ func StartServer() {
     router.GET("/Multas/ObtenerMultas/:fechai/:fechaf/:id_dpto/", GetMultasByFecha)
     router.GET("/Multas/ContarMultas/:fechai/:fechaf/:iddpto/", GetCountMultasByFecha)
     router.GET("/Multas/UpdateMultas/:grado/:id_dpto/:monto/:fecha/:causa/:idmul/", GetUpdateMultas)
-
+    router.GET("/Multas/ByID/:idmulta/", GetMultasByID)
 
     // Pagos gastos comunes queries
     router.GET("/PagosGC/", GetPagos)
@@ -98,6 +98,7 @@ func StartServer() {
     router.GET("/PagosGC/PagosCondMes/:fechai/:fechaf/", GetPagosByFechaAndCondominioID)
     router.GET("/PagosGC/Insert/:monto/:num_dpto/:cod_cond/", GetInsertPagos)
     router.GET("/PagosGC/Update/:monto/:fecha/:id_dpto/:idpago/", GetUpdatePagos)
+    router.GET("/PagosGC/ByID/:pago_id/", GetPagosByID)
 
     //Tickets queries
     router.GET("/Tickets/", GetTickets)

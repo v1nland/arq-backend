@@ -87,12 +87,12 @@ func GetBalanceGastosComunes(c *gin.Context){
 }
 
 // // // // INSERT GASTOSCOMUNES // // // //
-func (Gc GastoComun) InsertGastosComunes(monto string, detalle string, id_dpto string) (gastos_comunes []GastoComun, err error) {
+func (Gc GastoComun) InsertGastosComunes(monto string, detalle string, num_dpto string, cod_cond string) (gastos_comunes []GastoComun, err error) {
     // Opens DB
     db := GetConnection()
 
     // SQL query
-	rows, err := db.Query("insert into gastos_comunes(monto, detalle, fecha, id_departamentos) values (?, ?, current_timestamp, ?)", monto, detalle, id_dpto)
+	rows, err := db.Query("insert into gastos_comunes(monto, detalle, fecha, id_departamentos) values (?, ?, current_timestamp, (select id from departamentos where numero = ? and id_condominio in (select id from condominios where codigo = ?)))", monto, detalle, num_dpto, cod_cond)
 	if err != nil {
 		return
 	}
@@ -113,15 +113,17 @@ func GetInsertGastosComunes(c *gin.Context){
     //URL parameters
     var monto = c.Param("monto")
     var detalle = c.Param("detalle")
-    var id_dpto = c.Param("id_dpto")
+    var num_dpto = c.Param("num_dpto")
+    var cod_cond = c.Param("cod_cond")
 
     fmt.Println(monto);
     fmt.Println(detalle);
-    fmt.Println(id_dpto);
+    fmt.Println(num_dpto);
+    fmt.Println(cod_cond);
     // Results container
     gc := GastoComun{}
     // Fetch from database
-	gastos_comunes, err := gc.InsertGastosComunes(monto, detalle, id_dpto)
+	gastos_comunes, err := gc.InsertGastosComunes(monto, detalle, num_dpto, cod_cond)
 	if err != nil {
         panic(err.Error())
 	}
@@ -183,3 +185,5 @@ func GetUpdateGastosComunes(c *gin.Context){
 		"count": len(gastos_comunes),
 	})
 }
+
+
