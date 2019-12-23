@@ -98,7 +98,7 @@ func StartServer() {
     router.GET("/PagosGC/PagosCondMes/:fechai/:fechaf/", GetPagosByFechaAndCondominioID)
     router.GET("/PagosGC/Insertar/:monto/:num_dpto/:cod_cond/", GetInsertPagos)
     router.GET("/PagosGC/Update/:monto/:fecha/:id_dpto/:idpago/", GetUpdatePagos)
-    router.GET("/PagosGC/ByID/:pago_id/", GetPagosByID)
+    router.GET("/PagosGC/byID/:pago_id/", GetPagosByID)
 
     //Tickets queries
     router.GET("/Tickets/", GetTickets)
