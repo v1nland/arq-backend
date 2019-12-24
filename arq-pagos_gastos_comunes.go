@@ -365,3 +365,47 @@ func GetSumPagos(c *gin.Context){
 		"count": len(pagos_gastos_comunes),
 	})
 }
+
+// // // // SUMA PAGOS_GASTOS_COMUNES BY ID // // // //
+func (pag SumaPagosGastosComunes) FetchSumPagosByID(id_dpto string) (pagos_gastos_comunes []SumaPagosGastosComunes, err error) {
+    // Opens DB
+    db := GetConnection()
+
+    // SQL query
+	rows, err := db.Query("select sum(monto) as suma from pagos_gastos_comunes where id_departamentos= ?", id_dpto)
+	if err != nil {
+        return
+    }
+
+    // Take all data
+	for rows.Next() {
+		var pago SumaPagosGastosComunes
+        rows.Scan(&pago.Suma)
+        fmt.Println(pago.Suma)
+        pagos_gastos_comunes = append(pagos_gastos_comunes, pago)
+	}
+	defer rows.Close()
+
+	return
+}
+
+func GetSumPagosByID(c *gin.Context){
+    // URL parameters
+    var id_dpto = c.Param("id_dpto")
+
+    fmt.Println(id_dpto);
+
+    // Results container
+    pag := SumaPagosGastosComunes{}
+    // Fetch from database
+	pagos_gastos_comunes, err := pag.FetchSumPagosByID(id_dpto)
+	if err != nil {
+        panic(err.Error())
+	}
+
+    // Show via GET method
+	c.JSON(200, gin.H{
+		"rows": pagos_gastos_comunes,
+		"count": len(pagos_gastos_comunes),
+	})
+}

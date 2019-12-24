@@ -186,4 +186,92 @@ func GetUpdateGastosComunes(c *gin.Context){
 	})
 }
 
+// // // // SUMA GASTOSCOMUNES // // // //
+func (Gc SumaGastoComun) SumaGastosComunes(fechai string, fechaf string) (gastos_comunes []SumaGastoComun, err error) {
+    // Opens DB
+    db := GetConnection()
 
+    // SQL query
+	rows, err := db.Query("select sum(monto) from gastos_comunes where fecha between ? and ?", fechai, fechaf)
+	if err != nil {
+		return
+	}
+
+    // Take all data
+	for rows.Next() {
+		var gac SumaGastoComun
+        rows.Scan(&gac.Suma)
+        fmt.Println(gac.Suma)
+        gastos_comunes = append(gastos_comunes, gac)
+	}
+	defer rows.Close()
+
+	return
+}
+
+func GetSumaGastosComunes(c *gin.Context){
+    //URL parameters
+    var fechai = c.Param("fechai")
+    var fechaf = c.Param("fechaf")
+
+    fmt.Println(fechai);
+    fmt.Println(fechaf);
+
+    // Results container
+    gc := SumaGastoComun{}
+    // Fetch from database
+	gastos_comunes, err := gc.SumaGastosComunes(fechai, fechaf)
+	if err != nil {
+        panic(err.Error())
+	}
+
+    // Show via GET method
+	c.JSON(200, gin.H{
+		"rows": gastos_comunes,
+		"count": len(gastos_comunes),
+	})
+}
+
+// // // // SUMA GASTOSCOMUNES BY ID // // // //
+func (Gc SumaGastoComun) SumaGastosComunesByID(id_dpto string) (gastos_comunes []SumaGastoComun, err error) {
+    // Opens DB
+    db := GetConnection()
+
+    // SQL query
+	rows, err := db.Query("select sum(monto) from gastos_comunes where id_departamentos = ?", id_dpto)
+	if err != nil {
+		return
+	}
+
+    // Take all data
+	for rows.Next() {
+		var gac SumaGastoComun
+        rows.Scan(&gac.Suma)
+        fmt.Println(gac.Suma)
+        gastos_comunes = append(gastos_comunes, gac)
+	}
+	defer rows.Close()
+
+	return
+}
+
+func GetSumaGastosComunesByID(c *gin.Context){
+    //URL parameters
+    var id_dpto = c.Param("id_dpto")
+
+    fmt.Println(id_dpto);
+
+    // Results container
+    gc := SumaGastoComun{}
+    // Fetch from database
+	gastos_comunes, err := gc.SumaGastosComunesByID(id_dpto)
+	if err != nil {
+        panic(err.Error())
+	}
+
+    // Show via GET method
+	c.JSON(200, gin.H{
+		"rows": gastos_comunes,
+		"count": len(gastos_comunes),
+	})
+}

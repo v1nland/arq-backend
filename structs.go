@@ -89,6 +89,10 @@ type GastoComun struct{
     Id_departamentos int `json:"id_departamentos" form:"id_departamentos"`
 }
 
+type SumaGastoComun struct{
+    Suma int `json:"suma"`
+}
+
 type MedicionAgua struct{
     Id int `json:"id"`
     Fecha string `json:"fecha" form:"fecha"`
