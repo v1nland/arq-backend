@@ -130,6 +130,11 @@ type Multa struct{
 
 }
 
+
+type CuentaMultas struct{
+    Cuenta int `json:"cuenta"`
+}
+
 type MultaDpto struct{
     Id int `json:"id"`
     Grado int `json:"grado" form:"grado"`

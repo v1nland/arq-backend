@@ -97,6 +97,7 @@ func StartServer() {
     router.GET("/Multas/ContarMultas/:fechai/:fechaf/:iddpto/", GetCountMultasByFecha)
     router.GET("/Multas/UpdateMultas/:grado/:id_dpto/:monto/:fecha/:causa/:idmul/", GetUpdateMultas)
     router.GET("/Multas/byID/:idmulta/", GetMultasByID)
+    router.GET("/Multas/ContarFecha/:fechai/:fechaf/", GetCuentaMultasFecha)
 
     // Pagos gastos comunes queries
     router.GET("/PagosGC/", GetPagos)

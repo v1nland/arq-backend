@@ -377,3 +377,50 @@ func GetMultasByID(c *gin.Context){
 		"count": len(multas),
 	})
 }
+
+
+// // // // CONTAR MULTAS // // // //
+func (mu CuentaMultas) CuentaMultasFecha(fechai string, fechaf string) (multas []CuentaMultas, err error) {
+    // Opens DB
+    db := GetConnection()
+
+    // SQL query
+	rows, err := db.Query("select count(*) from multas where fecha between ? and ?", fechai, fechaf)
+	if err != nil {
+		return
+	}
+
+    // Take all data
+	for rows.Next() {
+		var mul CuentaMultas
+        rows.Scan(&mul.Cuenta)
+        fmt.Println(mul.Cuenta)
+        multas = append(multas, mul)
+	}
+	defer rows.Close()
+
+	return
+}
+
+func GetCuentaMultasFecha(c *gin.Context){
+    // URL parameters
+    var fechai = c.Param("fechai")
+    var fechaf = c.Param("fechaf")
+
+    fmt.Println(fechai);
+    fmt.Println(fechaf);
+
+    // Results container
+    mu := CuentaMultas{}
+    // Fetch from database
+	multas, err := mu.CuentaMultasFecha(fechai, fechaf)
+	if err != nil {
+        panic(err.Error())
+	}
+
+    // Show via GET method
+	c.JSON(200, gin.H{
+		"rows": multas,
+		"count": len(multas),
+	})
+}
